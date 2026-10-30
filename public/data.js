@@ -3,14 +3,14 @@
    des ressources.
 
    Une ressource :
-   { type: "cours" | "tp" | "exercice" | "animation" | "video" | "maths",
+   { type: "cours" | "activite" | "exercice" | "animation" | "video" | "maths",
      titre: "Titre affiché",
      desc: "Phrase facultative",
      date: "2026-11-05",
      fichier: "pdf/terminale-spe/titrages/cours.pdf"   // pour un PDF
      // ou  url: "https://..."                          // animation / capsule vidéo
    }
-   Arborescence : niveau > chapitre > cours, TP, exercices, animations et
+   Arborescence : niveau > chapitre > cours, activités, exercices, animations et
    simulations, capsules vidéo, points maths. Un PDF se range dans pdf/<niveau>/<chapitre>/.
    ============================================================ */
 window.SITE = {
@@ -62,11 +62,11 @@ window.SITE = {
       sous: "Spécialité Physique-Chimie",
       chapitres: [
         { id: "titrages", titre: "Titrage avec suivi pH-métrique et titrage avec suivi conductimétrique", ressources: [
-          { type: "tp", titre: "TP 1 : Titrage pH-métrique d'un vinaigre", desc: "Sujet type ECE (2 h) : titre massique du vinaigre, comparaison avec l'étiquette", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp1-vinaigre-ph-metrique-sujet.pdf" },
-          { type: "tp", titre: "TP 1 : Notice Regressi, titrage pH-métrique", desc: "Saisie des mesures, méthode des tangentes et méthode de la dérivée", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp1-vinaigre-ph-metrique-notice-regressi.pdf" },
-          { type: "tp", titre: "TP 2 : Titrage conductimétrique d'un déboucheur (Destop)", desc: "Sujet type ECE (1 h) : titre massique en hydroxyde de sodium", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-sujet.pdf" },
-          { type: "tp", titre: "TP 2 : Notice Regressi, titrage conductimétrique", desc: "Saisie des mesures et tracé de σ = f(VA)", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-notice-regressi.pdf" },
-          { type: "tp", titre: "TP 2 : Tableau de mesures (Destop dilué 20 fois)", desc: "Mesures de conductivité pour exploiter le titrage", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-tableau-mesures.pdf" }
+          { type: "activite", titre: "TP 1 : Titrage pH-métrique d'un vinaigre", desc: "Sujet type ECE (2 h) : titre massique du vinaigre, comparaison avec l'étiquette", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp1-vinaigre-ph-metrique-sujet.pdf" },
+          { type: "activite", titre: "TP 1 : Notice Regressi, titrage pH-métrique", desc: "Saisie des mesures, méthode des tangentes et méthode de la dérivée", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp1-vinaigre-ph-metrique-notice-regressi.pdf" },
+          { type: "activite", titre: "TP 2 : Titrage conductimétrique d'un déboucheur (Destop)", desc: "Sujet type ECE (1 h) : titre massique en hydroxyde de sodium", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-sujet.pdf" },
+          { type: "activite", titre: "TP 2 : Notice Regressi, titrage conductimétrique", desc: "Saisie des mesures et tracé de σ = f(VA)", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-notice-regressi.pdf" },
+          { type: "activite", titre: "TP 2 : Tableau de mesures (Destop dilué 20 fois)", desc: "Mesures de conductivité pour exploiter le titrage", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-tableau-mesures.pdf" }
         ] }
       ]
     },

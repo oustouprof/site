@@ -2,7 +2,7 @@
   var S = window.SITE, main = document.getElementById('main') || document.getElementById('contenu');
   var TYPES = {
     cours:{l:'Cours',g:'Cours',a:'Ouvrir le PDF'},
-    tp:{l:'TP',g:'TP',a:'Ouvrir le PDF'},
+    activite:{l:'Activité',g:'Activités',a:'Ouvrir le PDF'},
     exercice:{l:'Exercices',g:'Exercices',a:'Ouvrir le PDF'},
     animation:{l:'Animation / simulation',g:'Animations et simulations',a:'Lancer'},
     video:{l:'Capsule vidéo',g:'Capsules vidéo',a:'Regarder'},
