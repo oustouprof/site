@@ -58,7 +58,6 @@
     S.niveaux.forEach(function(n,i){
       var c = count(n);
       ul.appendChild(h('li',{},[h('a',{class:'niv',href:'#'+n.id,style:'--c:'+n.couleur},[
-        h('span',{class:'n',text:String(i+1).padStart(2,'0')}),
         h('h3',{text:n.titre}),
         h('span',{class:'s',text:n.sous}),
         h('span',{class:'k',text:c ? plur(c) : 'à venir'})
