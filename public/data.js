@@ -41,7 +41,12 @@ window.SITE = {
       id: "premiere-spe", titre: "Première · Spécialité", court: "Première spé", couleur: "var(--s3)",
       sous: "Spécialité Physique-Chimie",
       chapitres: [
-        { id: "dosage-spectrophotometrique", titre: "Dosage par étalonnage spectrophotométrique", ressources: [] }
+        { id: "dosage-spectrophotometrique", titre: "Dosage par étalonnage spectrophotométrique", ressources: [
+          { type: "activite", titre: "Construction d'une courbe d'absorption : groupe 1, le bleu patenté", desc: "Pourquoi une solution de bleu patenté nous paraît-elle bleue ?", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/absorption-groupe1-bleu-patente.pdf" },
+          { type: "activite", titre: "Construction d'une courbe d'absorption : groupe 2, la tartrazine", desc: "Pourquoi une solution de tartrazine nous paraît-elle jaune ?", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/absorption-groupe2-tartrazine.pdf" },
+          { type: "activite", titre: "Construction d'une courbe d'absorption : groupe 3, le mélange bleu patenté et tartrazine", desc: "Pourquoi le mélange d'une solution bleue et d'une solution jaune paraît-il vert ?", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/absorption-groupe3-melange.pdf" },
+          { type: "activite", titre: "Construction d'une courbe d'absorption : notice Regressi", desc: "Tracer le spectre d'absorption A = f(λ)", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/absorption-notice-regressi.pdf" }
+        ] }
       ]
     },
     {
