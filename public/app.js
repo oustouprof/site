@@ -133,17 +133,41 @@
   }
 
   /* Rubrique : les ressources */
-  function rubrique(n, ch, k){
+  function liste(rs){
+    var ul = h('ul',{class:'res'});
+    rs.forEach(function(r){ ul.appendChild(resItem(r,null,true)); });
+    return ul;
+  }
+
+  /* Rubrique : les ressources, éventuellement rangées en sous-rubriques (champ "groupe") */
+  function rubrique(n, ch, k, g){
     var frag = document.createDocumentFragment();
-    frag.appendChild(h('a',{class:'back',href:'#'+n.id+'/'+chId(ch),text:'← '+ch.titre}));
-    frag.appendChild(head(n, ch.titre, TYPES[k].g));
+    var base = '#'+n.id+'/'+chId(ch)+'/'+k;
     var rs = ch.ressources.filter(function(r){ return r.type===k; });
     rs.sort(function(a,b){ return (a.date||'').localeCompare(b.date||''); });
-    if (rs.length){
-      var ul = h('ul',{class:'res'});
-      rs.forEach(function(r){ ul.appendChild(resItem(r,null,true)); });
+    var noms = [];
+    rs.forEach(function(r){ if (r.groupe && noms.indexOf(r.groupe)<0) noms.push(r.groupe); });
+
+    var nom = g ? noms.filter(function(x){ return slug(x)===g; })[0] : null;
+    if (nom){
+      frag.appendChild(h('a',{class:'back',href:base,text:'← '+TYPES[k].g}));
+      frag.appendChild(head(n, ch.titre+' · '+TYPES[k].g, nom));
+      frag.appendChild(liste(rs.filter(function(r){ return r.groupe===nom; })));
+      return frag;
+    }
+    frag.appendChild(h('a',{class:'back',href:'#'+n.id+'/'+chId(ch),text:'← '+ch.titre}));
+    frag.appendChild(head(n, ch.titre, TYPES[k].g, noms.length ? 'Choisis une activité.' : null));
+    if (!rs.length){ frag.appendChild(h('p',{class:'vide',text:'Ressources à venir.'})); return frag; }
+    if (noms.length){
+      var ul = h('ul',{class:'chapitres'});
+      noms.forEach(function(x){
+        var c = rs.filter(function(r){ return r.groupe===x; }).length;
+        ul.appendChild(carte(n, base+'/'+slug(x), x, '', c + (c>1 ? ' documents' : ' document')));
+      });
       frag.appendChild(ul);
-    } else frag.appendChild(h('p',{class:'vide',text:'Ressources à venir.'}));
+    }
+    var libres = rs.filter(function(r){ return !r.groupe; });
+    if (libres.length) frag.appendChild(liste(libres));
     return frag;
   }
 
@@ -154,7 +178,7 @@
     var k = ch && parts[2] && TYPES[parts[2]] ? parts[2] : null;
     main.textContent = '';
     renderNav(n ? n.id : '');
-    if (n && ch && k){ main.appendChild(rubrique(n,ch,k)); document.title = TYPES[k].g + ' · ' + ch.titre; }
+    if (n && ch && k){ main.appendChild(rubrique(n,ch,k,parts[3])); document.title = (parts[3] ? '' : TYPES[k].g + ' · ') + ch.titre; }
     else if (n && ch){ main.appendChild(chapitre(n,ch)); document.title = ch.titre + ' · ' + n.titre; }
     else if (n){ main.appendChild(niveau(n)); document.title = n.titre + ' · Physique-Chimie, M. Oustou'; }
     else { main.appendChild(accueil()); document.title = 'Physique-Chimie, M. Oustou'; }
