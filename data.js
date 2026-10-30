@@ -14,7 +14,6 @@
 window.SITE = {
   nom: "M. OUSTOU Adel",
   titre: "Professeur agrégé de Physique-Chimie",
-  accroche: "Cours, activités, exercices, capsules vidéo et simulations pour mes élèves de seconde, de première et de terminale.",
   niveaux: [
     {
       id: "seconde", titre: "Seconde", couleur: "var(--s1)",

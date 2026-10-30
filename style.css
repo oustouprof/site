@@ -45,7 +45,7 @@ nav a[aria-current="page"]{border-bottom-color:var(--c,var(--accent));font-weigh
 main{padding-block:32px 56px;outline:none}
 
 /* accueil */
-.hero{position:relative;border-radius:14px;overflow:hidden;color:#fff;padding:56px 40px;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;
+.hero{position:relative;border-radius:14px;overflow:hidden;color:#fff;padding:56px 40px;min-height:260px;display:flex;flex-direction:column;justify-content:flex-end;
   background:linear-gradient(90deg,rgba(6,14,38,.94) 0%,rgba(6,14,38,.82) 42%,rgba(6,14,38,.25) 100%),url("hero.jpg") center/cover no-repeat,#0a1633}
 .hero .mono{color:#aebcff}
 .hero h1{font-size:clamp(2.4rem,7vw,4.4rem);font-weight:800;letter-spacing:-.02em;margin-top:10px}

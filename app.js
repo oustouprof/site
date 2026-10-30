@@ -51,8 +51,7 @@
     frag.appendChild(h('section',{class:'hero'},[
       h('span',{class:'mono',text:'Lycée · Physique-Chimie'}),
       h('h1',{text:S.nom}),
-      h('div',{class:'titre',text:S.titre}),
-      h('p',{text:S.accroche})
+      h('div',{class:'titre',text:S.titre})
     ]));
 
     var ul = h('ul',{class:'niveaux'});
