@@ -41,10 +41,7 @@ window.SITE = {
       id: "premiere-spe", titre: "Première · Spécialité", court: "Première spé", couleur: "var(--s3)",
       sous: "Spécialité Physique-Chimie",
       chapitres: [
-        { titre: "Constitution et transformations de la matière", ressources: [] },
-        { titre: "Mouvement et interactions", ressources: [] },
-        { titre: "L'énergie : conversions et transferts", ressources: [] },
-        { titre: "Ondes et signaux", ressources: [] }
+        { id: "dosage-spectrophotometrique", titre: "Dosage par étalonnage spectrophotométrique", ressources: [] }
       ]
     },
     {
