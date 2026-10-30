@@ -6,20 +6,23 @@
 <title>Physique-Chimie, M. Oustou</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="#accueil">M. Oustou</a>
-    <button id="menu" type="button" aria-expanded="false" aria-controls="nav">Niveaux</button>
+    <a class="brand" href="#accueil">M. Oustou <span>Physique-Chimie</span></a>
     <nav id="nav" aria-label="Niveaux"></nav>
   </div>
+  <div class="spectre" aria-hidden="true"></div>
 </header>
 <main id="contenu" class="wrap" tabindex="-1"></main>
-<footer class="wrap foot"><span id="foot-nom"></span></footer>
+<footer class="wrap foot">
+  <span id="foot-nom"></span>
+  <span class="mono">Les documents sont destinés aux élèves.</span>
+</footer>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
