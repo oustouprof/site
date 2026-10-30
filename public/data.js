@@ -48,7 +48,8 @@ window.SITE = {
           { type: "activite", titre: "Construction d'un spectre d'absorption (courbe d'absorbance) : notice Regressi", desc: "Tracer le spectre d'absorption A = f(λ)", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/absorption-notice-regressi.pdf" },
           { type: "activite", titre: "Dosage par étalonnage spectrophotométrique de l'eau de Dakin", desc: "Sujet type ECE, 1 h 30", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/dakin-sujet.pdf" },
           { type: "activite", titre: "Dosage par étalonnage spectrophotométrique de l'eau de Dakin : notice Regressi", desc: "Tracer une droite d'étalonnage et déterminer une concentration inconnue", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/dakin-notice-regressi.pdf" },
-          { type: "activite", titre: "Dosage par étalonnage spectrophotométrique de l'eau de Dakin : exemple de mesures expérimentales", desc: "Absorbances des solutions étalons", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/dakin-exemple-mesures.pdf" }
+          { type: "activite", titre: "Dosage par étalonnage spectrophotométrique de l'eau de Dakin : exemple de mesures expérimentales", desc: "Absorbances des solutions étalons", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/dakin-exemple-mesures.pdf" },
+          { type: "exercice", titre: "Dosage par étalonnage spectrophotométrique : le colorant E133 d'un sirop de menthe glaciale", desc: "Exercice type, énoncé", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/exercice-type-sirop-e133.pdf" }
         ] }
       ]
     },
