@@ -66,7 +66,7 @@ window.SITE = {
           { type: "activite", titre: "Titrage avec suivi pH-métrique d'un vinaigre : notice Regressi", desc: "Saisie des mesures, méthode des tangentes et méthode de la dérivée", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp1-vinaigre-ph-metrique-notice-regressi.pdf" },
           { type: "activite", titre: "Titrage avec suivi conductimétrique du Destop", desc: "Sujet type ECE (1 h) : titre massique en hydroxyde de sodium", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-sujet.pdf" },
           { type: "activite", titre: "Titrage avec suivi conductimétrique du Destop : notice Regressi", desc: "Saisie des mesures et tracé de σ = f(VA)", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-notice-regressi.pdf" },
-          { type: "activite", titre: "Titrage avec suivi conductimétrique du Destop : tableau de mesures (dilué 20 fois)", desc: "Mesures de conductivité pour exploiter le titrage", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-tableau-mesures.pdf" }
+          { type: "activite", titre: "Titrage avec suivi conductimétrique du Destop : exemple de mesures expérimentales", desc: "Mesures de conductivité pour exploiter le titrage", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-tableau-mesures.pdf" }
         ] }
       ]
     },
