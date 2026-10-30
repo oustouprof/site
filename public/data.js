@@ -10,8 +10,8 @@
      fichier: "pdf/terminale-spe/titrages/cours.pdf"   // pour un PDF
      // ou  url: "https://..."                          // animation / capsule vidéo
    }
-   Arborescence : niveau > chapitre > cours, TP, exercices, animations,
-   capsules vidéo, points maths. Un PDF se range dans pdf/<niveau>/<chapitre>/.
+   Arborescence : niveau > chapitre > cours, TP, exercices, animations et
+   simulations, capsules vidéo, points maths. Un PDF se range dans pdf/<niveau>/<chapitre>/.
    ============================================================ */
 window.SITE = {
   nom: "M. OUSTOU Adel",
@@ -61,7 +61,7 @@ window.SITE = {
       id: "terminale-spe", titre: "Terminale · Spécialité", court: "Terminale spé", couleur: "var(--s5)",
       sous: "Spécialité Physique-Chimie",
       chapitres: [
-        { titre: "Titrage avec suivi pH-métrique et titrage avec suivi conductimétrique", ressources: [] }
+        { id: "titrages", titre: "Titrage avec suivi pH-métrique et titrage avec suivi conductimétrique", ressources: [] }
       ]
     },
     {

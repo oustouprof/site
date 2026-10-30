@@ -108,3 +108,6 @@ main{padding-block:32px 56px;outline:none}
 .grp{font:600 .8rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:20px 0 4px}
 .r.notag{grid-template-columns:1fr auto}
 @media(max-width:640px){.r.notag{grid-template-columns:1fr}}
+.chapitres,.rubriques{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.chapitres{grid-template-columns:1fr}
+@media(max-width:640px){.rubriques{grid-template-columns:1fr}}

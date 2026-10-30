@@ -4,7 +4,7 @@
     cours:{l:'Cours',g:'Cours',a:'Ouvrir le PDF'},
     tp:{l:'TP',g:'TP',a:'Ouvrir le PDF'},
     exercice:{l:'Exercices',g:'Exercices',a:'Ouvrir le PDF'},
-    animation:{l:'Animation',g:'Animations',a:'Lancer'},
+    animation:{l:'Animation / simulation',g:'Animations et simulations',a:'Lancer'},
     video:{l:'Capsule vidéo',g:'Capsules vidéo',a:'Regarder'},
     maths:{l:'Point maths',g:'Points maths',a:'Ouvrir le PDF'}
   };
@@ -85,43 +85,78 @@
     return frag;
   }
 
+  function slug(t){
+    return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40);
+  }
+  function chId(ch){ return ch.id || slug(ch.titre); }
+
+  function head(n, kicker, titre, texte){
+    return h('div',{class:'n-head',style:'--c:'+n.couleur},[
+      h('span',{class:'mono',text:kicker}), h('h1',{text:titre}),
+      texte ? h('p',{text:texte}) : null
+    ]);
+  }
+  function carte(n, href, titre, sous, k){
+    return h('li',{},[h('a',{class:'niv',href:href,style:'--c:'+n.couleur},[
+      h('h3',{text:titre}),
+      sous ? h('span',{class:'s',text:sous}) : null,
+      h('span',{class:'k',text:k})
+    ])]);
+  }
+
+  /* Niveau : liste des chapitres */
   function niveau(n){
     var frag = document.createDocumentFragment();
     frag.appendChild(h('a',{class:'back',href:'#accueil',text:'← Accueil'}));
-    frag.appendChild(h('div',{class:'n-head',style:'--c:'+n.couleur},[
-      h('span',{class:'mono',text:n.sous}), h('h1',{text:n.titre}),
-      h('p',{text:'Cours, TP, exercices, animations, capsules vidéo et points maths, classés par chapitre.'})
-    ]));
-    var liste = h('div',{});
-    function draw(){
-      liste.textContent = '';
-      n.chapitres.forEach(function(ch){
-        var sec = h('section',{class:'chap'},[
-          h('h2',{},[ch.titre, h('span',{class:'mono',text:ch.ressources.length ? plur(ch.ressources.length) : ''})])
-        ]);
-        Object.keys(TYPES).forEach(function(k){
-          var rs = ch.ressources.filter(function(r){ return r.type===k; });
-          if (!rs.length) return;
-          var ul = h('ul',{class:'res'});
-          rs.forEach(function(r){ ul.appendChild(resItem(r,null,true)); });
-          sec.appendChild(h('h3',{class:'grp',text:TYPES[k].g}));
-          sec.appendChild(ul);
-        });
-        if (!ch.ressources.length) sec.appendChild(h('p',{class:'vide',text:'Ressources à venir.'}));
-        liste.appendChild(sec);
-      });
-    }
-    draw();
-    frag.appendChild(liste);
+    frag.appendChild(head(n, n.sous, n.titre, 'Choisis un chapitre.'));
+    var ul = h('ul',{class:'chapitres'});
+    n.chapitres.forEach(function(ch){
+      var c = ch.ressources.length;
+      ul.appendChild(carte(n, '#'+n.id+'/'+chId(ch), ch.titre, '', c ? plur(c) : 'à venir'));
+    });
+    frag.appendChild(ul);
+    return frag;
+  }
+
+  /* Chapitre : les 6 rubriques */
+  function chapitre(n, ch){
+    var frag = document.createDocumentFragment();
+    frag.appendChild(h('a',{class:'back',href:'#'+n.id,text:'← '+n.titre}));
+    frag.appendChild(head(n, n.titre, ch.titre, 'Choisis une rubrique.'));
+    var ul = h('ul',{class:'rubriques'});
+    Object.keys(TYPES).forEach(function(k){
+      var c = ch.ressources.filter(function(r){ return r.type===k; }).length;
+      ul.appendChild(carte(n, '#'+n.id+'/'+chId(ch)+'/'+k, TYPES[k].g, '', c ? c + (c>1 ? ' documents' : ' document') : 'à venir'));
+    });
+    frag.appendChild(ul);
+    return frag;
+  }
+
+  /* Rubrique : les ressources */
+  function rubrique(n, ch, k){
+    var frag = document.createDocumentFragment();
+    frag.appendChild(h('a',{class:'back',href:'#'+n.id+'/'+chId(ch),text:'← '+ch.titre}));
+    frag.appendChild(head(n, ch.titre, TYPES[k].g));
+    var rs = ch.ressources.filter(function(r){ return r.type===k; });
+    rs.sort(function(a,b){ return (a.date||'').localeCompare(b.date||''); });
+    if (rs.length){
+      var ul = h('ul',{class:'res'});
+      rs.forEach(function(r){ ul.appendChild(resItem(r,null,true)); });
+      frag.appendChild(ul);
+    } else frag.appendChild(h('p',{class:'vide',text:'Ressources à venir.'}));
     return frag;
   }
 
   function route(){
-    var id = location.hash.replace('#','') || 'accueil';
-    var n = S.niveaux.filter(function(x){return x.id===id;})[0];
+    var parts = location.hash.replace('#','').split('/');
+    var n = S.niveaux.filter(function(x){return x.id===parts[0];})[0];
+    var ch = n && parts[1] ? n.chapitres.filter(function(c){return chId(c)===parts[1];})[0] : null;
+    var k = ch && parts[2] && TYPES[parts[2]] ? parts[2] : null;
     main.textContent = '';
     renderNav(n ? n.id : '');
-    if (n){ main.appendChild(niveau(n)); document.title = n.titre + ' · Physique-Chimie, M. Oustou'; }
+    if (n && ch && k){ main.appendChild(rubrique(n,ch,k)); document.title = TYPES[k].g + ' · ' + ch.titre; }
+    else if (n && ch){ main.appendChild(chapitre(n,ch)); document.title = ch.titre + ' · ' + n.titre; }
+    else if (n){ main.appendChild(niveau(n)); document.title = n.titre + ' · Physique-Chimie, M. Oustou'; }
     else { main.appendChild(accueil()); document.title = 'Physique-Chimie, M. Oustou'; }
     window.scrollTo(0,0);
   }
