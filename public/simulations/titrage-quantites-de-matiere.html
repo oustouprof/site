@@ -1,0 +1,919 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Titrage 2 A + 3 B</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : paillasse à deux panneaux — bécher animé observé par un œil à gauche, courbes N = f(V) à droite, puis bilan et relation à l'équivalence */
+:root{
+  --bg:#eef1f5; --panel:#ffffff; --fg:#17202a; --muted:#566475; --line:#d4dbe4; --accent:#285e8f;
+  --a:#c2177c; --b:#1c9449; --c:#1f66d8; --d:#c99700; --cl:#6b7a8d; --so4:#8a6c9e;
+  --glass:#8ea2b6; --liquid:#dfe9f2; --soft:#e6ebf1; --iris:#3d7fa8;
+  --f-display:"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --f-body:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10151b; --panel:#18202a; --fg:#e7edf3; --muted:#98a6b5; --line:#2c3846; --accent:#79b4e6;
+    --a:#f26bbd; --b:#4fd47f; --c:#6ea8ff; --d:#ffd23f; --cl:#9aabbf; --so4:#b89ccc;
+    --glass:#6c8197; --liquid:#1c2a39; --soft:#212c38; --iris:#6fb4dc; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10151b; --panel:#18202a; --fg:#e7edf3; --muted:#98a6b5; --line:#2c3846; --accent:#79b4e6;
+  --a:#f26bbd; --b:#4fd47f; --c:#6ea8ff; --d:#ffd23f; --cl:#9aabbf; --so4:#b89ccc;
+  --glass:#6c8197; --liquid:#1c2a39; --soft:#212c38; --iris:#6fb4dc; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:1360px;margin:0 auto;padding-block:0 48px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:18px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.3rem);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 6px}
+.intro{color:var(--muted);max-width:74ch;margin:8px 0 0}
+sub,sup{font-size:.68em;line-height:0}
+.eq{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.eq-main{font-family:var(--f-display);font-size:clamp(.95rem,4vw,1.65rem);font-weight:500;white-space:nowrap;overflow-x:auto;max-width:100%}
+.eq-main .a{color:var(--a)} .eq-main .b{color:var(--b)} .eq-main .c{color:var(--c)} .eq-main .d{color:var(--d)}
+.eqgrid{display:inline-grid;grid-template-columns:repeat(7,auto);column-gap:.32em;row-gap:4px;justify-items:center;align-items:baseline}
+.eqgrid .k{display:inline!important;font-weight:600;font-size:.78em}
+.eqgrid .k.a{color:var(--a)} .eqgrid .k.b{color:var(--b)} .eqgrid .k.c{color:var(--c)} .eqgrid .k.d{color:var(--d)}
+.eq-main .k{font-family:var(--f-mono);font-size:.62em;color:var(--muted);display:block;line-height:1.4}
+.eq-full{color:var(--muted);font-size:.95rem;min-width:0;flex:1 1 300px;display:flex;flex-direction:column;gap:4px}
+.eq-full .cl{color:var(--cl)} .eq-full .so4{color:var(--so4)}
+.cond{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.cond > div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:.95rem}
+.cond b{font-family:var(--f-display);font-weight:700;display:block;margin-bottom:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:6px 12px 6px 9px;font:inherit;font-size:.92rem;cursor:pointer}
+.chip[aria-pressed="false"]{opacity:.45;text-decoration:line-through}
+.chip:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chip .tag{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.chip svg{flex:none}
+.hint{font-size:.85rem;color:var(--muted);margin:-8px 0 0}
+.h1like{font-family:var(--f-display);font-weight:700;font-size:clamp(1.4rem,3vw,2rem);line-height:1.1;margin:0;text-wrap:balance}
+.benchhead{flex:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 20px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 14px}
+.bh-title{font-family:var(--f-display);font-size:clamp(.9rem,1.35vw,1.1rem);font-weight:700;margin:0;flex:1 1 380px;text-wrap:balance}
+.bh-eq{display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px}
+.bh-grid{font-size:clamp(.9rem,1.5vw,1.2rem)!important;overflow:visible}
+.bh-spec{margin:0;font-size:.82rem;color:var(--muted);line-height:1.35}
+.bh-spec .cl{color:var(--cl)} .bh-spec .so4{color:var(--so4)}
+.bench .controls{flex:none}
+@media (max-width:720px){.bh-spec{display:none}.bh-title{font-size:.85rem}}
+/* paillasse : commandes + bécher + graphique + tableau, sur la hauteur d'un écran */
+.bench{height:100vh;height:100dvh;min-height:560px;display:flex;flex-direction:column;gap:10px;padding-block:10px;scroll-margin-top:0}
+.bench .controls{padding:8px 12px;gap:8px 12px}
+.bench .legend{gap:6px}
+.bench .chip{padding:3px 9px 3px 7px;font-size:.84rem}
+.bench .btn{padding:6px 12px;font-size:.92rem}
+.bench .vread{font-size:1.05rem;min-width:8ch}
+.bench .slider{flex:1 1 160px}
+@media (max-width:1139px){.bench .chip .tag{display:none}}
+@media (max-width:720px){.bench .slider,.bench label.sm,.bench .legend{display:none}.bench .btn{padding:6px 9px;font-size:.82rem}.bench .controls{gap:6px 8px;padding:6px 8px}.benchhead{padding:4px 10px}.bh-title{flex-basis:100%}}
+.grid{flex:1;min-height:0;display:grid;gap:12px;grid-template-columns:minmax(0,2.6fr) minmax(0,5.4fr) minmax(0,2.8fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"chart beaker log"}
+.beakerpanel{grid-area:beaker} .chartpanel{grid-area:chart} .logpanel{grid-area:log}
+.grid > .panel{min-height:0;overflow:hidden;padding:10px 12px;gap:8px}
+.cbox{position:relative;flex:1;min-height:0}
+.cbox canvas{position:absolute;inset:0;width:100%;height:100%}
+/* tablette */
+@media (max-width:1139px){.grid{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);grid-template-rows:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"beaker chart" "beaker log"}}
+/* téléphone */
+@media (max-width:720px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.9fr) minmax(0,1fr);grid-template-areas:"beaker beaker" "chart log";gap:8px}.bench .chip .tag{display:none}.grid > .panel h2 span{display:none}}
+.logpanel .logwrap{flex:1;min-height:0;max-height:none}
+.gobench{display:inline-block;margin-top:12px;font-weight:700;color:var(--panel);background:var(--accent);padding:8px 16px;border-radius:8px;text-decoration:none}
+.logwrap{overflow:auto;max-height:460px;border:1px solid var(--line);border-radius:8px}
+table.log{min-width:0;width:100%;font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.74rem}
+table.log th,table.log td{padding:3px 4px;text-align:right;border-bottom:1px solid var(--line)}
+table.log th{position:sticky;top:0;background:var(--panel);z-index:1;letter-spacing:0;text-transform:none;font-size:.78rem;white-space:nowrap}
+table.log th svg{vertical-align:middle;margin-right:1px;width:12px;height:12px}
+@media (max-width:480px){table.log th svg{display:none}table.log{font-size:.64rem}table.log th,table.log td{padding:2px 2px}}
+table.log td:first-child,table.log th:first-child{text-align:left;color:var(--muted)}
+table.log tr.latest td{background:var(--soft);font-weight:600}
+table.log tr.eqrow td{box-shadow:inset 0 -2px 0 var(--accent)}
+table.log .empty td{text-align:left;color:var(--muted);font-family:var(--f-body)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.panel h2{font-family:var(--f-display);font-size:1.05rem;margin:0;font-weight:700}
+.panel h2 span{color:var(--muted);font-family:var(--f-body);font-weight:400;font-size:.9rem}
+canvas{display:block;width:100%}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.btn{font:inherit;font-weight:600;border-radius:8px;border:1px solid var(--line);background:var(--soft);color:var(--fg);padding:8px 14px;cursor:pointer}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.vread{font-family:var(--f-mono);font-size:1.25rem;font-variant-numeric:tabular-nums;min-width:9.5ch}
+.vread small{font-family:var(--f-body);font-size:.8rem;color:var(--muted);display:block;line-height:1}
+.slider{flex:1 1 220px;display:flex;flex-direction:column;gap:2px;min-width:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.ticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+label.sm{font-size:.85rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.phase{border-left:4px solid var(--accent);background:var(--panel);border-radius:0 10px 10px 0;padding:12px 16px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.phase b{font-family:var(--f-display);display:block;font-size:1.05rem;margin-bottom:2px}
+.phase p{margin:0;max-width:82ch}
+.tablewrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;font-size:1.05rem}
+th.num{text-align:right}
+td.sp{white-space:nowrap}
+td.sp svg{vertical-align:middle;margin-right:6px}
+.pill{display:inline-block;font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.pill.spec{color:var(--muted);border-style:dashed}
+.pill.reac{color:var(--accent)}
+.pill.prod{color:var(--c)}
+.trend{color:var(--muted);font-size:.9rem}
+.relation{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+.relation h3{margin:0;font-family:var(--f-display);font-size:1rem;width:100%}
+.math{font-size:1.08rem;display:inline-flex;align-items:center;gap:.4em;white-space:nowrap}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;line-height:1.3}
+.frac > span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em 1px}
+.frac > span:last-child{padding:1px .25em 0}
+.wrap:not(.show-explain) .explain-only{display:none}
+.eqlive{flex:none;padding:6px 10px;border-radius:8px;display:flex;align-items:center;height:7.6em;overflow:hidden;font-size:.82rem;line-height:1.3;border:2px solid var(--accent);background:var(--soft);opacity:0;transition:opacity .45s}
+.eqbox{flex:none;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 22px;padding:5px 10px;border:2px solid var(--accent);border-radius:8px;background:var(--panel);opacity:0;transition:opacity .3s}
+.eqbox.show{opacity:1}
+.eqb-grid{font-family:var(--f-display);font-weight:700;font-size:1.3rem;row-gap:0!important;line-height:1.15}
+.eqb-grid > span{white-space:nowrap}
+.eqb-grid .lab{font-family:var(--f-body);font-size:.68rem;font-weight:600;color:var(--muted);justify-self:center}
+.eqb-side{display:flex;flex-direction:column;gap:1px}
+.eqb-n{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.eqb-f{font-family:var(--f-mono);font-size:.74rem}
+.eqbox .a{color:var(--a)} .eqbox .b{color:var(--b)} .eqbox .c{color:var(--c)} .eqbox .d{color:var(--d)}
+@media (max-width:720px){.eqb-grid{font-size:1rem}.eqb-side{display:none}.eqbox{padding:3px 8px}}
+@media (prefers-reduced-motion: reduce){.eqbox{transition:none}}
+.eqlive.show{opacity:1}
+.eqlive .mh{font-family:var(--f-display);font-weight:700;font-size:1em;margin-bottom:2px}
+.eqlive .ms{margin-top:6px;padding-left:1em;text-indent:-1em}
+.eqlive .ml{font-weight:700;color:var(--fg);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+.bk-side .eqlive{display:block}
+.eqb-f{white-space:nowrap}
+/* bécher plus étroit, textes explicatifs sur le côté */
+.bk-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:10px}
+.bk-side{display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0;min-height:0;overflow:hidden}
+.bk-side .eqbox{flex-direction:column;gap:4px}
+.bk-side .eqb-side{align-items:center}
+.bk-side .eqlive{height:auto;max-height:100%;overflow:auto;font-size:.84rem;line-height:1.36;padding:8px 10px}
+@media (max-width:720px){.bk-body{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}.bk-side{gap:6px}.bk-side .eqlive{font-size:.64rem;height:13em;overflow:auto}}
+
+@media (max-width:720px){.eqlive{font-size:.64rem;height:9.6em;padding:4px 8px}}
+.eqlive b{font-weight:700}
+.eqlive .so4{color:var(--so4)} .eqlive .cl{color:var(--cl)}
+@media (prefers-reduced-motion: reduce){.eqlive{transition:none}}
+.eqlive .eqn{font-size:1.05rem!important}
+.eqlive .n{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.eqlive .eqn{font-family:var(--f-display);font-size:1.15rem;font-weight:500}
+.eqlive .sym{font-family:var(--f-mono);font-size:.9rem;color:var(--muted)}
+.eqlive .a{color:var(--a)} .eqlive .b{color:var(--b)} .eqlive .c{color:var(--c)} .eqlive .d{color:var(--d)}
+.eqlive.flash{animation:eqflash 1.6s ease-out}
+@keyframes eqflash{0%,60%{background:var(--soft);box-shadow:0 0 0 2px var(--accent) inset}100%{background:transparent;box-shadow:none}}
+@media (prefers-reduced-motion: reduce){.eqlive.flash{animation:none}}
+.keysec{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.keysec h2{font-family:var(--f-display);font-size:1.05rem;margin:0}
+.keygrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+@media (min-width:900px){.keygrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.key{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px}
+.key svg{grid-row:1/3;justify-self:center}
+.key .k1{font-weight:700}
+.key .k1 .lt{font-family:var(--f-mono);font-size:1.05rem;margin-right:6px}
+.key .k2{font-size:.88rem;color:var(--muted)}
+.note{color:var(--muted);font-size:.88rem;margin:0}
+
+/* ===== smartphone ===== */
+@media (max-width:720px){
+  .bench{min-height:0;gap:6px;padding-block:6px}
+  .grid > .panel h2{display:none}
+  .grid > .panel{padding:6px 8px}
+  .grid{grid-template-rows:minmax(0,1.75fr) minmax(0,1fr)!important}
+  .benchhead{gap:2px 10px}
+  .bh-title{font-size:.78rem;flex-basis:100%}
+  .bh-grid{font-size:.95rem!important}
+  .bk-body{grid-template-rows:minmax(0,1fr) auto!important}
+  .bk-side .eqbox{flex-direction:row;padding:2px 8px}
+  .bk-side .eqb-grid{font-size:.95rem}
+  .bk-side .eqb-grid .lab{font-size:.58rem}
+  .bk-side .eqlive{font-size:.6rem!important;height:auto!important;max-height:9.5em;overflow:auto!important;padding:4px 8px!important}
+  .eqlive .ms{margin-top:2px}
+}
+/* smartphone à l'horizontale */
+@media (max-height:520px) and (min-width:560px){
+  .bench{min-height:0;gap:6px;padding-block:6px}
+  .benchhead{display:none}
+  .bench .legend{display:none}
+  .bench .controls{padding:4px 8px}
+  .bench label.sm,.bench .slider{display:none}
+  .bench .btn{padding:4px 10px;font-size:.8rem}
+  .bk-side{justify-content:flex-start;gap:6px}
+  .bk-side .eqbox{padding:2px 6px}
+  .bk-side .eqb-side{display:none}
+  .bk-side .eqb-grid{font-size:.85rem!important}
+  .grid{grid-template-columns:minmax(0,2.4fr) minmax(0,5.6fr) minmax(0,2.6fr)!important;grid-template-rows:minmax(0,1fr)!important;grid-template-areas:"chart beaker log"!important;gap:6px}
+  .grid > .panel h2{display:none}
+  .grid > .panel{padding:4px 6px}
+  .bk-side .eqlive{font-size:.62rem!important}
+  .bk-side .eqb-grid{font-size:.95rem}
+  .eqb-f{font-size:.6rem}
+  table.log{font-size:.6rem}
+}
+</style>
+
+<div class="wrap" id="wrap">
+  <section class="bench" id="paillasse" aria-label="Paillasse">
+  <div class="benchhead">
+    <h1 class="bh-title">Titrage d'une solution de chlorure d'or(III) (Au<sup>3+</sup><sub>(aq)</sub> + 3 Cl<sup>−</sup><sub>(aq)</sub>) par une solution de sulfate d'étain(II) (Sn<sup>2+</sup><sub>(aq)</sub> + SO<sub>4</sub><sup>2−</sup><sub>(aq)</sub>)</h1>
+    <div class="bh-eq">
+      <div class="eq-main eqgrid bh-grid">
+        <span class="a">2 Au<sup>3+</sup><sub>(aq)</sub></span><span>+</span><span class="b">3 Sn<sup>2+</sup><sub>(aq)</sub></span><span>→</span><span class="c">2 Au<sub>(s)</sub></span><span>+</span><span class="d">3 Sn<sup>4+</sup><sub>(aq)</sub></span>
+        <span class="k a">2 A</span><span class="k">+</span><span class="k b">3 B</span><span class="k">→</span><span class="k c">2 C</span><span class="k">+</span><span class="k d">3 D</span>
+      </div>
+      <p class="bh-spec">Ions spectateurs : <span class="cl">Cl<sup>−</sup><sub>(aq)</sub></span> et <span class="so4">SO<sub>4</sub><sup>2−</sup><sub>(aq)</sub></span><br>Bécher : 16 A · burette : 75 B (3 B par mL)</p>
+    </div>
+  </div>
+  <section class="controls" aria-label="Commandes">
+    <button class="btn primary" id="play" type="button">Verser 1 mL</button>
+    <button class="btn" id="reset" type="button">Recommencer</button>
+    <button class="btn" id="explain" type="button" aria-pressed="false">Afficher les explications</button>
+    <div class="vread" aria-live="polite"><small>Volume versé</small><span id="vval">0,00 mL</span></div>
+    <div class="slider">
+      <input type="range" id="vrange" min="0" max="25" step="1" value="0" aria-label="Volume de solution titrante versé (mL)">
+      <div class="ticks"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25 mL</span></div>
+    </div>
+    <label class="sm" for="speed">Débit
+      <select id="speed">
+        <option value="0.2">0,2 mL/s</option>
+        <option value="0.4" selected>0,4 mL/s</option>
+        <option value="0.8">0,8 mL/s</option>
+      </select>
+    </label>
+  <div class="legend" id="legend" aria-label="Afficher ou masquer une espèce chimique"></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel beakerpanel">
+      <h2>Burette et bécher <span>· bécher : 1 symbole = 1 entité · burette : 1 symbole = 5 entités</span></h2>
+      <div class="bk-body">
+        <div class="cbox"><canvas id="beaker" role="img" aria-label="Bécher contenant les entités, burette au-dessus avec un robinet cliquable, œil observant le milieu réactionnel"></canvas></div>
+        <div class="bk-side">
+        <div class="eqbox" id="eqbox" aria-live="polite">
+          <div class="eqgrid eqb-grid"><span class="a">2 A</span><span>+</span><span class="b">3 B</span><span>→</span><span class="c">2 C</span><span>+</span><span class="d">3 D</span><span class="lab" style="grid-column:1/4">réactifs</span><span class="lab">donnent</span><span class="lab" style="grid-column:5/8">produits</span></div>
+          <div class="eqb-side"><span class="eqb-n" id="eqbn">Réaction n° 1</span><span class="eqb-f"><span class="a">2 Au³⁺</span> + <span class="b">3 Sn²⁺</span> → <span class="c">2 Au(s)</span> + <span class="d">3 Sn⁴⁺</span></span></div>
+        </div>
+        <div class="eqlive" id="eqlive" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+    <section class="panel chartpanel">
+      <h2>Nombre d'entités <span>· N en fonction de V</span></h2>
+      <div class="cbox"><canvas id="chart" role="img" aria-label="Courbes du nombre d'entités de chaque espèce chimique en fonction du volume versé"></canvas></div>
+      <p class="note explain-only">Un point s'ajoute à chaque millilitre versé. Avant l'équivalence, les courbes de D et de SO<sub>4</sub><sup>2−</sup> se superposent (3 entités par mL), et la courbe de B reste sur l'axe : les 3 entités de B versées à chaque millilitre sont consommées par 2 entités de A. Après l'équivalence, c'est A qui reste à zéro. Les espèces chimiques spectatrices sont en pointillés.</p>
+    </section>
+    <section class="panel logpanel">
+      <h2>Recensement <span>· millilitre par millilitre</span></h2>
+      <div class="logwrap"><table class="log"><thead><tr id="loghead"></tr></thead><tbody id="logbody"></tbody></table></div>
+    </section>
+  </div>
+  </section>
+
+  <header>
+    <p class="eyebrow">Titrage · Terminale spé</p>
+    <h2 class="h1like">Évolution des quantités de matière au cours d'un titrage</h2>
+    <p class="intro"><strong style="color:var(--fg)">Titrage d'une solution de chlorure d'or(III) (Au<sup>3+</sup><sub>(aq)</sub> + 3 Cl<sup>−</sup><sub>(aq)</sub>) par une solution de sulfate d'étain(II) (Sn<sup>2+</sup><sub>(aq)</sub> + SO<sub>4</sub><sup>2−</sup><sub>(aq)</sub>).</strong></p>
+  </header>
+
+  <section class="eq" aria-label="Équation de la réaction support du titrage">
+    <p class="eyebrow" style="margin:0;width:100%">Équation de la réaction support du titrage</p>
+    <div class="eq-main eqgrid">
+      <span class="a">2 Au<sup>3+</sup><sub>(aq)</sub></span><span>+</span><span class="b">3 Sn<sup>2+</sup><sub>(aq)</sub></span><span>→</span><span class="c">2 Au<sub>(s)</sub></span><span>+</span><span class="d">3 Sn<sup>4+</sup><sub>(aq)</sub></span>
+      <span class="k a">2 A</span><span class="k">+</span><span class="k b">3 B</span><span class="k">→</span><span class="k c">2 C</span><span class="k">+</span><span class="k d">3 D</span>
+    </div>
+    <p class="eq-full" style="margin:0"><span><b style="color:var(--fg)">Ions spectateurs du titrage :</b> <span class="cl">Cl<sup>−</sup><sub>(aq)</sub></span> (apportés par la solution titrée) et <span class="so4">SO<sub>4</sub><sup>2−</sup><sub>(aq)</sub></span> (apportés par la solution titrante).</span><span>Dans une équation de réaction, les espèces chimiques spectatrices n'apparaissent pas.</span></p>
+  </section>
+
+  <section class="keysec" aria-label="Symboles utilisés">
+    <h2>Symboles utilisés pour les 6 espèces chimiques</h2>
+    <div class="keygrid" id="keygrid"></div>
+  </section>
+
+  <p class="intro" style="margin:0">Le bécher contient 16 entités du réactif titré A. La burette, graduée de 0 à 25 mL, contient 75 entités du réactif titrant B : à chaque millilitre versé, 3 entités de B tombent dans le bécher pour réagir avec 2 entités de A et former 2 entités de C et 3 entités de D, conformément à l'équation de la réaction. Un œil observe le milieu réactionnel et compte le nombre d'entités.</p>
+
+  <section class="cond">
+    <div><b>Solution titrée (bécher)</b>Chlorure d'or(III) (Au<sup>3+</sup><sub>(aq)</sub> + 3 Cl<sup>−</sup><sub>(aq)</sub>), 50,0 mL (solution diluée)<br><span class="mono">16 entités de A · 48 entités de Cl<sup>−</sup></span></div>
+    <div><b>Solution titrante (burette)</b>Sulfate d'étain(II) (Sn<sup>2+</sup><sub>(aq)</sub> + SO<sub>4</sub><sup>2−</sup><sub>(aq)</sub>), 25 mL<br><span class="mono">75 entités de B · 75 entités de SO<sub>4</sub><sup>2−</sup> · 3 entités de B par mL</span></div>
+  </section>
+
+  <p class="hint">Cliquez sur le robinet de la burette (ou sur « Verser 1 mL ») : il s'ouvre, laisse couler 1 mL de solution titrante puis se referme. Touchez une espèce chimique pour la masquer dans le bécher et sur le graphique. Masquer les spectatrices agrandit l'échelle des courbes. Les explications, le volume équivalent et la relation à l'équivalence restent cachés jusqu'au clic sur « Afficher les explications ».</p>
+
+
+  <section class="phase explain-only" id="phase" aria-live="polite"><b></b><p></p></section>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Espèce chimique</th><th>Rôle</th><th>Origine</th><th class="num">Nombre d'entités</th><th class="explain-only">Évolution</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <section class="relation explain-only">
+    <h3>Relation à l'équivalence</h3>
+    <div class="math"><span class="frac"><span>N<sub>0</sub>(A)</span><span>2</span></span> = <span class="frac"><span>N<sub>E</sub>(B)</span><span>3</span></span></div>
+    <div class="math">donc &nbsp;N<sub>E</sub>(B) = <span class="frac"><span>3 × 16</span><span>2</span></span> = 24 entités</div>
+    <div class="math">et &nbsp;V<sub>E</sub> = <span class="frac"><span>24 entités</span><span>3 entités par mL</span></span> = <b class="mono">8,0 mL</b></div>
+  </section>
+</div>
+
+<script>
+(function(){
+const NA0=16, NB_TOT=75, VBUR=25, VMAX=25, VBECHER=50;
+const PER_ML=NB_TOT/VBUR;      // 3 entités de B par mL
+const NBE=3*NA0/2;             // 24
+const VE=NBE/PER_ML;           // 8,0 mL
+const RMAX=NA0/2;              // 10 réactions possibles
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const SP=[
+ {k:'a', html:'A = Au<sup>3+</sup><sub>(aq)</sub>', tag:'titré', role:['reac','Réactif titré'], from:'Solution titrée'},
+ {k:'b', html:'B = Sn<sup>2+</sup><sub>(aq)</sub>', tag:'titrant', role:['reac','Réactif titrant'], from:'Solution titrante'},
+ {k:'c', html:'C = Au<sub>(s)</sub>', tag:'produit', role:['prod','Produit'], from:'Formé par la réaction'},
+ {k:'d', html:'D = Sn<sup>4+</sup><sub>(aq)</sub>', tag:'produit', role:['prod','Produit'], from:'Formé par la réaction'},
+ {k:'cl', html:'Cl<sup>−</sup><sub>(aq)</sub>', tag:'spectatrice', role:['spec','Espèce chimique spectatrice'], from:'Solution titrée'},
+ {k:'so4', html:'SO<sub>4</sub><sup>2−</sup><sub>(aq)</sub>', tag:'spectatrice', role:['spec','Espèce chimique spectatrice'], from:'Solution titrante'}
+];
+const visible={a:true,b:true,c:true,d:true,cl:true,so4:true};
+
+/* modèle continu (graphique) */
+function cont(V){
+  const nB=PER_ML*V, x=Math.min(RMAX,nB/3);
+  return {a:NA0-2*x, b:nB-3*x, c:2*x, d:3*x, cl:3*NA0, so4:nB};
+}
+/* modèle discret (bécher, œil, tableau) : 3 entités de B par mL, qui réagissent par groupes de 3 */
+function delivered(V){return Math.round(PER_ML*V);}
+function target(V){
+  const nb=delivered(V), r=Math.min(RMAX,Math.floor(nb/3));
+  return {r, a:NA0-2*r, b:nb-3*r, c:2*r, d:3*r, cl:3*NA0, so4:nb};
+}
+const fr=(v,d=2)=>v.toFixed(d).replace('.',',');
+
+/* couleurs */
+let col={};
+function readColors(){
+  const s=getComputedStyle(document.documentElement);
+  ['bg','panel','fg','muted','line','accent','a','b','c','d','cl','so4','glass','liquid','soft','iris'].forEach(k=>col[k]=s.getPropertyValue('--'+k).trim());
+}
+readColors();
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{readColors();drawChart();});}catch(e){}
+new MutationObserver(()=>{readColors();drawChart();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+/* ---------- glyphes ---------- */
+function pathA(ctx,x,y,s){ctx.moveTo(x,y-s);ctx.lineTo(x+s,y);ctx.lineTo(x,y+s);ctx.lineTo(x-s,y);ctx.closePath();}
+// B : bloc à encoche en V (angle droit) qui épouse un coin du losange ; origine = fond de l'encoche
+function pathB(ctx,x,y,s,ang){
+  const n=.62*s, h=.62*s, g=Math.max(.6,s*.12);
+  const pts=[[-n,-n+g],[0,g],[n,-n+g],[n,h+g],[-n,h+g]];
+  const c=Math.cos(ang), si=Math.sin(ang);
+  pts.forEach((p,i)=>{const X=x+p[0]*c-p[1]*si, Y=y+p[0]*si+p[1]*c; i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);});
+  ctx.closePath();
+}
+// complexe activé : 2 losanges côte à côte, 3 blocs emboîtés sur des coins
+const LOCK={A:[[-1,0],[1,0]], B:[[-2,0,Math.PI/2],[2,0,-Math.PI/2],[0,-1,Math.PI]]};
+function pathD(ctx,x,y,s){ctx.moveTo(x,y-.75*s);ctx.lineTo(x+.7*s,y+.5*s);ctx.lineTo(x-.7*s,y+.5*s);ctx.closePath();}
+function drawGlyph(ctx,k,x,y,s,ang){
+  if(k==='a'){ctx.fillStyle=col.a;ctx.beginPath();pathA(ctx,x,y,s);ctx.fill();}
+  else if(k==='b'){ctx.fillStyle=col.b;ctx.beginPath();pathB(ctx,x,y-.3*s,s,ang||0);ctx.fill();}
+  else if(k==='c'){ctx.fillStyle=col.c;ctx.fillRect(x-.6*s,y-.6*s,1.2*s,1.2*s);}
+  else if(k==='d'){ctx.fillStyle=col.d;ctx.beginPath();ctx.arc(x,y,.62*s,0,7);ctx.fill();}
+  else if(k==='cl'){ctx.strokeStyle=col.cl;ctx.lineWidth=Math.max(1,s*.18);ctx.beginPath();ctx.arc(x,y,s*.34,0,7);ctx.stroke();}
+  else if(k==='so4'){ctx.strokeStyle=col.so4;ctx.lineWidth=Math.max(1,s*.2);const r=s*.32;ctx.beginPath();ctx.moveTo(x-r,y-r);ctx.lineTo(x+r,y+r);ctx.moveTo(x+r,y-r);ctx.lineTo(x-r,y+r);ctx.stroke();}
+}
+function legendSVG(k){
+  const m={
+    a:'<path d="M9 2 L16 9 L9 16 L2 9 Z" fill="var(--a)"/>',
+    b:'<path d="M3 4 L9 10 L15 4 L15 15 L3 15 Z" fill="var(--b)"/>',
+    c:'<rect x="3.5" y="3.5" width="11" height="11" fill="var(--c)"/>',
+    d:'<circle cx="9" cy="9" r="5.5" fill="var(--d)"/>',
+    cl:'<circle cx="9" cy="9" r="4" fill="none" stroke="var(--cl)" stroke-width="1.8"/>',
+    so4:'<path d="M5.5 5.5 L12.5 12.5 M12.5 5.5 L5.5 12.5" stroke="var(--so4)" stroke-width="2" fill="none"/>'
+  };
+  return '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">'+m[k]+'</svg>';
+}
+
+/* symboles utilisés */
+const KEY=[
+ ['a','A','ion or(III) Au<sup>3+</sup><sub>(aq)</sub>','losange magenta · réactif titré'],
+ ['b','B','ion étain(II) Sn<sup>2+</sup><sub>(aq)</sub>','bloc vert à encoche · réactif titrant'],
+ ['c','C','or Au<sub>(s)</sub>','carré bleu · produit (solide déposé au fond)'],
+ ['d','D','ion étain(IV) Sn<sup>4+</sup><sub>(aq)</sub>','rond jaune · produit'],
+ ['cl','','ion chlorure Cl<sup>−</sup><sub>(aq)</sub>','anneau gris · espèce chimique spectatrice (solution titrée)'],
+ ['so4','','ion sulfate SO<sub>4</sub><sup>2−</sup><sub>(aq)</sub>','croix violette · espèce chimique spectatrice (solution titrante)']
+];
+document.getElementById('keygrid').innerHTML=KEY.map(([k,l,n,d])=>'<div class="key">'+legendSVG(k).replace('width="18" height="18"','width="34" height="34"')+'<div class="k1">'+(l?'<span class="lt">'+l+' :</span>':'')+n+'</div><div class="k2">'+d+'</div></div>').join('');
+
+/* légende */
+const legend=document.getElementById('legend');
+SP.forEach(sp=>{
+  const b=document.createElement('button');
+  b.type='button';b.className='chip';b.id='chip-'+sp.k;b.setAttribute('aria-pressed','true');
+  b.innerHTML=legendSVG(sp.k)+'<span>'+sp.html+'</span><span class="tag">'+sp.tag+'</span>';
+  b.onclick=()=>{visible[sp.k]=!visible[sp.k];b.setAttribute('aria-pressed',visible[sp.k]);drawChart();};
+  legend.appendChild(b);
+});
+
+/* tableau */
+const tbody=document.getElementById('tbody');
+SP.forEach(sp=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td class="sp">'+legendSVG(sp.k)+sp.html+'</td><td><span class="pill '+sp.role[0]+'">'+sp.role[1]+'</span></td><td>'+sp.from+'</td><td class="num" id="n-'+sp.k+'"></td><td class="trend explain-only" id="t-'+sp.k+'"></td>';
+  tbody.appendChild(tr);
+});
+function trendText(k,V){
+  const before=V<VE-1e-6, atE=Math.abs(V-VE)<1e-6;
+  if(k==='a') return V===0?'quantité initiale':(before?'diminue : 2 entités consommées pour 3 entités de B versées':'nulle : entièrement consommé');
+  if(k==='b'){if(V===0)return 'pas encore versé';if(before||atE)return target(V).b>0?'en attente : il faut 3 entités de B pour réagir avec 2 entités de A':'nulle : les entités versées sont consommées (réactif limitant)';return 'augmente : versé en excès';}
+  if(k==='c') return V===0?'pas encore formé':(before?'augmente : 2 entités formées par réaction (dépôt solide)':'maximale, constante');
+  if(k==='d') return V===0?'pas encore formé':(before?'augmente : 3 entités formées par réaction':'maximale, constante');
+  if(k==='cl') return 'constante : ne réagit pas';
+  if(k==='so4') return V===0?'pas encore versée':'augmente : apportée par la burette, ne réagit pas';
+}
+
+/* état */
+let V=0, playing=false, lastSmall=true, showExplain=false;
+const vrange=document.getElementById('vrange'), vval=document.getElementById('vval'), playBtn=document.getElementById('play');
+const phase=document.getElementById('phase');
+function setV(nv,small){V=Math.max(0,Math.min(VMAX,nv));lastSmall=small;vrange.value=V;updateUI();}
+function updateUI(){
+  vval.textContent=fr(V)+' mL';
+  const t=target(V);
+  SP.forEach(sp=>{
+    document.getElementById('t-'+sp.k).textContent=trendText(sp.k,V);
+  });
+  let h,p;
+  if(V===0){h='État initial';p='Le bécher ne contient que les espèces chimiques de la solution titrée : 16 entités de A et 48 ions Cl⁻ spectateurs (3 Cl⁻ pour 1 Au³⁺).';}
+  else if(Math.abs(V-VE)<0.08){h='À l\'équivalence (V = Vᴇ = 8,0 mL)';p='24 entités de B ont été versées pour 16 entités de A : les réactifs ont été introduits dans les proportions stœchiométriques et sont entièrement consommés. Il s\'est formé 16 entités de C et 24 entités de D. Les espèces chimiques spectatrices sont toujours là : 48 Cl⁻ et 24 SO₄²⁻.';}
+  else if(V<VE){h='Avant l\'équivalence';p='B est le réactif limitant : à chaque millilitre, les 3 entités de B versées s\'emboîtent avec 2 entités de A, puis l\'ensemble donne 2 entités de C et 3 entités de D. N(A) diminue de 2 par millilitre, N(B) reste nul. Les ions SO₄²⁻ versés s\'accumulent sans réagir, les ions Cl⁻ ne varient pas.';}
+  else {h='Après l\'équivalence';p='Il n\'y a plus d\'entités de A : la réaction n\'a plus lieu. Les entités de B versées s\'accumulent, tout comme les ions SO₄²⁻ spectateurs. N(C) = 16 et N(D) = 24 ne varient plus.';}
+  phase.querySelector('b').textContent=h;phase.querySelector('p').textContent=p;
+  drawChart();
+}
+
+/* ---------- particules ---------- */
+let parts=[], events=[], flashes=[], banner=null;
+// chronologie d'une réaction (s) : approche, emboîtement, transformation, séparation
+const ZOOM=1.8, ZOOM_HOLD=.9; // grossissement des entités qui réagissent, durée de maintien des produits agrandis (s)
+const T={meet:.8,lock:1.0,morph:1.7,end:2.0}; // réaction complète en 2,0 s
+const rnd=(a,b)=>a+Math.random()*(b-a);
+let geo={left:0,bottom:0,iw:1,liqH:1,s:4,cell:8,cols:20,dropX:.5};
+function add(sp,x,y,st){const p={sp,x,y,vx:rnd(-.04,.04),vy:rnd(-.04,.04),st:st||'free',ang:rnd(0,6.28),spin:rnd(-.6,.6)};parts.push(p);return p;}
+function removeP(p){const i=parts.indexOf(p);if(i>=0)parts.splice(i,1);}
+function freeOf(sp){return parts.filter(p=>p.sp===sp&&p.st==='free');}
+function nOf(sp){let n=0;for(const p of parts)if(p.sp===sp)n++;return n;}
+function nFree(sp){let n=0;for(const p of parts)if(p.sp===sp&&p.st==='free')n++;return n;}
+function pileRows(){return Math.ceil((nOf('c')+2*events.length)/geo.cols);}
+function floorY(){return Math.min(.5,(pileRows()*geo.cell+geo.s*1.5)/Math.max(1,geo.liqH));}
+function randPos(){return [rnd(.03,.97),rnd(floorY(),.97)];}
+function adjust(sp,d,anim){
+  if(d>0){for(let i=0;i<d;i++){if(anim){add(sp,geo.dropX+rnd(-.04,.04),.97);}else{const q=randPos();add(sp,q[0],q[1]);}}}
+  else if(d<0){let f=freeOf(sp);for(let i=0;i<-d&&f.length;i++){const j=Math.floor(Math.random()*f.length);removeP(f[j]);f.splice(j,1);}}
+}
+function finishEvent(e){
+  // 2 C (solide, se dépose) aux places des A ; 3 D (en solution) aux places des B
+  e.cPos.forEach(q=>{const p=add('c',q[0],q[1],'fall');p.z=ZOOM;p.zt=0;});
+  e.dPos.forEach(q=>{const p=add('d',q[0],q[1]);p.z=ZOOM;p.zt=0;p.vx=(q[0]-e.ax)*3+rnd(-.05,.05);p.vy=(q[1]-e.ay)*3+rnd(-.02,.06);});
+}
+// ce qui est réellement visible : une réaction compte comme faite à mi-transformation
+function seenCounts(){
+  const half=(T.lock+T.morph)/2; let done=0,pend=0;
+  events.forEach(e=>{e.t>=half?done++:pend++;});
+  return {a:nFree('a')+2*pend,b:nFree('b')+3*pend,c:nOf('c')+2*done,d:nOf('d')+3*done,cl:nFree('cl'),so4:nFree('so4')};
+}
+function flushEvents(){events.forEach(e=>{e.cPos=[[e.ax-.02,e.ay],[e.ax+.02,e.ay]];e.dPos=[[e.ax-.04,e.ay],[e.ax+.04,e.ay],[e.ax,e.ay+.03]];finishEvent(e);});events=[];}
+function reconcile(){
+  const t=target(V), anim=lastSmall&&!reduced;
+  adjust('so4',t.so4-nFree('so4'),anim);
+  const rNow=nOf('c')/2+events.length;
+  if(t.r<rNow){
+    flushEvents();
+    const d=nOf('c')/2-t.r;
+    const cs=parts.filter(p=>p.sp==='c');
+    for(let i=0;i<d;i++){
+      removeP(cs.pop());removeP(cs.pop());
+      adjust('d',-3,false);
+      for(let k=0;k<2;k++){const q=randPos();add('a',q[0],q[1]);}
+    }
+  } else if(t.r>rNow){
+    const d=t.r-rNow;
+    adjust('b',(t.b+3*d)-nFree('b'),anim); // les entités de B versées arrivent d'abord dans le bécher
+    for(let i=0;i<d;i++){
+      const f=freeOf('a'); if(f.length<2)break;
+      const fb=freeOf('b'); if(fb.length<3)break;
+      const a1=f[Math.floor(Math.random()*f.length)];
+      let a2=null,best=1e9; f.forEach(p=>{if(p===a1)return;const dd=Math.hypot(p.x-a1.x,p.y-a1.y);if(dd<best){best=dd;a2=p;}});
+      removeP(a1);removeP(a2);
+      const ax=Math.min(.85,Math.max(.15,(a1.x+a2.x)/2)), ay=Math.min(.88,Math.max(floorY()+.08,(a1.y+a2.y)/2));
+      fb.sort((p,q)=>Math.hypot(p.x-ax,p.y-ay)-Math.hypot(q.x-ax,q.y-ay));
+      const bs=fb.slice(0,3); bs.forEach(removeP);
+      const delay=Math.max(0,...events.map(ev=>T.lock-ev.t),0);
+      const e={ax,ay,a:[[a1.x,a1.y],[a2.x,a2.y]],b:bs.map(p=>[p.x,p.y]),bAng:bs.map(p=>p.ang),t:-delay,dur:T.end};
+      if(anim&&d<=3){events.push(e);}
+      else{e.cPos=[[ax-.02,ay],[ax+.02,ay]];e.dPos=[[ax-.04,ay],[ax+.04,ay],[ax,ay+.03]];finishEvent(e);}
+    }
+  }
+  adjust('b',t.b-nFree('b'),anim);
+}
+// état initial
+for(let i=0;i<NA0;i++)add('a',rnd(.04,.96),rnd(.05,.96));
+for(let i=0;i<3*NA0;i++)add('cl',rnd(.02,.98),rnd(.02,.98));
+
+/* équation réécrite à chaque formation de produits */
+const eqlive=document.getElementById('eqlive'), eqbox=document.getElementById('eqbox');
+const BANNER_T=3.0; // durée d'affichage du bandeau (s)
+function announce(n){
+  document.getElementById('eqbn').textContent='Réaction n° '+n;eqbox.classList.add('show');
+  showMsg(MSG_BEFORE);
+}
+/* phrase qui s'affiche puis disparaît à chaque millilitre */
+const MSG_BEFORE='<div class="mh">Avant l\'équivalence</div><div class="ms r"><b>– </b><span class="ml">Réactifs</span><b> :</b> <b class="b">3 B</b> (titrant) arrivent dans le bécher et sont immédiatement consommés par <b class="a">2 A</b> (titré). Bilan : <b class="b">0 B</b> dans le bécher, le nombre de <b class="a">A</b> a diminué de 2.</div><div class="ms p"><b>– </b><span class="ml">Produits</span><b> :</b> Formation de <b class="c">2 C</b> et <b class="d">3 D</b>.</div><div class="ms s"><b>– </b><span class="ml">Ions spectateurs</span><b> :</b> Les <b class="so4">3 ions SO₄²⁻</b> apportés par la burette s\'accumulent dans le milieu ; le nombre d\'<b class="cl">ions Cl⁻</b> présents dans la solution titrée reste constant.</div>';
+const MSG_AFTER='<div class="mh">Après l\'équivalence</div><div class="ms r"><b>– </b><span class="ml">Réactifs</span><b> :</b> <b class="b">3 B</b> (titrant) arrivent dans le bécher mais ne sont plus consommés : il n\'y a plus d\'entités <b class="a">A</b> (titré). Bilan : le nombre de <b class="b">B</b> a augmenté de 3, le nombre de <b class="a">A</b> reste nul.</div><div class="ms p"><b>– </b><span class="ml">Produits</span><b> :</b> Aucune formation de <b class="c">C</b> ni de <b class="d">D</b>.</div><div class="ms s"><b>– </b><span class="ml">Ions spectateurs</span><b> :</b> Les <b class="so4">3 ions SO₄²⁻</b> apportés par la burette s\'accumulent dans le milieu ; le nombre d\'<b class="cl">ions Cl⁻</b> présents dans la solution titrée reste constant.</div>';
+const MSG_SHOW=3.2; // durée d'affichage (s)
+let msgTimer=null;
+function showMsg(html){
+  eqlive.innerHTML=html;eqlive.classList.add('show');
+  clearTimeout(msgTimer); // reste affiché jusqu'à la prochaine ouverture du robinet
+}
+function hideMsg(){clearTimeout(msgTimer);eqlive.classList.remove('show');}
+const MSG_HINT='<span>Cliquez sur le robinet de la burette pour verser 1 mL de solution titrante.</span>';
+showMsg(MSG_HINT);
+function drawBanner(ctx,W,cxB,yB,dt,xMin){
+  if(!banner)return;
+  banner.t+=dt;
+  const alpha=Math.min(1,banner.t/.12); // reste affiché jusqu'à la prochaine ouverture du robinet
+  const fs=Math.round(Math.max(14,Math.min(21,W*.046)));
+  const segs=[['2 A','a'],[' + ','fg'],['3 B','b'],['  →  ','fg'],['2 C','c'],[' + ','fg'],['3 D','d']];
+  const segs2=[['2 Au³⁺','a'],[' + ','muted'],['3 Sn²⁺','b'],[' → ','muted'],['2 Au(s)','c'],[' + ','muted'],['3 Sn⁴⁺','d']];
+  ctx.save();ctx.globalAlpha=alpha;ctx.textBaseline='middle';ctx.textAlign='left';
+  const f1='700 '+fs+'px '+rootStyle().getPropertyValue('--f-display'), f2=Math.round(fs*.62)+'px '+fMono();
+  ctx.font=f1;const w1=segs.reduce((w,x)=>w+ctx.measureText(x[0]).width,0);
+  ctx.font=f2;const w2=segs2.reduce((w,x)=>w+ctx.measureText(x[0]).width,0);
+  const bw=Math.max(w1,w2)+28, bh=fs*3.75;
+  const x0=Math.max(4,Math.min(W-bw-4,xMin!=null?xMin:cxB-bw/2)), y0=yB-bh-8; // juste au-dessus de la surface libre, à côté de la burette
+  ctx.fillStyle=col.panel;ctx.strokeStyle=col.accent;ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect?ctx.roundRect(x0,y0,bw,bh,8):ctx.rect(x0,y0,bw,bh);ctx.fill();ctx.stroke();
+  ctx.font='700 '+Math.round(fs*.5)+'px '+fBody();ctx.fillStyle=col.muted;ctx.textAlign='center';
+  ctx.fillText('RÉACTION N° '+banner.n,x0+bw/2,y0+fs*.5);
+  ctx.textAlign='left';
+  // équation : réactifs → produits
+  let x=x0+(bw-w1)/2; ctx.font=f1; const xs=[];
+  segs.forEach(([t,k])=>{const w=ctx.measureText(t).width;xs.push([x,w]);ctx.fillStyle=col[k];ctx.fillText(t,x,y0+fs*1.35);x+=w;});
+  const mid=(i,j)=>(xs[i][0]+xs[j][0]+xs[j][1])/2;
+  ctx.font='600 '+Math.round(fs*.55)+'px '+fBody();ctx.textAlign='center';ctx.fillStyle=col.muted;
+  ctx.fillText('réactifs',mid(0,2),y0+fs*2.15);
+  ctx.fillText('donnent',mid(3,3),y0+fs*2.15);
+  ctx.fillText('produits',mid(4,6),y0+fs*2.15);
+  ctx.textAlign='left';
+  x=x0+(bw-w2)/2; ctx.font=f2;
+  segs2.forEach(([t,k])=>{ctx.fillStyle=col[k];ctx.fillText(t,x,y0+fs*3.1);x+=ctx.measureText(t).width;});
+  ctx.restore();
+}
+
+/* ---------- canvas ---------- */
+function fitCanvas(cv){
+  const r=cv.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+  const w=Math.max(10,Math.round(r.width*dpr)), h=Math.max(10,Math.round(r.height*dpr));
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx,W:r.width,H:r.height};
+}
+const rootStyle=()=>getComputedStyle(document.documentElement);
+const fMono=()=>rootStyle().getPropertyValue('--f-mono');
+const fBody=()=>rootStyle().getPropertyValue('--f-body');
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+/* œil */
+const eye={fx:.5,fy:.5,wx:.5,wy:.5,wt:0,blink:0,next:3};
+function drawEye(ctx,ex,ey,R,tx,ty,dt){
+  // clignement
+  eye.next-=dt; if(eye.next<=0&&!reduced){eye.blink=.16;eye.next=rnd(3,6);}
+  if(eye.blink>0)eye.blink=Math.max(0,eye.blink-dt);
+  const open=eye.blink>0?Math.abs(eye.blink-.08)/.08:1;
+  const hh=R*.62*Math.max(.08,open);
+  // contour en amande
+  ctx.save();
+  ctx.beginPath();ctx.moveTo(ex-R,ey);ctx.quadraticCurveTo(ex,ey-hh*1.6,ex+R,ey);ctx.quadraticCurveTo(ex,ey+hh*1.6,ex-R,ey);ctx.closePath();
+  ctx.fillStyle=col.panel;ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=col.fg;ctx.stroke();
+  ctx.clip();
+  const dx=tx-ex, dy=ty-ey, d=Math.hypot(dx,dy)||1;
+  const ix=ex+dx/d*Math.min(R*.42,d*.2), iy=ey+dy/d*Math.min(R*.26,d*.2);
+  ctx.fillStyle=col.iris;ctx.beginPath();ctx.arc(ix,iy,R*.42,0,7);ctx.fill();
+  ctx.fillStyle=col.fg;ctx.beginPath();ctx.arc(ix,iy,R*.2,0,7);ctx.fill();
+  ctx.fillStyle=col.panel;ctx.beginPath();ctx.arc(ix-R*.1,iy-R*.1,R*.07,0,7);ctx.fill();
+  ctx.restore();
+  // cils
+  ctx.strokeStyle=col.fg;ctx.lineWidth=1.5;
+  for(let i=-2;i<=2;i++){const a=-Math.PI/2+i*.32, px=ex+Math.cos(a)*R*.7, py=ey-hh*.82+Math.sin(a)*2;ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+Math.cos(a)*R*.22,py+Math.sin(a)*R*.22);ctx.stroke();}
+}
+
+const bcv=document.getElementById('beaker');
+let dropT=0;
+const valve={x:0,y:0,r:24,ang:0,hover:false};
+function drawBeaker(dt){
+  const {ctx,W,H}=fitCanvas(bcv);
+  ctx.clearRect(0,0,W,H);
+  const bx=W*.19, bw=W*.6, btop=H*.47, bbot=H*.975, bh=bbot-btop; // bécher forme haute
+  const innerH=bh*.95, liqH=innerH*(VBECHER+V)/((VBECHER+VMAX)*1.07), surf=bbot-liqH;
+  const s=Math.max(5,Math.min(17,W*.03,H*.027));
+  const cell=1.45*s+1.5, cols=Math.max(8,Math.floor((bw-12)/cell));
+  const cx=bx+bw/2;
+  geo={left:bx+6,bottom:bbot-4,iw:bw-12,liqH:liqH-8,s,cell,cols,dropX:0};
+  const toX=x=>geo.left+x*geo.iw, toY=y=>geo.bottom-y*geo.liqH;
+  const fromX=px=>(px-geo.left)/geo.iw, fromY=py=>(geo.bottom-py)/geo.liqH;
+  geo.dropX=fromX(cx);
+
+  /* burette */
+  const buTop=H*.015, buBot=H*.42, buW=Math.max(48,W*.18), tipY=H*.515;
+  const lvl=buTop+(buBot-buTop)*(V/VBUR);
+  ctx.fillStyle=col.liquid;ctx.fillRect(cx-buW/2,lvl,buW,buBot-lvl);
+  // contenu de la burette : 1 symbole = 5 entités (représentation allégée pour bien voir B et SO4²⁻)
+  const BUR_UNIT=5, nSym=Math.ceil(Math.max(0,NB_TOT-PER_ML*V)/BUR_UNIT-1e-9); // symboles de B restants (autant de SO4²⁻)
+  const rows=Math.ceil(2*NB_TOT/BUR_UNIT/4), rowH=(buBot-buTop)/rows;
+  const gs=Math.max(3,Math.min(rowH*.42,buW/8.5));
+  ctx.save();ctx.beginPath();ctx.rect(cx-buW/2,lvl,buW,buBot-lvl);ctx.clip();
+  for(let i=0;i<2*nSym;i++){
+    const row=Math.floor(i/4), colI=i%4, k=(i%2===0)?'b':'so4';
+    const x=cx-buW/2+buW*(.24+colI*.18)+(row%2)*buW*.04, y=buBot-(row+.5)*rowH;
+    if(visible[k])drawGlyph(ctx,k,x,y,gs,0);
+  }
+  ctx.restore();
+  ctx.strokeStyle=col.glass;ctx.lineWidth=1.5;ctx.strokeRect(cx-buW/2,buTop,buW,buBot-buTop);
+  ctx.fillStyle=col.muted;ctx.font='10px '+fMono();ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let g=0;g<=VBUR;g++){
+    const y=buTop+(buBot-buTop)*g/VBUR, long=g%5===0;
+    ctx.strokeStyle=col.glass;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx-buW/2,y);ctx.lineTo(cx-buW/2+(long?11:5),y);ctx.stroke();
+    if(long)ctx.fillText(String(g),cx-buW/2-4,y);
+  }
+  ctx.strokeStyle=col.b;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-buW/2,lvl);ctx.lineTo(cx+buW/2,lvl);ctx.stroke();
+  ctx.strokeStyle=col.glass;ctx.lineWidth=1.5;ctx.beginPath();
+  ctx.moveTo(cx-buW/2,buBot);ctx.lineTo(cx-3,buBot+H*.03);ctx.lineTo(cx-3,tipY);
+  ctx.moveTo(cx+buW/2,buBot);ctx.lineTo(cx+3,buBot+H*.03);ctx.lineTo(cx+3,tipY);ctx.stroke();
+  // robinet : poignée perpendiculaire au tube = fermé, parallèle = ouvert
+  const vx=cx, vy=buBot+H*.03, vr=Math.max(6,W*.016);
+  valve.ang+=((playing?Math.PI/2:0)-valve.ang)*Math.min(1,dt*10);
+  valve.x=vx;valve.y=vy;valve.r=Math.max(24,vr*3.4);
+  if(valve.hover){ctx.fillStyle=col.accent;ctx.globalAlpha=.12;ctx.beginPath();ctx.arc(vx,vy,valve.r,0,7);ctx.fill();ctx.globalAlpha=1;}
+  ctx.save();ctx.translate(vx,vy);ctx.rotate(valve.ang);
+  ctx.fillStyle=playing?col.accent:col.muted;
+  const hl=vr*3.2, hw=vr*.75;
+  ctx.beginPath();ctx.roundRect?ctx.roundRect(-hl,-hw/2,2*hl,hw,hw/2):ctx.rect(-hl,-hw/2,2*hl,hw);ctx.fill();
+  ctx.restore();
+  ctx.fillStyle=col.panel;ctx.strokeStyle=playing?col.accent:col.muted;ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(vx,vy,vr,0,7);ctx.fill();ctx.stroke();
+  if(W>=420||H>=520){
+  ctx.font='600 11px '+fBody();ctx.textAlign='right';ctx.textBaseline='middle';
+  ctx.fillStyle=playing?col.accent:col.fg;
+  ctx.fillText(playing?'Robinet ouvert':(V>=VMAX-1e-6?'Burette vide':'Robinet fermé'),vx-vr*3.6-6,vy-6);
+  ctx.font='10px '+fBody();ctx.fillStyle=col.muted;
+  ctx.fillText(playing?'1 mL en cours':(V>=VMAX-1e-6?'« Recommencer »':'cliquer : verser 1 mL'),vx-vr*3.6-6,vy+8);
+  }
+  ctx.textAlign='left';
+  const left=Math.max(0,Math.round(NB_TOT-PER_ML*V));
+  ctx.textAlign='left';ctx.font='11px '+fMono();ctx.fillStyle=col.muted;
+  ctx.fillText('mL',cx+buW/2+5,buTop+6);
+  const lx=cx+buW/2+8, ly0=(buTop+buBot)/2;
+  ctx.font='600 11px '+fBody();ctx.fillStyle=col.muted;ctx.fillText('Burette :',lx,ly0-24);
+  ctx.font='11px '+fMono();
+  drawGlyph(ctx,'b',lx+4,ly0-8,4,0);ctx.fillStyle=col.fg;ctx.fillText('B '+left,lx+12,ly0-8);
+  drawGlyph(ctx,'so4',lx+4,ly0+8,4,0);ctx.fillStyle=col.fg;ctx.fillText('SO₄²⁻ '+left,lx+12,ly0+8);
+  ctx.font='10px '+fBody();ctx.fillStyle=col.muted;ctx.fillText('1 symbole',lx,ly0+26);ctx.fillText('= 5 entités',lx,ly0+38);
+  if(playing&&V<VMAX&&!reduced){
+    dropT=(dropT+dt*1.7)%1;
+    const y=tipY+(surf-tipY)*dropT;
+    ctx.fillStyle=col.b;ctx.globalAlpha=.55;ctx.beginPath();ctx.ellipse(cx,y,2.6,4,0,0,7);ctx.fill();ctx.globalAlpha=1;
+  }
+
+  /* liquide + bécher */
+  ctx.fillStyle=col.liquid;ctx.fillRect(bx+2,surf,bw-4,liqH-2);
+  ctx.strokeStyle=col.glass;ctx.globalAlpha=.8;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(bx+2,surf);ctx.lineTo(bx+bw-2,surf);ctx.stroke();ctx.globalAlpha=1;
+  ctx.strokeStyle=col.glass;ctx.lineWidth=2.5;ctx.beginPath();
+  ctx.moveTo(bx-6,btop);ctx.lineTo(bx,btop+6);ctx.lineTo(bx,bbot-8);ctx.quadraticCurveTo(bx,bbot,bx+8,bbot);
+  ctx.lineTo(bx+bw-8,bbot);ctx.quadraticCurveTo(bx+bw,bbot,bx+bw,bbot-8);ctx.lineTo(bx+bw,btop+6);ctx.lineTo(bx+bw+6,btop);ctx.stroke();
+  ctx.fillStyle=col.muted;ctx.textAlign='right';ctx.textBaseline='middle';ctx.font='11px '+fMono();
+  ctx.fillText(fr(VBECHER+V,1)+' mL',bx+bw-8,btop+14);
+
+  /* mouvement */
+  const fy=floorY();
+  const cs=parts.filter(p=>p.sp==='c');
+  cs.forEach((p,i)=>{
+    const row=Math.floor(i/cols), c=i%cols;
+    const tx=fromX(geo.left+(c+.5)*cell), ty=fromY(geo.bottom-(row+.5)*cell);
+    if(p.zt<ZOOM_HOLD){p.x+=(tx-p.x)*Math.min(1,dt*.3);}else{p.x+=(tx-p.x)*Math.min(1,dt*1.2); p.y+=(ty-p.y)*Math.min(1,dt*.9);}
+  });
+  for(const p of parts){
+    if(p.st!=='free')continue;
+    if(!reduced){
+      p.vx+=rnd(-1,1)*.5*dt;p.vy+=rnd(-1,1)*.5*dt;p.vx*=.985;p.vy*=.985;
+      const sp=Math.hypot(p.vx,p.vy),mx=.1; if(sp>mx){p.vx*=mx/sp;p.vy*=mx/sp;}
+      p.x+=p.vx*dt;p.y+=p.vy*dt;p.ang+=p.spin*dt;
+    }
+    if(p.x<.02){p.x=.02;p.vx=Math.abs(p.vx);} if(p.x>.98){p.x=.98;p.vx=-Math.abs(p.vx);}
+    if(p.y<fy){p.y+=(fy-p.y)*Math.min(1,dt*3);p.vy=Math.abs(p.vy);} if(p.y>.98){p.y=.98;p.vy=-Math.abs(p.vy);}
+  }
+
+  for(const p of parts){if(p.z>1){p.zt+=dt;if(p.zt>ZOOM_HOLD)p.z=Math.max(1,p.z-dt*2);}}
+  /* dessin */
+  ['cl','so4','d','b','a'].forEach(k=>{
+    if(!visible[k])return;
+    for(const p of parts)if(p.sp===k&&p.st==='free')drawGlyph(ctx,k,toX(p.x),toY(p.y),s*(p.z||1),p.ang);
+  });
+  if(visible.c)for(const p of cs)drawGlyph(ctx,'c',toX(p.x),toY(p.y),s*(p.z||1));
+
+  /* réactions en cours : 2 A + 3 B s'emboîtent, puis donnent 2 C + 3 D */
+  for(let i=events.length-1;i>=0;i--){
+    const e=events[i]; e.t+=dt;
+    const t=Math.max(0,e.t);
+    const kA=ease(Math.min(1,t/T.meet));
+    const Z=1+(ZOOM-1)*kA, sz=s*Z; // les entités mises en jeu grossissent
+    // le groupe qui réagit reste dans la solution
+    const AX=Math.min(geo.left+geo.iw-3*s*ZOOM,Math.max(geo.left+3*s*ZOOM,toX(e.ax)));
+    const AY=Math.max(surf+2.2*s*ZOOM,Math.min(geo.bottom-2.4*s*ZOOM,toY(e.ay)));
+    const aP=LOCK.A.map((q,j)=>{const x0=toX(e.a[j][0]),y0=toY(e.a[j][1]);return [x0+(AX+q[0]*sz-x0)*kA,y0+(AY+q[1]*sz-y0)*kA];});
+    const bP=LOCK.B.map((q,j)=>{
+      const x0=toX(e.b[j][0]), y0=toY(e.b[j][1]);
+      const kb=ease(Math.min(1,Math.max(0,(t-j*.06)/(T.meet-j*.06))));
+      return [x0+(AX+q[0]*sz-x0)*kb,y0+(AY+q[1]*sz-y0)*kb,e.bAng[j]+(q[2]-e.bAng[j])*kb];
+    });
+    // halo pendant l'emboîtement
+    if(t>T.meet&&t<T.morph){
+      const u=(t-T.meet)/(T.morph-T.meet);
+      ctx.strokeStyle=col.accent;ctx.lineWidth=2;ctx.globalAlpha=.25+.35*Math.abs(Math.sin(u*Math.PI));
+      ctx.beginPath();ctx.arc(AX,AY,2.9*sz,0,7);ctx.stroke();ctx.globalAlpha=1;
+    }
+    const m=t<T.lock?0:Math.min(1,(t-T.lock)/(T.morph-T.lock));   // 0 : réactifs, 1 : produits
+    const sep=t<T.morph?0:ease(Math.min(1,(t-T.morph)/(T.end-T.morph)));
+    if(m<1){
+      ctx.globalAlpha=1-m;
+      if(visible.a){ctx.fillStyle=col.a;ctx.beginPath();aP.forEach(q=>pathA(ctx,q[0],q[1],sz));ctx.fill();}
+      if(visible.b){ctx.fillStyle=col.b;ctx.beginPath();bP.forEach(q=>pathB(ctx,q[0],q[1],sz,q[2]));ctx.fill();}
+      ctx.globalAlpha=1;
+    }
+    const cP=aP.map(q=>[q[0]+(q[0]-AX)*1.2*sep,q[1]+(q[1]-AY)*1.2*sep]);
+    const dP=bP.map(q=>[q[0]+(q[0]-AX)*.9*sep,q[1]+(q[1]-AY)*.9*sep]);
+    if(m>0){
+      ctx.globalAlpha=m;const sc=sz*(.5+.5*m);
+      if(visible.c)cP.forEach(q=>drawGlyph(ctx,'c',q[0],q[1],sc));
+      if(visible.d)dP.forEach(q=>drawGlyph(ctx,'d',q[0],q[1],sc));
+      ctx.globalAlpha=1;
+    }
+    if(!e.flashed&&t>=T.lock){e.flashed=true;flashes.push({x:e.ax,y:e.ay,t:0});announce(seenCounts().c/2+1);}
+    if(e.t>=e.dur){
+      e.cPos=cP.map(q=>[fromX(q[0]),fromY(q[1])]);
+      e.dPos=dP.map(q=>[fromX(q[0]),fromY(q[1])]);
+      finishEvent(e);
+      events.splice(i,1);
+    }
+  }
+  for(let i=flashes.length-1;i>=0;i--){
+    const f=flashes[i]; f.t+=dt;
+    if(f.t>.6){flashes.splice(i,1);continue;}
+    ctx.strokeStyle=col.c;ctx.globalAlpha=1-f.t/.6;ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.arc(toX(f.x),toY(f.y),3*s+f.t*26,0,7);ctx.stroke();ctx.globalAlpha=1;
+  }
+
+
+  /* l'œil observateur */
+  // l'œil est posé sur le côté du bécher et regarde à travers la paroi
+  const R=Math.max(14,Math.min(24,W*.05)), ex=bx-R-10, ey=Math.max(btop+bh*.3,surf+R);
+  const lx0=Math.max(6,W*.03);
+  let tx,ty;
+  const act=events.filter(e=>e.t>=0);
+  if(act.length){const e=act[act.length-1];tx=toX(e.ax);ty=toY(e.ay);}
+  else if(flashes.length){const f=flashes[flashes.length-1];tx=toX(f.x);ty=toY(f.y);}
+  else if(playing){tx=cx;ty=surf;}
+  else{
+    eye.wt-=dt; if(eye.wt<=0){eye.wx=rnd(.1,.9);eye.wy=rnd(.15,.85);eye.wt=rnd(1.5,3);}
+    tx=toX(eye.wx);ty=toY(eye.wy);
+  }
+  eye.fx+=(tx-eye.fx)*Math.min(1,dt*5); eye.fy+=(ty-eye.fy)*Math.min(1,dt*5);
+  ctx.strokeStyle=col.iris;ctx.globalAlpha=.35;ctx.setLineDash([3,4]);ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(ex,ey+R*.4);ctx.lineTo(eye.fx,eye.fy);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+  ctx.strokeStyle=col.iris;ctx.globalAlpha=.6;ctx.beginPath();ctx.arc(eye.fx,eye.fy,2.6*s,0,7);ctx.stroke();ctx.globalAlpha=1;
+  drawEye(ctx,ex,ey,R,eye.fx,eye.fy,dt);
+  // ce que l'œil compte
+  const t=target(V);
+  const seen=seenCounts();
+  SP.forEach(sp=>{const el=document.getElementById('n-'+sp.k);const v=String(seen[sp.k]);if(el.textContent!==v)el.textContent=v;});
+  ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.font='600 11px '+fBody();ctx.fillStyle=col.muted;
+  let ly=H*.05;
+  ctx.fillText('L\'œil compte :',lx0,ly); ly+=17;
+  ctx.font='11px '+fMono();
+  const names={a:'A',b:'B',c:'C',d:'D',cl:'Cl⁻',so4:'SO₄²⁻'};
+  ['a','b','c','d','cl','so4'].forEach(k=>{
+    drawGlyph(ctx,k,lx0+5,ly,4.2,0);
+    ctx.fillStyle=visible[k]?col.fg:col.muted;
+    ctx.fillText(names[k]+' '+String(seen[k]).padStart(3,' '),lx0+13,ly);
+    ly+=14;
+  });
+}
+
+/* ---------- graphique ---------- */
+const ccv=document.getElementById('chart');
+const MAXV={a:NA0,b:PER_ML*VMAX-NBE,c:NA0,d:NBE,cl:3*NA0,so4:PER_ML*VMAX};
+function niceMax(m){
+  for(const st of [5,10,20,25,50,100,200,250,500]){if(m/st<=6)return {max:Math.ceil(m/st)*st,step:st};}
+  return {max:Math.ceil(m/500)*500,step:500};
+}
+function drawChart(){
+  if(typeof renderLog==='function')renderLog();
+  const {ctx,W,H}=fitCanvas(ccv);
+  ctx.clearRect(0,0,W,H);
+  const mono=fMono();
+  const L=48,R=44,T=16,B=42, pw=W-L-R, ph=H-T-B;
+  let m=10; Object.keys(visible).forEach(k=>{if(visible[k])m=Math.max(m,MAXV[k]);});
+  const sc=niceMax(m*1.04), YMAX=sc.max;
+  const X=v=>L+v/VMAX*pw, Y=n=>T+ph-n/YMAX*ph;
+  ctx.font='11px '+mono;ctx.fillStyle=col.muted;ctx.strokeStyle=col.line;ctx.lineWidth=1;
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let n=0;n<=YMAX+1e-9;n+=sc.step){const y=Y(n);ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(L+pw,y);ctx.stroke();ctx.fillText(String(n),L-6,y);}
+  ctx.textAlign='center';ctx.textBaseline='top';
+  for(let v=0;v<=VMAX;v++){
+    const x=X(v),long=v%5===0;ctx.beginPath();ctx.moveTo(x,T+ph);ctx.lineTo(x,T+ph+(long?5:2.5));ctx.stroke();
+    if(long)ctx.fillText(String(v),x,T+ph+7);
+  }
+  ctx.fillText('V versé (mL)',L+pw/2,T+ph+24);
+  ctx.save();ctx.translate(12,T+ph/2);ctx.rotate(-Math.PI/2);ctx.textBaseline='middle';ctx.fillText('N (entités)',0,0);ctx.restore();
+  // le graphique se construit millilitre par millilitre : un point par mL déjà versé
+  const kmax=Math.floor(V+1e-6);
+  if(showExplain&&kmax>=VE){
+    ctx.strokeStyle=col.accent;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(X(VE),T);ctx.lineTo(X(VE),T+ph);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=col.accent;ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('Vᴇ = 8,0 mL',X(VE)+5,T+2);
+  }
+  const rec=[];for(let k=0;k<=kmax;k++)rec.push(target(k));
+  const order=['so4','cl','b','d','c','a'];
+  order.forEach(k=>{
+    if(!visible[k])return;
+    ctx.strokeStyle=col[k];ctx.lineWidth=2.2;ctx.setLineDash(k==='cl'||k==='so4'?[6,4]:[]);
+    ctx.beginPath();rec.forEach((r,i)=>{const x=X(i),y=Y(r[k]);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();ctx.setLineDash([]);
+    rec.forEach((r,i)=>{
+      const x=X(i),y=Y(r[k]);
+      ctx.fillStyle=col.panel;ctx.beginPath();ctx.arc(x,y,4.2,0,7);ctx.fill();
+      ctx.fillStyle=col[k];ctx.beginPath();ctx.arc(x,y,3,0,7);ctx.fill();
+    });
+  });
+  // volume en cours de versement
+  if(V>kmax+1e-6){ctx.strokeStyle=col.fg;ctx.globalAlpha=.35;ctx.lineWidth=1;ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(X(V),T);ctx.lineTo(X(V),T+ph);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;}
+  ctx.font='600 12px '+mono;ctx.textBaseline='middle';
+  const last=rec[rec.length-1];
+  const lab=(k,txt,v,val,dx,dy)=>{if(!visible[k])return;ctx.fillStyle=col[k];ctx.textAlign='left';ctx.fillText(txt,X(v)+dx,Y(val)+dy);};
+  lab('a','A',0,NA0,8,-10); lab('cl','Cl⁻',0,3*NA0,8,-10);
+  if(kmax>0){lab('b','B',kmax,last.b,8,-9); lab('so4','SO₄²⁻',kmax,last.so4,8,-10); lab('c','C',kmax,last.c,8,0); lab('d','D',kmax,last.d,8,10);}
+}
+
+/* ---------- boucle ---------- */
+let last=performance.now();
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000); last=now;
+  if(playing){
+    let nv=V+parseFloat(document.getElementById('speed').value)*dt;
+    if(nv>=pourTarget){nv=pourTarget;setPlaying(false);if(pourTarget>VE+1e-6)showMsg(MSG_AFTER);}
+    V=nv;lastSmall=true;vrange.value=V;updateUI();
+  }
+  reconcile();
+  drawBeaker(dt);
+  requestAnimationFrame(frame);
+}
+let pourTarget=0;
+function setPlaying(on){playing=on;playBtn.textContent=on?'Robinet ouvert…':'Verser 1 mL';playBtn.disabled=on||V>=VMAX-1e-6;}
+function toggleValve(){if(playing||V>=VMAX-1e-6)return;eqbox.classList.remove('show');hideMsg();pourTarget=Math.min(VMAX,Math.floor(V+1e-6)+1);setPlaying(true);}
+playBtn.onclick=toggleValve;
+function canvasPt(e){const r=bcv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
+function onValve(e){const [x,y]=canvasPt(e);return Math.hypot(x-valve.x,y-valve.y)<=valve.r;}
+bcv.addEventListener('click',e=>{if(onValve(e))toggleValve();});
+bcv.addEventListener('pointermove',e=>{valve.hover=onValve(e);bcv.style.cursor=valve.hover?'pointer':'default';});
+bcv.addEventListener('pointerleave',()=>{valve.hover=false;});
+document.getElementById('reset').onclick=()=>{flushEvents();eqbox.classList.remove('show');setV(0,false);setPlaying(false);showMsg(MSG_HINT);};
+vrange.addEventListener('input',()=>{const nv=parseFloat(vrange.value);const small=Math.abs(nv-V)<=1;setV(nv,small);setPlaying(false);});
+/* recensement millilitre par millilitre */
+const LOGK=['a','b','c','d','cl','so4'], LOGN={a:'A',b:'B',c:'C',d:'D',cl:'Cl⁻',so4:'SO₄²⁻'};
+document.getElementById('loghead').innerHTML='<th>V (mL)</th>'+LOGK.map(k=>'<th>'+legendSVG(k)+LOGN[k]+'</th>').join('');
+const logbody=document.getElementById('logbody'); let logK=-1, logEq=null;
+function renderLog(){
+  const kmax=Math.floor(V+1e-6), eq=showExplain;
+  if(kmax===logK&&eq===logEq)return;
+  logK=kmax;logEq=eq;
+  let h='';
+  for(let k=0;k<=kmax;k++){
+    const t=target(k), cls=[k===kmax?'latest':'',(eq&&k===VE)?'eqrow':''].join(' ').trim();
+    h+='<tr'+(cls?' class="'+cls+'"':'')+'><td>'+k+'</td>'+LOGK.map(x=>'<td>'+t[x]+'</td>').join('')+'</tr>';
+  }
+  logbody.innerHTML=h;
+  const w=logbody.closest('.logwrap'); w.scrollTop=w.scrollHeight;
+}
+const explainBtn=document.getElementById('explain');
+explainBtn.onclick=()=>{showExplain=!showExplain;document.getElementById('wrap').classList.toggle('show-explain',showExplain);explainBtn.setAttribute('aria-pressed',showExplain);explainBtn.textContent=showExplain?'Masquer les explications':'Afficher les explications';drawChart();};
+window.addEventListener('resize',drawChart);
+try{new ResizeObserver(()=>drawChart()).observe(document.getElementById('chart').parentNode);}catch(e){}
+updateUI();
+requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>
