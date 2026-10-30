@@ -105,3 +105,6 @@ main{padding-block:32px 56px;outline:none}
   .btn{justify-self:start}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.grp{font:600 .8rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:20px 0 4px}
+.r.notag{grid-template-columns:1fr auto}
+@media(max-width:640px){.r.notag{grid-template-columns:1fr}}

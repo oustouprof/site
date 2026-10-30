@@ -1,11 +1,13 @@
 (function(){
   var S = window.SITE, main = document.getElementById('main') || document.getElementById('contenu');
   var TYPES = {
-    cours:{l:'Cours',a:'Ouvrir le PDF'}, activite:{l:'Activité',a:'Ouvrir le PDF'},
-    exercice:{l:'Exercices',a:'Ouvrir le PDF'}, video:{l:'Vidéo',a:'Regarder'},
-    simulation:{l:'Simulation',a:'Lancer'}
+    cours:{l:'Cours',g:'Cours',a:'Ouvrir le PDF'},
+    tp:{l:'TP',g:'TP',a:'Ouvrir le PDF'},
+    exercice:{l:'Exercices',g:'Exercices',a:'Ouvrir le PDF'},
+    animation:{l:'Animation',g:'Animations',a:'Lancer'},
+    video:{l:'Capsule vidéo',g:'Capsules vidéo',a:'Regarder'},
+    maths:{l:'Point maths',g:'Points maths',a:'Ouvrir le PDF'}
   };
-  var filtre = 'tous';
 
   function h(tag, attrs, kids){
     var e = document.createElement(tag);
@@ -31,7 +33,7 @@
     });
   }
 
-  function resItem(r, niveauNom){
+  function resItem(r, niveauNom, sansTag){
     var t = TYPES[r.type] || {l:r.type, a:'Ouvrir'};
     var href = r.fichier || r.url;
     var info = [h('b',{text:r.titre})];
@@ -39,8 +41,8 @@
     if (niveauNom) meta.push(niveauNom);
     if (r.desc) meta.push(r.desc);
     if (meta.length) info.push(h('small',{text:meta.join(' · ')}));
-    return h('li',{class:'r'},[
-      h('span',{class:'tag',text:t.l}),
+    return h('li',{class:sansTag ? 'r notag' : 'r'},[
+      sansTag ? null : h('span',{class:'tag',text:t.l}),
       h('div',{},info),
       href ? h('a',{class:'btn',href:href,target:'_blank',rel:'noopener',text:t.a}) : null
     ]);
@@ -88,34 +90,29 @@
     frag.appendChild(h('a',{class:'back',href:'#accueil',text:'← Accueil'}));
     frag.appendChild(h('div',{class:'n-head',style:'--c:'+n.couleur},[
       h('span',{class:'mono',text:n.sous}), h('h1',{text:n.titre}),
-      h('p',{text:'Cours, activités, exercices, vidéos et simulations, classés par thème.'})
+      h('p',{text:'Cours, TP, exercices, animations, capsules vidéo et points maths, classés par chapitre.'})
     ]));
-    var bar = h('div',{class:'filtres',role:'group','aria-label':'Filtrer par type'});
     var liste = h('div',{});
-    [['tous','Tout']].concat(Object.keys(TYPES).map(function(k){ return [k, TYPES[k].l + (k==='exercice'?'':'' )]; })).forEach(function(p){
-      var b = h('button',{type:'button',text:p[1],'aria-pressed':String(filtre===p[0])});
-      b.addEventListener('click',function(){
-        filtre = p[0];
-        Array.prototype.forEach.call(bar.children,function(x){ x.setAttribute('aria-pressed','false'); });
-        b.setAttribute('aria-pressed','true');
-        draw();
-      });
-      bar.appendChild(b);
-    });
     function draw(){
       liste.textContent = '';
       n.chapitres.forEach(function(ch){
-        var rs = ch.ressources.filter(function(r){ return filtre==='tous' || r.type===filtre; });
-        var ul = h('ul',{class:'res'});
-        rs.forEach(function(r){ ul.appendChild(resItem(r)); });
-        liste.appendChild(h('section',{class:'chap'},[
-          h('h2',{},[ch.titre, h('span',{class:'mono',text:rs.length ? plur(rs.length) : ''})]),
-          rs.length ? ul : h('p',{class:'vide',text: ch.ressources.length ? 'Aucune ressource de ce type pour le moment.' : 'Ressources à venir.'})
-        ]));
+        var sec = h('section',{class:'chap'},[
+          h('h2',{},[ch.titre, h('span',{class:'mono',text:ch.ressources.length ? plur(ch.ressources.length) : ''})])
+        ]);
+        Object.keys(TYPES).forEach(function(k){
+          var rs = ch.ressources.filter(function(r){ return r.type===k; });
+          if (!rs.length) return;
+          var ul = h('ul',{class:'res'});
+          rs.forEach(function(r){ ul.appendChild(resItem(r,null,true)); });
+          sec.appendChild(h('h3',{class:'grp',text:TYPES[k].g}));
+          sec.appendChild(ul);
+        });
+        if (!ch.ressources.length) sec.appendChild(h('p',{class:'vide',text:'Ressources à venir.'}));
+        liste.appendChild(sec);
       });
     }
     draw();
-    frag.appendChild(bar); frag.appendChild(liste);
+    frag.appendChild(liste);
     return frag;
   }
 
@@ -124,7 +121,7 @@
     var n = S.niveaux.filter(function(x){return x.id===id;})[0];
     main.textContent = '';
     renderNav(n ? n.id : '');
-    if (n){ filtre='tous'; main.appendChild(niveau(n)); document.title = n.titre + ' · Physique-Chimie, M. Oustou'; }
+    if (n){ main.appendChild(niveau(n)); document.title = n.titre + ' · Physique-Chimie, M. Oustou'; }
     else { main.appendChild(accueil()); document.title = 'Physique-Chimie, M. Oustou'; }
     window.scrollTo(0,0);
   }

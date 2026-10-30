@@ -3,13 +3,15 @@
    des ressources.
 
    Une ressource :
-   { type: "cours" | "activite" | "exercice" | "video" | "simulation",
+   { type: "cours" | "tp" | "exercice" | "animation" | "video" | "maths",
      titre: "Titre affiché",
      desc: "Phrase facultative",
      date: "2026-11-05",
-     fichier: "pdf/seconde/ch1-cours.pdf"   // pour un PDF
-     // ou  url: "https://..."               // pour une vidéo / simulation
+     fichier: "pdf/terminale-spe/titrages/cours.pdf"   // pour un PDF
+     // ou  url: "https://..."                          // animation / capsule vidéo
    }
+   Arborescence : niveau > chapitre > cours, TP, exercices, animations,
+   capsules vidéo, points maths. Un PDF se range dans pdf/<niveau>/<chapitre>/.
    ============================================================ */
 window.SITE = {
   nom: "M. OUSTOU Adel",
@@ -59,11 +61,7 @@ window.SITE = {
       id: "terminale-spe", titre: "Terminale · Spécialité", court: "Terminale spé", couleur: "var(--s5)",
       sous: "Spécialité Physique-Chimie",
       chapitres: [
-        { titre: "Constitution et transformations de la matière", ressources: [] },
-        { titre: "Titrage avec suivi pH-métrique et titrage avec suivi conductimétrique", ressources: [] },
-        { titre: "Mouvement et interactions", ressources: [] },
-        { titre: "L'énergie : conversions et transferts", ressources: [] },
-        { titre: "Ondes et signaux", ressources: [] }
+        { titre: "Titrage avec suivi pH-métrique et titrage avec suivi conductimétrique", ressources: [] }
       ]
     },
     {
