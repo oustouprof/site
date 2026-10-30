@@ -11,6 +11,10 @@
      fichier: "pdf/terminale-spe/titrages/cours.pdf"   // pour un PDF
      // ou  url: "https://..."                          // animation / capsule vidéo
    }
+   RÈGLE : dès qu'une activité, un exercice ou un cours comporte plus d'un document
+   (sujet + notice, énoncé + corrigé, etc.), tous ses documents reçoivent le même
+   "groupe" : ils sont alors réunis dans une sous-rubrique portant ce nom.
+
    Arborescence : niveau > chapitre > cours, activités, exercices, animations et
    simulations, capsules vidéo, points maths. Un PDF se range dans pdf/<niveau>/<chapitre>/.
    ============================================================ */
@@ -75,8 +79,8 @@ window.SITE = {
           { type: "activite", groupe: "Titrage avec suivi conductimétrique du Destop", titre: "Titrage avec suivi conductimétrique du Destop", desc: "Sujet type ECE (1 h) : titre massique en hydroxyde de sodium", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-sujet.pdf" },
           { type: "activite", groupe: "Titrage avec suivi conductimétrique du Destop", titre: "Titrage avec suivi conductimétrique du Destop : notice Regressi", desc: "Saisie des mesures et tracé de σ = f(VA)", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-notice-regressi.pdf" },
           { type: "activite", groupe: "Titrage avec suivi conductimétrique du Destop", titre: "Titrage avec suivi conductimétrique du Destop : exemple de mesures expérimentales", desc: "Mesures de conductivité pour exploiter le titrage", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/tp2-destop-conductimetrique-tableau-mesures.pdf" },
-          { type: "exercice", titre: "Rappels de Première sur le titrage : contrôle qualité d'une eau oxygénée", desc: "Exercice type", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-rappels-premiere-eau-oxygenee.pdf" },
-          { type: "exercice", titre: "Rappels de Première sur le titrage : contrôle qualité d'une eau oxygénée, corrigé", desc: "Corrigé de l'exercice type", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-rappels-premiere-eau-oxygenee-corrige.pdf" },
+          { type: "exercice", groupe: "Rappels de Première sur le titrage : contrôle qualité d'une eau oxygénée", titre: "Rappels de Première sur le titrage : contrôle qualité d'une eau oxygénée", desc: "Exercice type", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-rappels-premiere-eau-oxygenee.pdf" },
+          { type: "exercice", groupe: "Rappels de Première sur le titrage : contrôle qualité d'une eau oxygénée", titre: "Rappels de Première sur le titrage : contrôle qualité d'une eau oxygénée, corrigé", desc: "Corrigé de l'exercice type", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-rappels-premiere-eau-oxygenee-corrige.pdf" },
           { type: "exercice", titre: "Titrage avec suivi pH-métrique : un comprimé de vitamine C bien dosé ?", desc: "Exercice type, 10 points, durée conseillée 1 h", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-vitamine-c-ph-metrique.pdf" },
           { type: "exercice", titre: "Titrage avec suivi conductimétrique : un détartrant contre le calcaire", desc: "Exercice type, 10 points", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-detartrant-conductimetrique.pdf" },
           { type: "animation", titre: "Évolution des quantités de matière au cours d'un titrage", desc: "Simulation interactive : burette, bécher, nombre d'entités et courbe N = f(V)", date: "2026-10-30", url: "simulations/titrage-quantites-de-matiere.html" }

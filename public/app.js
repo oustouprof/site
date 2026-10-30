@@ -133,6 +133,8 @@
   }
 
   /* Rubrique : les ressources */
+  var CHOIX = {cours:'Choisis un cours.',activite:'Choisis une activité.',exercice:'Choisis un exercice.',animation:'Choisis une animation.',video:'Choisis une capsule.',maths:'Choisis un point maths.'};
+
   function liste(rs){
     var ul = h('ul',{class:'res'});
     rs.forEach(function(r){ ul.appendChild(resItem(r,null,true)); });
@@ -156,7 +158,7 @@
       return frag;
     }
     frag.appendChild(h('a',{class:'back',href:'#'+n.id+'/'+chId(ch),text:'← '+ch.titre}));
-    frag.appendChild(head(n, ch.titre, TYPES[k].g, noms.length ? 'Choisis une activité.' : null));
+    frag.appendChild(head(n, ch.titre, TYPES[k].g, noms.length ? (CHOIX[k]||'Choisis un document.') : null));
     if (!rs.length){ frag.appendChild(h('p',{class:'vide',text:'Ressources à venir.'})); return frag; }
     if (noms.length){
       var ul = h('ul',{class:'chapitres'});
