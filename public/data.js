@@ -60,6 +60,7 @@ window.SITE = {
       sous: "Spécialité Physique-Chimie",
       chapitres: [
         { titre: "Constitution et transformations de la matière", ressources: [] },
+        { titre: "Titrage avec suivi pH-métrique et titrage avec suivi conductimétrique", ressources: [] },
         { titre: "Mouvement et interactions", ressources: [] },
         { titre: "L'énergie : conversions et transferts", ressources: [] },
         { titre: "Ondes et signaux", ressources: [] }
