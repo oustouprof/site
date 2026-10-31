@@ -18,7 +18,7 @@
    (« Choisir un chapitre », « Ouvrir le PDF »), jamais à l'impératif (« Choisis »).
    RÈGLE : les chapitres d'un niveau sont rangés dans l'ordre de la progression
    (Terminale spé : chap 1 acide-base, 2 ondes sonores et Doppler, 3 dosage par
-   étalonnage, 4 lunette astronomique, 5 titrages). Insérer un nouveau chapitre à sa place.
+   étalonnage, 4 lunette astronomique afocale, 5 titrages). Insérer un nouveau chapitre à sa place.
    RÈGLE : ne jamais publier de fiche professeur. Si un PDF en contient une
    (pages « Fiche professeur » en fin de sujet), retirer ces pages avant la mise en ligne.
    Seuls le sujet et le corrigé des activités sont publiés. Uniquement des PDF.
@@ -126,7 +126,7 @@ window.SITE = {
           { type: "video", titre: "Le geste expérimental, version ECE", desc: "Capsule 3 de la révision de Première (12 min)", date: "2026-10-31", url: "https://youtu.be/MCKHTuwwbY8" },
           { type: "video", titre: "Bonus : un exercice résolu au tableau", desc: "Calcul d'une concentration à partir d'une courbe d'étalonnage (8 min)", date: "2026-10-31", url: "https://youtu.be/DXaEzYwXc-I" }
         ] },
-        { id: "lunette-astronomique", titre: "La lunette astronomique", ressources: [
+        { id: "lunette-astronomique", titre: "La lunette astronomique afocale", ressources: [
           { type: "cours", titre: "La lunette astronomique", desc: "Cours du chapitre : diamètre apparent, image d'un objet à l'infini, lunette afocale et grossissement, avec renvois vers les activités et les exercices", date: "2026-10-31", fichier: "pdf/terminale-spe/lunette-astronomique/cours-lunette-astronomique.pdf" },
           { type: "cours", titre: "Fiche résumé : rayons lumineux provenant d'un objet à l'infini et entrant dans une lentille convergente", desc: "Une page A4 : où se forme l'image d'un objet à l'infini", date: "2026-10-31", fichier: "pdf/terminale-spe/lunette-astronomique/fiche-resume-lentille-objet-infini.pdf" },
           { type: "activite", groupe: "De la lentille convergente à la lunette astronomique", titre: "De la lentille convergente à la lunette astronomique", desc: "Constructions graphiques : objet à l'infini, objet dans le plan focal objet, lunette afocale", date: "2026-10-31", fichier: "pdf/terminale-spe/lunette-astronomique/activite-lentille-a-lunette-sujet.pdf" },
