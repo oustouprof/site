@@ -14,6 +14,9 @@
    RÈGLE : dès qu'une activité, un exercice ou un cours comporte plus d'un document
    (sujet + notice, énoncé + corrigé, etc.), tous ses documents reçoivent le même
    "groupe" : ils sont alors réunis dans une sous-rubrique portant ce nom.
+   RÈGLE : ne jamais publier de fiche professeur. Si un PDF en contient une
+   (pages « Fiche professeur » en fin de sujet), retirer ces pages avant la mise en ligne.
+   Seuls le sujet et le corrigé des activités sont publiés. Uniquement des PDF.
 
    Arborescence : niveau > chapitre > cours, activités, exercices, animations et
    simulations, capsules vidéo, points maths. Un PDF se range dans pdf/<niveau>/<chapitre>/.
