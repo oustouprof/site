@@ -18,7 +18,8 @@
    (« Choisir un chapitre », « Ouvrir le PDF »), jamais à l'impératif (« Choisis »).
    RÈGLE : les chapitres d'un niveau sont rangés dans l'ordre de la progression
    (Terminale spé : chap 1 acide-base, 2 ondes sonores et Doppler, 3 dosage par
-   étalonnage, 4 lunette astronomique afocale, 5 titrages). Insérer un nouveau chapitre à sa place.
+   étalonnage, 4 lunette astronomique afocale, 5 titrages ; Première spé : quantité de matière,
+   dosage par étalonnage spectrophotométrique, lentilles minces convergentes). Insérer un nouveau chapitre à sa place.
    RÈGLE : ne jamais publier de fiche professeur. Si un PDF en contient une
    (pages « Fiche professeur » en fin de sujet), retirer ces pages avant la mise en ligne.
    Seuls le sujet et le corrigé des activités sont publiés. Uniquement des PDF.
@@ -55,6 +56,24 @@ window.SITE = {
       id: "premiere-spe", titre: "Première · Spécialité", court: "Première spé", couleur: "var(--s3)",
       sous: "Spécialité Physique-Chimie",
       chapitres: [
+        { id: "quantite-de-matiere", titre: "Quantité de matière", ressources: [
+          { type: "cours", titre: "Autour de la quantité de matière", desc: "Cours complet : quantité de matière et constante d'Avogadro, masse molaire, volume molaire, concentration, préparation d'une solution", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/cours-quantite-de-matiere.pdf" },
+          { type: "activite", groupe: "La bouteille bleue (TP évalué)", titre: "La bouteille bleue (TP évalué)", desc: "Préparer une solution par dissolution, quantité de matière et concentration (1 h 30)", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/tp-bouteille-bleue-sujet.pdf" },
+          { type: "activite", groupe: "La bouteille bleue (TP évalué)", titre: "La bouteille bleue (TP évalué) : grille d'évaluation", desc: "Évaluation des compétences", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/tp-bouteille-bleue-grille.pdf" },
+          { type: "activite", groupe: "La bouteille bleue (TP évalué)", titre: "La bouteille bleue (TP évalué), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/tp-bouteille-bleue-corrige.pdf" },
+          { type: "exercice", groupe: "Autour de la quantité de matière : feuille d'exercices", titre: "Autour de la quantité de matière : feuille d'exercices", desc: "8 exercices", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/exercices-quantite-de-matiere.pdf" },
+          { type: "exercice", groupe: "Autour de la quantité de matière : feuille d'exercices", titre: "Autour de la quantité de matière : feuille d'exercices, corrigé", desc: "Les 8 exercices résolus pas à pas : la méthode, le calcul en entier et les points de vigilance", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/exercices-quantite-de-matiere-corrige.pdf" },
+          { type: "evaluation", groupe: "Évaluation de 50 min (sujet A)", titre: "Évaluation de 50 min (sujet A)", desc: "QCM de cours et exercices, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-sujet-a.pdf" },
+          { type: "evaluation", groupe: "Évaluation de 50 min (sujet A)", titre: "Évaluation de 50 min (sujet A), corrigé", desc: "Corrigé détaillé", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-sujet-a-corrige.pdf" },
+          { type: "evaluation", groupe: "Évaluation de 50 min (sujet B)", titre: "Évaluation de 50 min (sujet B)", desc: "QCM de cours et exercices, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-sujet-b.pdf" },
+          { type: "evaluation", groupe: "Évaluation de 50 min (sujet B)", titre: "Évaluation de 50 min (sujet B), corrigé", desc: "Corrigé détaillé", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-sujet-b-corrige.pdf" },
+          { type: "evaluation", groupe: "Évaluation type bac de 1 h : du bicarbonate à la cartouche de CO2", titre: "Évaluation type bac de 1 h : du bicarbonate à la cartouche de CO2", desc: "Deux exercices indépendants, sur 20 points", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-type-bac-sujet.pdf" },
+          { type: "evaluation", groupe: "Évaluation type bac de 1 h : du bicarbonate à la cartouche de CO2", titre: "Évaluation type bac de 1 h : du bicarbonate à la cartouche de CO2, corrigé", desc: "Corrigé détaillé et barème", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-type-bac-corrige.pdf" },
+          { type: "evaluation", groupe: "Évaluation C de 1 h : solutions, dilution, masse volumique (permanganate de potassium)", titre: "Évaluation C de 1 h : solutions, dilution, masse volumique (permanganate de potassium)", desc: "Niveau soutenu, aucune formule fournie, sur 20 points", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-c-permanganate-dilution-sujet.pdf" },
+          { type: "evaluation", groupe: "Évaluation C de 1 h : solutions, dilution, masse volumique (permanganate de potassium)", titre: "Évaluation C de 1 h : solutions, dilution, masse volumique (permanganate de potassium), corrigé", desc: "Corrigé détaillé et barème", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/evaluation-c-permanganate-dilution-corrige.pdf" },
+          { type: "maths", titre: "Fiche méthode : chiffres significatifs et analyse des unités", desc: "Combien de chiffres garder dans un résultat, et comment vérifier ou retrouver une formule grâce aux unités, avec applications", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/fiche-methode-chiffres-significatifs-unites.pdf" },
+          { type: "maths", titre: "Le produit en croix", desc: "Méthode pour retrouver une quantité inconnue dans une égalité de deux fractions", date: "2026-10-31", fichier: "pdf/premiere-spe/quantite-de-matiere/fiche-produit-en-croix.pdf" }
+        ] },
         { id: "dosage-spectrophotometrique", titre: "Dosage par étalonnage spectrophotométrique", ressources: [
           { type: "activite", groupe: "Construction d'un spectre d'absorption (courbe d'absorbance)", titre: "Construction d'un spectre d'absorption (courbe d'absorbance) : groupe 1, le bleu patenté", desc: "Pourquoi une solution de bleu patenté nous paraît-elle bleue ?", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/absorption-groupe1-bleu-patente.pdf" },
           { type: "activite", groupe: "Construction d'un spectre d'absorption (courbe d'absorbance)", titre: "Construction d'un spectre d'absorption (courbe d'absorbance) : groupe 2, la tartrazine", desc: "Pourquoi une solution de tartrazine nous paraît-elle jaune ?", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/absorption-groupe2-tartrazine.pdf" },
