@@ -120,6 +120,13 @@ window.SITE = {
           { type: "video", titre: "Couleur d'une solution et dosage par étalonnage", desc: "Capsule 2 de la révision de Première (15 min)", date: "2026-10-31", url: "https://youtu.be/5fk_-1Lnq-A" },
           { type: "video", titre: "Le geste expérimental, version ECE", desc: "Capsule 3 de la révision de Première (12 min)", date: "2026-10-31", url: "https://youtu.be/MCKHTuwwbY8" },
           { type: "video", titre: "Bonus : un exercice résolu au tableau", desc: "Calcul d'une concentration à partir d'une courbe d'étalonnage (8 min)", date: "2026-10-31", url: "https://youtu.be/DXaEzYwXc-I" }
+        ] },
+        { id: "ondes-sonores-doppler", titre: "Les ondes sonores et l'effet Doppler", ressources: [
+          { type: "exercice", titre: "Les ondes sonores et l'effet Doppler : feuille d'exercices", desc: "7 exercices : intensité sonore, niveau d'intensité sonore et effet Doppler", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/exercices-ondes-sonores-doppler.pdf" },
+          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet A)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet A)", desc: "Ondes sonores et effet Doppler, 45 min, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-sujet-a.pdf" },
+          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet A)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet A), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-corrige-a.pdf" },
+          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet B)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet B)", desc: "Ondes sonores et effet Doppler, 45 min, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-sujet-b.pdf" },
+          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet B)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet B), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-corrige-b.pdf" }
         ] }
       ]
     },
