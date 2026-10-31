@@ -14,6 +14,8 @@
    RÈGLE : dès qu'une activité, un exercice ou un cours comporte plus d'un document
    (sujet + notice, énoncé + corrigé, etc.), tous ses documents reçoivent le même
    "groupe" : ils sont alors réunis dans une sous-rubrique portant ce nom.
+   RÈGLE : sur le site, écrire les consignes avec des verbes à l'infinitif
+   (« Choisir un chapitre », « Ouvrir le PDF »), jamais à l'impératif (« Choisis »).
    RÈGLE : ne jamais publier de fiche professeur. Si un PDF en contient une
    (pages « Fiche professeur » en fin de sujet), retirer ces pages avant la mise en ligne.
    Seuls le sujet et le corrigé des activités sont publiés. Uniquement des PDF.
@@ -138,6 +140,7 @@ window.SITE = {
           { type: "cours", titre: "Fiche méthode : nomenclature des acides carboxyliques", desc: "Une page A4 : le groupe carboxyle et le nom des acides carboxyliques", date: "2026-10-31", fichier: "pdf/terminale-spe/transformations-acide-base/fiche-methode-acides-carboxyliques.pdf" },
           { type: "activite", groupe: "Vérification de la relation pH = −log([H₃O⁺]/c°)", titre: "Vérification de la relation pH = −log([H₃O⁺]/c°)", desc: "Activité expérimentale : dilutions successives d'une solution d'acide chlorhydrique et mesures de pH", date: "2026-10-31", fichier: "pdf/terminale-spe/transformations-acide-base/activite-ph-log-sujet.pdf" },
           { type: "activite", groupe: "Vérification de la relation pH = −log([H₃O⁺]/c°)", titre: "Vérification de la relation pH = −log([H₃O⁺]/c°), corrigé", desc: "Corrigé de l'activité", date: "2026-10-31", fichier: "pdf/terminale-spe/transformations-acide-base/activite-ph-log-corrige.pdf" },
+          { type: "exercice", titre: "Les transformations acide-base : fiche d'exercices", desc: "7 exercices d'application du cours", date: "2026-10-31", fichier: "pdf/terminale-spe/transformations-acide-base/exercices-transformations-acide-base.pdf" },
           { type: "evaluation", groupe: "Évaluation de 50 min : QCM de cours et exercice type bac (la triméthylamine)", titre: "Évaluation de 50 min : QCM de cours et exercice type bac (la triméthylamine)", desc: "Sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/transformations-acide-base/evaluation-50min-sujet.pdf" },
           { type: "evaluation", groupe: "Évaluation de 50 min : QCM de cours et exercice type bac (la triméthylamine)", titre: "Évaluation de 50 min : QCM de cours et exercice type bac (la triméthylamine), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/transformations-acide-base/evaluation-50min-corrige.pdf" },
           { type: "evaluation", groupe: "Évaluation de 30 min : l'acide propanoïque, conservateur du pain de mie (sujet A)", titre: "Évaluation de 30 min : l'acide propanoïque, conservateur du pain de mie (sujet A)", desc: "Sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/transformations-acide-base/evaluation-propanoique-sujet.pdf" },

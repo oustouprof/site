@@ -75,7 +75,7 @@
     tous.slice(0,6).forEach(function(x){ rec.appendChild(resItem(x.r, label(x.n))); });
     frag.appendChild(h('section',{class:'sect'},[
       h('h2',{text:'Derniers ajouts'}),
-      tous.length ? rec : h('p',{class:'vide',text:'Les premières ressources arrivent bientôt. Revenez voir après les prochains cours.'})
+      tous.length ? rec : h('p',{class:'vide',text:'Les premières ressources arrivent bientôt. Revenir après les prochains cours.'})
     ]));
 
     var lg = h('div',{class:'liens'});
@@ -109,7 +109,7 @@
   function niveau(n){
     var frag = document.createDocumentFragment();
     frag.appendChild(h('a',{class:'back',href:'#accueil',text:'← Accueil'}));
-    frag.appendChild(head(n, n.sous, n.titre, 'Choisis un chapitre.'));
+    frag.appendChild(head(n, n.sous, n.titre, 'Choisir un chapitre.'));
     var ul = h('ul',{class:'chapitres'});
     n.chapitres.forEach(function(ch){
       var c = ch.ressources.length;
@@ -123,7 +123,7 @@
   function chapitre(n, ch){
     var frag = document.createDocumentFragment();
     frag.appendChild(h('a',{class:'back',href:'#'+n.id,text:'← '+n.titre}));
-    frag.appendChild(head(n, n.titre, ch.titre, 'Choisis une rubrique.'));
+    frag.appendChild(head(n, n.titre, ch.titre, 'Choisir une rubrique.'));
     var ul = h('ul',{class:'rubriques'});
     Object.keys(TYPES).forEach(function(k){
       var c = ch.ressources.filter(function(r){ return r.type===k; }).length;
@@ -134,7 +134,7 @@
   }
 
   /* Rubrique : les ressources */
-  var CHOIX = {cours:'Choisis un cours.',activite:'Choisis une activité.',exercice:'Choisis un exercice.',evaluation:'Choisis une évaluation.',animation:'Choisis une animation.',video:'Choisis une capsule.',maths:'Choisis un point maths.'};
+  var CHOIX = {cours:'Choisir un cours.',activite:'Choisir une activité.',exercice:'Choisir un exercice.',evaluation:'Choisir une évaluation.',animation:'Choisir une animation.',video:'Choisir une capsule.',maths:'Choisir un point maths.'};
 
   function liste(rs){
     var ul = h('ul',{class:'res'});
@@ -159,7 +159,7 @@
       return frag;
     }
     frag.appendChild(h('a',{class:'back',href:'#'+n.id+'/'+chId(ch),text:'← '+ch.titre}));
-    frag.appendChild(head(n, ch.titre, TYPES[k].g, noms.length ? (CHOIX[k]||'Choisis un document.') : null));
+    frag.appendChild(head(n, ch.titre, TYPES[k].g, noms.length ? (CHOIX[k]||'Choisir un document.') : null));
     if (!rs.length){ frag.appendChild(h('p',{class:'vide',text:'Ressources à venir.'})); return frag; }
     if (noms.length){
       var ul = h('ul',{class:'chapitres'});
