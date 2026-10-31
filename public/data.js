@@ -3,7 +3,7 @@
    des ressources.
 
    Une ressource :
-   { type: "cours" | "activite" | "exercice" | "animation" | "video" | "maths",
+   { type: "cours" | "activite" | "exercice" | "evaluation" | "animation" | "video" | "maths",
      titre: "Titre affiché",
      desc: "Phrase facultative",
      date: "2026-11-05",
@@ -18,8 +18,9 @@
    (pages « Fiche professeur » en fin de sujet), retirer ces pages avant la mise en ligne.
    Seuls le sujet et le corrigé des activités sont publiés. Uniquement des PDF.
 
-   Arborescence : niveau > chapitre > cours, activités, exercices, animations et
-   simulations, capsules vidéo, points maths. Un PDF se range dans pdf/<niveau>/<chapitre>/.
+   Arborescence : niveau > chapitre > cours, activités, exercices, évaluations,
+   animations et simulations, capsules vidéo, points maths. Les évaluations (sujets et
+   corrigés) vont dans la rubrique « Évaluations » (type "evaluation"), pas dans Exercices. Un PDF se range dans pdf/<niveau>/<chapitre>/.
    ============================================================ */
 window.SITE = {
   nom: "M. OUSTOU Adel",
@@ -112,10 +113,10 @@ window.SITE = {
           { type: "activite", groupe: "Dosage par étalonnage conductimétrique d'une eau salée préparée par un aquariophile", titre: "Dosage par étalonnage conductimétrique d'une eau salée préparée par un aquariophile : exemple de résultats et exploitation chiffrée", desc: "Jeu de mesures de référence et exploitation complète", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/eau-salee-exemple-resultats.pdf" },
           { type: "exercice", groupe: "Dosage par étalonnage : feuille d'exercices", titre: "Dosage par étalonnage : feuille d'exercices", desc: "7 exercices : spectrophotométrie (spiruline, crème contre l'acné, sirop de grenadine) et conductimétrie", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/exercices-dosage-etalonnage.pdf" },
           { type: "exercice", groupe: "Dosage par étalonnage : feuille d'exercices", titre: "Dosage par étalonnage : feuille d'exercices, corrigé", desc: "Corrigé des 7 exercices", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/exercices-dosage-etalonnage-corrige.pdf" },
-          { type: "exercice", groupe: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet A)", titre: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet A)", desc: "QCM de 9 questions, 15 min, calculatrice autorisée (permanganate de potassium)", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-sujet-a.pdf" },
-          { type: "exercice", groupe: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet A)", titre: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet A), corrigé", desc: "Grille de réponses et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-corrige-a.pdf" },
-          { type: "exercice", groupe: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet B)", titre: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet B)", desc: "QCM de 9 questions, 15 min, calculatrice autorisée (diiode)", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-sujet-b.pdf" },
-          { type: "exercice", groupe: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet B)", titre: "Évaluation QCM : dosage par étalonnage spectrophotométrique (sujet B), corrigé", desc: "Grille de réponses et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-corrige-b.pdf" },
+          { type: "evaluation", groupe: "QCM : dosage par étalonnage spectrophotométrique (sujet A)", titre: "QCM : dosage par étalonnage spectrophotométrique (sujet A)", desc: "QCM de 9 questions, 15 min, calculatrice autorisée (permanganate de potassium)", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-sujet-a.pdf" },
+          { type: "evaluation", groupe: "QCM : dosage par étalonnage spectrophotométrique (sujet A)", titre: "QCM : dosage par étalonnage spectrophotométrique (sujet A), corrigé", desc: "Grille de réponses et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-corrige-a.pdf" },
+          { type: "evaluation", groupe: "QCM : dosage par étalonnage spectrophotométrique (sujet B)", titre: "QCM : dosage par étalonnage spectrophotométrique (sujet B)", desc: "QCM de 9 questions, 15 min, calculatrice autorisée (diiode)", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-sujet-b.pdf" },
+          { type: "evaluation", groupe: "QCM : dosage par étalonnage spectrophotométrique (sujet B)", titre: "QCM : dosage par étalonnage spectrophotométrique (sujet B), corrigé", desc: "Grille de réponses et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/dosage-etalonnage/evaluation-qcm-spectro-corrige-b.pdf" },
           { type: "video", titre: "Absorbance et loi de Beer-Lambert", desc: "Capsule 1 de la révision de Première (10 min)", date: "2026-10-31", url: "https://youtu.be/P65SvG00qgA" },
           { type: "video", titre: "Couleur d'une solution et dosage par étalonnage", desc: "Capsule 2 de la révision de Première (15 min)", date: "2026-10-31", url: "https://youtu.be/5fk_-1Lnq-A" },
           { type: "video", titre: "Le geste expérimental, version ECE", desc: "Capsule 3 de la révision de Première (12 min)", date: "2026-10-31", url: "https://youtu.be/MCKHTuwwbY8" },
@@ -123,10 +124,10 @@ window.SITE = {
         ] },
         { id: "ondes-sonores-doppler", titre: "Les ondes sonores et l'effet Doppler", ressources: [
           { type: "exercice", titre: "Les ondes sonores et l'effet Doppler : feuille d'exercices", desc: "7 exercices : intensité sonore, niveau d'intensité sonore et effet Doppler", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/exercices-ondes-sonores-doppler.pdf" },
-          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet A)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet A)", desc: "Ondes sonores et effet Doppler, 45 min, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-sujet-a.pdf" },
-          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet A)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet A), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-corrige-a.pdf" },
-          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet B)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet B)", desc: "Ondes sonores et effet Doppler, 45 min, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-sujet-b.pdf" },
-          { type: "exercice", groupe: "Évaluation : l'écholocation chez la chauve-souris (sujet B)", titre: "Évaluation : l'écholocation chez la chauve-souris (sujet B), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-corrige-b.pdf" }
+          { type: "evaluation", groupe: "L'écholocation chez la chauve-souris (sujet A)", titre: "L'écholocation chez la chauve-souris (sujet A)", desc: "Ondes sonores et effet Doppler, 45 min, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-sujet-a.pdf" },
+          { type: "evaluation", groupe: "L'écholocation chez la chauve-souris (sujet A)", titre: "L'écholocation chez la chauve-souris (sujet A), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-corrige-a.pdf" },
+          { type: "evaluation", groupe: "L'écholocation chez la chauve-souris (sujet B)", titre: "L'écholocation chez la chauve-souris (sujet B)", desc: "Ondes sonores et effet Doppler, 45 min, sur 20 points, calculatrice autorisée", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-sujet-b.pdf" },
+          { type: "evaluation", groupe: "L'écholocation chez la chauve-souris (sujet B)", titre: "L'écholocation chez la chauve-souris (sujet B), corrigé", desc: "Corrigé et barème", date: "2026-10-31", fichier: "pdf/terminale-spe/ondes-sonores-doppler/evaluation-echolocation-corrige-b.pdf" }
         ] }
       ]
     },

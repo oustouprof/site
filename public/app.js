@@ -4,6 +4,7 @@
     cours:{l:'Cours',g:'Cours',a:'Ouvrir le PDF'},
     activite:{l:'Activité',g:'Activités',a:'Ouvrir le PDF'},
     exercice:{l:'Exercices',g:'Exercices',a:'Ouvrir le PDF'},
+    evaluation:{l:'Évaluation',g:'Évaluations',a:'Ouvrir le PDF'},
     animation:{l:'Animation / simulation',g:'Animations et simulations',a:'Lancer'},
     video:{l:'Capsule vidéo',g:'Capsules vidéo',a:'Regarder'},
     maths:{l:'Point maths',g:'Points maths',a:'Ouvrir le PDF'}
@@ -133,7 +134,7 @@
   }
 
   /* Rubrique : les ressources */
-  var CHOIX = {cours:'Choisis un cours.',activite:'Choisis une activité.',exercice:'Choisis un exercice.',animation:'Choisis une animation.',video:'Choisis une capsule.',maths:'Choisis un point maths.'};
+  var CHOIX = {cours:'Choisis un cours.',activite:'Choisis une activité.',exercice:'Choisis un exercice.',evaluation:'Choisis une évaluation.',animation:'Choisis une animation.',video:'Choisis une capsule.',maths:'Choisis un point maths.'};
 
   function liste(rs){
     var ul = h('ul',{class:'res'});
