@@ -190,7 +190,7 @@ window.SITE = {
           { type: "exercice", titre: "Titrage avec suivi pH-métrique : un comprimé de vitamine C bien dosé ?", desc: "Exercice type, 10 points, durée conseillée 1 h", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-vitamine-c-ph-metrique.pdf" },
           { type: "exercice", titre: "Titrage avec suivi conductimétrique : un détartrant contre le calcaire", desc: "Exercice type, 10 points", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-detartrant-conductimetrique.pdf" },
           { type: "animation", titre: "Évolution des quantités de matière au cours d'un titrage", desc: "Simulation interactive : burette, bécher, nombre d'entités et courbe N = f(V)", date: "2026-10-30", url: "simulations/titrage-quantites-de-matiere.html" },
-          { type: "video", titre: "Déterminer un volume équivalent par la méthode des tangentes", date: "2026-11-02", url: "https://www.youtube.com/watch?v=NiUULBcLf-0" }
+          { type: "video", titre: "Titrage avec suivi pH-métrique : déterminer un volume équivalent par la méthode des tangentes", date: "2026-11-02", url: "https://www.youtube.com/watch?v=NiUULBcLf-0" }
         ] }
       ]
     },
