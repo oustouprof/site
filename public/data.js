@@ -49,7 +49,12 @@ window.SITE = {
         { titre: "Une longue histoire de la matière", ressources: [] },
         { titre: "Le Soleil, notre source d'énergie", ressources: [] },
         { titre: "La Terre, un astre singulier", ressources: [] },
-        { titre: "Son et musique, porteurs d'information", ressources: [] }
+        { id: "son-et-musique", titre: "Son et musique, porteurs d'information", ressources: [
+          { type: "evaluation", groupe: "Évaluation sommative : son et cordes vibrantes", titre: "Évaluation sommative : son et cordes vibrantes (sujet 1), corrigé", desc: "Ex. 1 : guitare, téléphone et ukulélé ; ex. 2 : la guitare", date: "2026-11-07", fichier: "pdf/premiere-es/son-et-musique/evaluation-son-cordes-vibrantes-sujet-1-corrige.pdf" },
+          { type: "evaluation", groupe: "Évaluation sommative : son et cordes vibrantes", titre: "Évaluation sommative : son et cordes vibrantes (sujet 2), corrigé", desc: "Ex. 1 : violon, diapason et piano ; ex. 2 : le violon", date: "2026-11-07", fichier: "pdf/premiere-es/son-et-musique/evaluation-son-cordes-vibrantes-sujet-2-corrige.pdf" },
+          { type: "evaluation", groupe: "Évaluation sommative : son et cordes vibrantes", titre: "Évaluation sommative : son et cordes vibrantes (sujet 3), corrigé", desc: "Ex. 1 : saxophone, générateur et trompette ; ex. 2 : le violoncelle", date: "2026-11-07", fichier: "pdf/premiere-es/son-et-musique/evaluation-son-cordes-vibrantes-sujet-3-corrige.pdf" },
+          { type: "evaluation", groupe: "Évaluation sommative : son et cordes vibrantes", titre: "Évaluation sommative : son et cordes vibrantes (sujet 4), corrigé", desc: "Ex. 1 : piano, diapason électronique et harpe ; ex. 2 : le ukulélé", date: "2026-11-07", fichier: "pdf/premiere-es/son-et-musique/evaluation-son-cordes-vibrantes-sujet-4-corrige.pdf" }
+        ] }
       ]
     },
     {
