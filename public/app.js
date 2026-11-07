@@ -45,7 +45,7 @@
     return h('li',{class:sansTag ? 'r notag' : 'r'},[
       sansTag ? null : h('span',{class:'tag',text:t.l}),
       h('div',{},info),
-      href ? h('a',{class:'btn',href:href,target:'_blank',rel:'noopener',text:t.a}) : null
+      href ? h('a',{class:'btn',href:href,target:'_blank',rel:'noopener',text:(/\.zip$/i.test(href) ? 'Télécharger (.zip)' : (/\.(wav|mp3)$/i.test(href) ? 'Écouter le son' : t.a))}) : null
     ]);
   }
 
