@@ -46,9 +46,6 @@ window.SITE = {
       id: "premiere-es", titre: "Première · Enseignement scientifique", court: "Première ES", couleur: "var(--s2)",
       sous: "Enseignement scientifique, voie générale",
       chapitres: [
-        { titre: "Une longue histoire de la matière", ressources: [] },
-        { titre: "Le Soleil, notre source d'énergie", ressources: [] },
-        { titre: "La Terre, un astre singulier", ressources: [] },
         { id: "son-et-musique", titre: "Chap 1 - Le son émis par un instrument de musique", ressources: [
           { type: "cours", titre: "Bilan de cours : caractéristiques d’un son et cordes vibrantes", desc: "Son périodique, période et fréquence, hauteur, son pur et son composé, spectre, timbre, cordes vibrantes (longueur, tension, masse linéique)", date: "2026-11-07", fichier: "pdf/premiere-es/son-et-musique/bilan-cours-son-cordes-vibrantes.pdf" },
           { type: "activite", groupe: "Le La3 d’un ukulélé, d’une guitare et d’un téléphone", titre: "Le La3 d’un ukulélé, d’une guitare et d’un téléphone", desc: "Activité avec Audacity : période, fréquence, son pur et son composé, spectre et timbre", date: "2026-11-07", fichier: "pdf/premiere-es/son-et-musique/activite-la3-ukulele-guitare-telephone.pdf" },
@@ -134,10 +131,6 @@ window.SITE = {
       id: "terminale-es", titre: "Terminale · Enseignement scientifique", court: "Terminale ES", couleur: "var(--s4)",
       sous: "Enseignement scientifique, voie générale",
       chapitres: [
-        { titre: "Science, climat et société", ressources: [] },
-        { titre: "Le futur des énergies", ressources: [] },
-        { titre: "Une histoire du vivant", ressources: [] },
-        { titre: "À la recherche de l'intelligence artificielle", ressources: [] }
       ]
     },
     {

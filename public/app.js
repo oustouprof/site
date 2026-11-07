@@ -116,6 +116,7 @@
       ul.appendChild(carte(n, '#'+n.id+'/'+chId(ch), ch.titre, '', c ? plur(c) : 'à venir'));
     });
     frag.appendChild(ul);
+    if (!n.chapitres.length) frag.appendChild(h('p',{class:'vide',text:'Chapitres à venir.'}));
     return frag;
   }
 
