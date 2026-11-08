@@ -18,7 +18,7 @@
    (« Choisir un chapitre », « Ouvrir le PDF »), jamais à l'impératif (« Choisis »).
    RÈGLE : les chapitres d'un niveau sont rangés dans l'ordre de la progression
    (Terminale spé : chap 1 acide-base, 2 ondes sonores et Doppler, 3 dosage par
-   étalonnage, 4 lunette astronomique afocale, 5 titrages ; Première spé : quantité de matière,
+   étalonnage, 4 lunette astronomique afocale, 5 titrages, 6 diffraction et interférences ; Première spé : quantité de matière,
    dosage par étalonnage spectrophotométrique, lentilles minces convergentes). Insérer un nouveau chapitre à sa place.
    RÈGLE : ne jamais publier de fiche professeur. Si un PDF en contient une
    (pages « Fiche professeur » en fin de sujet), retirer ces pages avant la mise en ligne.
@@ -220,6 +220,8 @@ window.SITE = {
           { type: "video", titre: "Titrage avec suivi pH-métrique : déterminer un volume équivalent par la méthode des tangentes", date: "2026-11-02", url: "https://www.youtube.com/watch?v=NiUULBcLf-0" }
         ] },
         { id: "diffraction-interferences", titre: "Diffraction et interférences", ressources: [
+          { type: "cours", titre: "Diffraction et interférences", desc: "Cours du chapitre : le phénomène de diffraction (angle caractéristique θ = λ/a, largeur de la tache centrale) et le phénomène d’interférences (conditions d’observation, différence de chemin optique, ordre d’interférence, interfrange)", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/cours-diffraction-interferences.pdf" },
+          { type: "exercice", titre: "Feuille d’exercices : diffraction et interférences", desc: "6 exercices d’application, puis 4 exercices bilans : fil de suture, caléfaction, fentes d’Young et couleur des scarabées", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/feuille-exercices-diffraction-interferences.pdf" },
           { type: "activite", titre: "Diffraction et interférences de la lumière", desc: "Activité expérimentale (entraînement ECE, 1 h) : diffraction par des fils calibrés, détermination de la longueur d’onde d’un laser, interférences et écartement des fentes de bifentes", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/tp-diffraction-interferences.pdf" },
           { type: "evaluation", groupe: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", titre: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", desc: "À faire à la maison avec Regressi : tracer L en fonction de 1/a, en déduire λ, incertitude et z-score", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/evaluation-formative-diffraction.pdf" },
           { type: "evaluation", groupe: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", titre: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe : notice Regressi", desc: "Les étapes dans Regressi : tableau, grandeur 1/a, graphique et modélisation, équation de la droite", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/notice-regressi-diffraction.pdf" },
