@@ -218,6 +218,11 @@ window.SITE = {
           { type: "exercice", titre: "Titrage avec suivi conductimétrique : un détartrant contre le calcaire", desc: "Exercice type, 10 points", date: "2026-10-30", fichier: "pdf/terminale-spe/titrages/exercice-detartrant-conductimetrique.pdf" },
           { type: "animation", titre: "Évolution des quantités de matière au cours d'un titrage", desc: "Simulation interactive : burette, bécher, nombre d'entités et courbe N = f(V)", date: "2026-10-30", url: "simulations/titrage-quantites-de-matiere.html" },
           { type: "video", titre: "Titrage avec suivi pH-métrique : déterminer un volume équivalent par la méthode des tangentes", date: "2026-11-02", url: "https://www.youtube.com/watch?v=NiUULBcLf-0" }
+        ] },
+        { id: "diffraction-interferences", titre: "Diffraction et interférences", ressources: [
+          { type: "activite", titre: "Diffraction et interférences de la lumière", desc: "Activité expérimentale (entraînement ECE, 1 h) : diffraction par des fils calibrés, détermination de la longueur d’onde d’un laser, interférences et écartement des fentes de bifentes", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/tp-diffraction-interferences.pdf" },
+          { type: "evaluation", groupe: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", titre: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", desc: "À faire à la maison avec Regressi : tracer L en fonction de 1/a, en déduire λ, incertitude et z-score", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/evaluation-formative-diffraction.pdf" },
+          { type: "evaluation", groupe: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", titre: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe : notice Regressi", desc: "Les étapes dans Regressi : tableau, grandeur 1/a, graphique et modélisation, équation de la droite", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/notice-regressi-diffraction.pdf" },
         ] }
       ]
     },
