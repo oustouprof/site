@@ -124,6 +124,9 @@ window.SITE = {
           { type: "activite", groupe: "Dosage par étalonnage spectrophotométrique de l'eau de Dakin", titre: "Dosage par étalonnage spectrophotométrique de l'eau de Dakin, corrigé", desc: "Corrigé", date: "2026-11-03", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/dakin-corrige.pdf" },
           { type: "exercice", titre: "Dosage par étalonnage spectrophotométrique : le colorant E133 d'un sirop de menthe glaciale", desc: "Exercice type, énoncé", date: "2026-10-30", fichier: "pdf/premiere-spe/dosage-spectrophotometrique/exercice-type-sirop-e133.pdf" },
           { type: "video", titre: "Le principe du dosage par étalonnage spectrophotométrique", date: "2026-10-31", url: "https://www.youtube.com/watch?v=FySfA2eKlhI" }
+        ] },
+        { id: "ondes-mecaniques", titre: "Les ondes mécaniques", ressources: [
+          { type: "animation", titre: "Propagation d'une perturbation le long d'un ressort", desc: "Animation : on comprime quelques spires en haut d'un ressort tenu verticalement, puis on les relâche ; règle graduée, chronomètre et calcul de la célérité", date: "2026-11-09", url: "simulations/ressort-perturbation.html" }
         ] }
       ]
     },

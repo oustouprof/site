@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propagation d'une perturbation le long d'un ressort</title>
+<style>
+  :root { --bleu:#2a6099; --rouge:#c9211e; }
+  * { box-sizing: border-box; }
+  html, body { height:100%; }
+  body { margin:0; font-family: "Liberation Sans", Arial, Helvetica, sans-serif; background:#f4f6f9; color:#222;
+         display:flex; flex-direction:column; }
+  header { background: var(--bleu); color:#fff; padding:6px 12px; flex:0 0 auto; }
+  header h1 { margin:0; font-size:1rem; font-weight:bold; }
+  main { flex:1 1 auto; min-height:0; display:flex; flex-direction:row; flex-wrap:nowrap; gap:8px; padding:8px; }
+  .scene { flex:1 1 auto; min-width:0; min-height:0; display:flex; align-items:flex-start; justify-content:center;
+           background:#fff; border:1px solid #cdd6e2; border-radius:8px; padding:4px; }
+  canvas { display:block; }
+  .panneau { flex:0 0 190px; overflow-y:auto; background:#fff; border:1px solid #cdd6e2; border-radius:8px; padding:8px; }
+  .panneau p { margin:0 0 8px; font-size:0.82rem; line-height:1.3; }
+  button { display:block; width:100%; margin:0 0 6px; padding:9px 6px; font-size:0.95rem; border:none; border-radius:6px; cursor:pointer; }
+  #lancer { background: var(--rouge); color:#fff; font-weight:bold; }
+  #pause, #raz { background:#e3e9f1; color:#1f3a5f; }
+  label { display:flex; align-items:flex-start; gap:6px; font-size:0.85rem; margin:6px 0; cursor:pointer; line-height:1.2; }
+  @media (max-width: 520px) {
+    .panneau { flex-basis:132px; padding:6px; }
+    .panneau p { font-size:0.74rem; }
+    button { font-size:0.82rem; padding:8px 4px; }
+    label { font-size:0.76rem; }
+    header h1 { font-size:0.88rem; }
+  }
+</style>
+</head>
+<body>
+<header><h1>Propagation d'une perturbation le long d'un ressort</h1></header>
+<main>
+  <div class="scene" id="scene"><canvas id="c" width="430" height="640"></canvas></div>
+  <div class="panneau">
+    <button id="lancer">Comprimer puis relâcher</button>
+    <button id="pause">Pause</button>
+    <button id="raz">Réinitialiser</button>
+    <label><input type="checkbox" id="ralenti" checked> Ralenti</label>
+    <label><input type="checkbox" id="repere" checked> Spire rouge et repère</label>
+    <label><input type="checkbox" id="calcul" checked> Calcul de la célérité</label>
+    <p>Le ressort est tenu par son extrémité supérieure ; l'autre main comprime quelques spires en haut, puis les
+       relâche.</p>
+    <p>Observer la zone comprimée et la <b style="color:var(--rouge)">spire rouge</b>. Le chronomètre démarre au
+       relâchement et s'arrête quand la perturbation arrive en bas du ressort.</p>
+    <p>L'animation est ralentie 3 fois (12 fois avec « Ralenti ») : le chronomètre indique la durée réelle.</p>
+  </div>
+</main>
+<script>
+(function () {
+  const N = 60;              // nombre de spires
+  const c = 20;              // célérité (spires par seconde)
+  const dt = 0.004;          // pas de calcul (s)
+  const r = c * dt;          // nombre de Courant (espacement = 1)
+  const K = 4;               // spire saisie par la main
+  const D = 3.0;             // déplacement vers le haut de la spire K (en espacements)
+  const TC = 0.7, TM = 0.35, TS = 0.5;   // durées : compression, maintien, retrait de la main (s)
+  const KSPIRE = 26;         // spire repérée
+  const LONGUEUR_CM = 180;   // longueur du ressort au repos (60 spires espacées de 3 cm)
+  const RALENTI = 3;         // l'animation est ralentie 3 fois : t réel = t animation / 3
+
+  let u = new Float64Array(N + 1), uo = new Float64Array(N + 1), un = new Float64Array(N + 1);
+  const cible = new Float64Array(N + 1);
+  for (let i = 0; i <= N; i++) cible[i] = i <= K ? -D * i / K : (i < 3 * K ? -D * (3 * K - i) / (2 * K) : 0);
+  let etat = "repos", tp = 0, t = 0, enPause = false, acc = 0, tArrivee = null;
+
+  const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+  const scene = document.getElementById("scene");
+
+  function ajuster() {
+    const W = scene.clientWidth - 8, H = scene.clientHeight - 8;
+    const s = Math.max(0.2, Math.min(W / cv.width, H / cv.height));
+    cv.style.width = Math.floor(cv.width * s) + "px";
+    cv.style.height = Math.floor(cv.height * s) + "px";
+  }
+  window.addEventListener("resize", ajuster);
+  ajuster();
+
+  const lisse = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
+  const fr = x => x.toFixed(2).replace(".", ",");
+  const fr3 = x => x.toFixed(3).replace(".", ",");
+
+  function pas() {
+    const r2 = r * r;
+    for (let i = 1; i < N; i++) un[i] = 2 * u[i] - uo[i] + r2 * (u[i + 1] - 2 * u[i] + u[i - 1]);
+    un[0] = 0;                                                   // extrémité tenue
+    un[N] = u[N - 1] + (r - 1) / (r + 1) * (un[N - 1] - u[N]);   // extrémité basse sans réflexion
+    const tmp = uo; uo = u; u = un; un = tmp;
+  }
+
+  function avancer(duree) {
+    acc += duree;
+    while (acc >= dt) {
+      acc -= dt;
+      tp += dt;
+      if (etat === "compression") {
+        const p = lisse(tp / TC);
+        for (let i = 0; i <= N; i++) { u[i] = p * cible[i]; uo[i] = u[i]; }
+        if (tp >= TC) { etat = "maintien"; tp = 0; }
+      } else if (etat === "maintien") {
+        if (tp >= TM) { etat = "libre"; tp = 0; t = 0; for (let i = 0; i <= N; i++) uo[i] = u[i]; }
+      } else if (etat === "libre") {
+        pas(); t += dt;
+        if (tArrivee === null) {
+          let imin = -1, smin = 0;
+          for (let i = 1; i < N; i++) { const d = u[i + 1] - u[i]; if (d < smin) { smin = d; imin = i; } }
+          if (smin < -0.15 && imin >= N - 1) tArrivee = t;
+        }
+      }
+    }
+  }
+
+  // ---------- dessin ----------
+  function rr(x, y, w, h, rad) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, rad); else ctx.rect(x, y, w, h); }
+  function peau() { ctx.fillStyle = "#f2c9a0"; ctx.strokeStyle = "#7a5230"; ctx.lineWidth = 1.2; }
+  function mainCote(x, y) {
+    ctx.fillStyle = "#3d6fa3"; rr(x + 72, y - 14, 70, 30, 4); ctx.fill();
+    peau(); rr(x + 34, y - 18, 44, 38, 13); ctx.fill(); ctx.stroke();
+    peau(); rr(x + 12, y + 10, 34, 9, 4.5); ctx.fill(); ctx.stroke();
+    peau(); rr(x, y, 46, 10, 5); ctx.fill(); ctx.stroke();
+    peau(); rr(x + 20, y - 13, 26, 9, 4.5); ctx.fill(); ctx.stroke();
+  }
+  function mainHaut(x, y) {
+    ctx.fillStyle = "#3d6fa3"; rr(x - 15, y - 62, 30, 36, 4); ctx.fill();
+    peau(); rr(x - 26, y - 30, 52, 30, 11); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = "#7a5230"; ctx.lineWidth = 1;
+    for (let k = -1; k <= 1; k++) { ctx.beginPath(); ctx.moveTo(x + 12 * k, y - 26); ctx.lineTo(x + 12 * k, y - 8); ctx.stroke(); }
+  }
+
+  function regle(xr, haut, e) {
+    const y0 = haut, y1 = haut + N * e;
+    ctx.fillStyle = "#fff6d6"; ctx.strokeStyle = "#8a6d1f"; ctx.lineWidth = 1;
+    ctx.fillRect(xr, y0 - 8, 34, y1 - y0 + 16); ctx.strokeRect(xr, y0 - 8, 34, y1 - y0 + 16);
+    ctx.fillStyle = "#333"; ctx.font = "10px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    for (let cm = 0; cm <= LONGUEUR_CM; cm += 5) {
+      const yy = y0 + (cm / LONGUEUR_CM) * (y1 - y0);
+      const L = cm % 20 === 0 ? 12 : (cm % 10 === 0 ? 8 : 4);
+      ctx.beginPath(); ctx.moveTo(xr, yy); ctx.lineTo(xr + L, yy); ctx.strokeStyle = "#333"; ctx.stroke();
+      if (cm % 20 === 0) ctx.fillText(String(cm), xr + 14, yy);
+    }
+    ctx.textAlign = "right"; ctx.fillText("cm", xr + 32, y0 - 16);
+    ctx.textBaseline = "alphabetic";
+  }
+
+  function chronometre(cx, cy, R, tt) {
+    ctx.fillStyle = "#555"; ctx.fillRect(cx - 5, cy - R - 10, 10, 8);
+    ctx.beginPath(); ctx.arc(cx, cy, R + 4, 0, 2 * Math.PI); ctx.fillStyle = "#3a3a3a"; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.fillStyle = "#fff"; ctx.fill();
+    ctx.strokeStyle = "#333";
+    for (let k = 0; k < 20; k++) {
+      const a = k / 20 * 2 * Math.PI, L = k % 5 === 0 ? 7 : 3;
+      ctx.lineWidth = k % 5 === 0 ? 2 : 1;
+      ctx.beginPath(); ctx.moveTo(cx + (R - L) * Math.sin(a), cy - (R - L) * Math.cos(a));
+      ctx.lineTo(cx + R * Math.sin(a), cy - R * Math.cos(a)); ctx.stroke();
+    }
+    const a = (tt % 1) * 2 * Math.PI;   // un tour en 1 s
+    ctx.strokeStyle = "#c9211e"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + (R - 5) * Math.sin(a), cy - (R - 5) * Math.cos(a)); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, 3, 0, 2 * Math.PI); ctx.fillStyle = "#c9211e"; ctx.fill();
+    ctx.fillStyle = "#1f3a5f"; ctx.font = "bold 15px Arial"; ctx.textAlign = "center";
+    ctx.fillText("t = " + fr(tt) + " s", cx, cy + R + 22);
+    ctx.lineWidth = 1;
+  }
+
+  function fraction(x, y, num, den, font) {
+    ctx.font = font; ctx.textAlign = "center";
+    const w = Math.max(ctx.measureText(num).width, ctx.measureText(den).width) + 6;
+    ctx.fillText(num, x + w / 2, y - 6);
+    ctx.fillText(den, x + w / 2, y + 15);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + w, y); ctx.strokeStyle = "#222"; ctx.lineWidth = 1.2; ctx.stroke();
+    return w;
+  }
+
+  function calcul(x, y) {
+    ctx.fillStyle = "#f4f7fb"; ctx.strokeStyle = "#2a6099"; ctx.lineWidth = 1;
+    ctx.fillRect(x - 8, y - 22, 178, 250); ctx.strokeRect(x - 8, y - 22, 178, 250);
+    ctx.fillStyle = "#222"; ctx.textAlign = "left"; ctx.font = "13px Arial";
+    ctx.fillText("Départ (haut, 0 cm) :", x, y);
+    ctx.fillText("t = 0,00 s", x + 14, y + 18);
+    const ta = tArrivee === null ? null : tArrivee / RALENTI;
+    ctx.fillText("Arrivée en bas (180 cm) :", x, y + 42);
+    ctx.fillText("t = " + (ta === null ? "…" : fr(ta) + " s"), x + 14, y + 60);
+    if (ta === null) return;
+    ctx.fillText("Distance parcourue :", x, y + 86);
+    ctx.fillText("d = 1,80 m", x + 14, y + 104);
+    ctx.fillText("Durée : Δt = " + fr(ta) + " s", x, y + 128);
+    ctx.fillText("Célérité :", x, y + 152);
+    let xx = x; const yy = y + 180, f = "14px Arial";
+    ctx.font = f; ctx.textAlign = "left"; ctx.fillText("v =", xx, yy + 5); xx += 26;
+    xx += fraction(xx, yy, "d", "Δt", f) + 4;
+    ctx.textAlign = "left"; ctx.font = f; ctx.fillText("=", xx, yy + 5); xx += 12;
+    fraction(xx, yy, "1,80 m", fr(ta) + " s", f);
+    ctx.textAlign = "left"; ctx.font = "bold 14px Arial"; ctx.fillStyle = "#c9211e";
+    ctx.fillText("v = " + (1.80 / Number(ta.toFixed(2))).toFixed(1).replace(".", ",") + " m·s⁻¹", x, yy + 44);
+    ctx.fillStyle = "#222";
+  }
+
+  function dessiner() {
+    const W = cv.width, H = cv.height;
+    ctx.clearRect(0, 0, W, H);
+    const haut = 84, bas = H - 25;
+    const e = (bas - haut) / N;
+    const xc = 95, rx = 48, ry = Math.max(3, e * 0.55);
+    const y = i => haut + (i + u[i]) * e;
+    const repere = document.getElementById("repere").checked;
+
+    if (repere) {
+      const yr = haut + KSPIRE * e;
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = "#c9211e"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(xc + rx + 6, yr); ctx.lineTo(xc + rx + 30, yr); ctx.stroke(); ctx.setLineDash([]);
+    }
+    // espacement local de chaque spire (1 = repos) : les spires comprimées sont dessinées en noir
+    const esp = i => {
+      const a = i > 0 ? (i + u[i]) - (i - 1 + u[i - 1]) : 9;
+      const b = i < N ? (i + 1 + u[i + 1]) - (i + u[i]) : 9;
+      return Math.min(a, b);
+    };
+    for (let pass = 0; pass < 2; pass++) {
+      for (let i = 0; i <= N; i++) {
+        const yi = y(i), rouge = repere && i === KSPIRE;
+        const k = Math.max(0, Math.min(1, (0.9 - esp(i)) / 0.3));   // 0 : repos, 1 : nettement comprimée
+        ctx.beginPath();
+        if (pass === 0) ctx.ellipse(xc, yi, rx, ry, 0, Math.PI, 2 * Math.PI);
+        else ctx.ellipse(xc, yi, rx, ry, 0, 0, Math.PI);
+        if (rouge) { ctx.strokeStyle = "#c9211e"; ctx.lineWidth = 3; }
+        else {
+          const g = Math.round((pass === 0 ? 200 : 150) * (1 - k));
+          ctx.strokeStyle = "rgb(" + g + "," + g + "," + g + ")";
+          ctx.lineWidth = 1.4 + 1.4 * k;
+        }
+        ctx.stroke();
+      }
+    }
+    mainHaut(xc, y(0) - ry);
+    let dx = 0, visible = true;
+    if (etat === "repos") visible = false;
+    else if (etat === "compression") dx = 110 * (1 - lisse(Math.min(1, tp / (0.35 * TC))));
+    else if (etat === "libre") { dx = 150 * lisse(tp / TS); if (tp > TS) visible = false; }
+    if (visible) mainCote(xc + rx - 16 + dx, y(K) + ry + 1);
+
+    regle(xc + rx + 34, haut, e);
+    const tc = (etat === "libre" ? (tArrivee === null ? t : tArrivee) : 0) / RALENTI;
+    chronometre(345, 62, 30, tc);
+    if (document.getElementById("ralenti").checked) {
+      ctx.fillStyle = "#c9211e"; ctx.font = "bold 11px Arial"; ctx.textAlign = "center";
+      ctx.fillText("animation ralentie 12 fois", 345, 136);
+    } else {
+      ctx.fillStyle = "#c9211e"; ctx.font = "bold 11px Arial"; ctx.textAlign = "center";
+      ctx.fillText("animation ralentie 3 fois", 345, 136);
+    }
+    if (document.getElementById("calcul").checked) calcul(255, 172);
+  }
+
+  let dernier = null;
+  function boucle(ts) {
+    if (dernier === null) dernier = ts;
+    const ecoule = Math.min(0.05, (ts - dernier) / 1000);
+    dernier = ts;
+    if (!enPause) avancer(ecoule * (document.getElementById("ralenti").checked ? 0.25 : 1));
+    dessiner();
+    requestAnimationFrame(boucle);
+  }
+
+  function raz() { u.fill(0); uo.fill(0); un.fill(0); t = 0; tp = 0; acc = 0; etat = "repos"; tArrivee = null; }
+  document.getElementById("lancer").addEventListener("click", () => {
+    raz(); etat = "compression"; enPause = false; document.getElementById("pause").textContent = "Pause";
+  });
+  document.getElementById("pause").addEventListener("click", (ev) => {
+    enPause = !enPause; ev.target.textContent = enPause ? "Reprendre" : "Pause";
+  });
+  document.getElementById("raz").addEventListener("click", () => {
+    raz(); enPause = false; document.getElementById("pause").textContent = "Pause";
+  });
+  requestAnimationFrame(boucle);
+})();
+</script>
+</body>
+</html>
