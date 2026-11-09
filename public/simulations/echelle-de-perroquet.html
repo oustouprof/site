@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propagation d'une perturbation le long d'une échelle de perroquet</title>
+<style>
+  :root { --bleu:#2a6099; --rouge:#c9211e; }
+  * { box-sizing: border-box; }
+  html, body { height:100%; }
+  body { margin:0; font-family: "Liberation Sans", Arial, Helvetica, sans-serif; background:#f4f6f9; color:#222;
+         display:flex; flex-direction:column; }
+  header { background: var(--bleu); color:#fff; padding:6px 12px; flex:0 0 auto; }
+  header h1 { margin:0; font-size:1rem; font-weight:bold; }
+  main { flex:1 1 auto; min-height:0; display:flex; flex-direction:row; flex-wrap:nowrap; gap:8px; padding:8px; }
+  .scene { flex:1 1 auto; min-width:0; min-height:0; display:flex; align-items:flex-start; justify-content:center;
+           background:#fff; border:1px solid #cdd6e2; border-radius:8px; padding:4px; }
+  canvas { display:block; }
+  .panneau { flex:0 0 190px; overflow-y:auto; background:#fff; border:1px solid #cdd6e2; border-radius:8px; padding:8px; }
+  .panneau p { margin:0 0 8px; font-size:0.82rem; line-height:1.3; }
+  button { display:block; width:100%; margin:0 0 6px; padding:9px 6px; font-size:0.95rem; border:none; border-radius:6px; cursor:pointer; }
+  #lancer { background: var(--rouge); color:#fff; font-weight:bold; }
+  #pause, #raz { background:#e3e9f1; color:#1f3a5f; }
+  label { display:flex; align-items:flex-start; gap:6px; font-size:0.85rem; margin:6px 0; cursor:pointer; line-height:1.2; }
+  @media (max-width: 520px) {
+    .panneau { flex-basis:132px; padding:6px; }
+    .panneau p { font-size:0.74rem; }
+    button { font-size:0.82rem; padding:8px 4px; }
+    label { font-size:0.76rem; }
+    header h1 { font-size:0.88rem; }
+  }
+</style>
+</head>
+<body>
+<header><h1>Propagation d'une perturbation le long d'une échelle de perroquet</h1></header>
+<main>
+  <div class="scene" id="scene"><canvas id="c" width="465" height="640"></canvas></div>
+  <div class="panneau">
+    <button id="lancer">Tourner puis relâcher la tige du haut</button>
+    <button id="pause">Pause</button>
+    <button id="raz">Réinitialiser</button>
+    <label><input type="checkbox" id="ralenti"> Ralenti</label>
+    <label><input type="checkbox" id="repere" checked> Tige colorée</label>
+    <label><input type="checkbox" id="calcul" checked> Calcul de la célérité</label>
+    <p>Des tiges horizontales, munies de petites masses à leurs extrémités, sont fixées en leur milieu sur un ruban
+       vertical. Une main fait tourner la tige du haut autour du ruban, puis la relâche.</p>
+    <p>Observer la rotation des tiges et la <b style="color:#e08a00">tige orange</b>. Le chronomètre démarre au
+       relâchement et s'arrête quand la perturbation arrive en bas de l'échelle.</p>
+  </div>
+</main>
+<script>
+(function () {
+  const N = 40;              // intervalles : tiges numérotées de 0 (haut) à N (bas)
+  const c = 12;              // célérité en tiges par seconde (tiges espacées de 2,5 cm : 0,30 m/s)
+  const dt = 0.004;
+  const r = c * dt;
+  const K = 4;               // nombre de tiges entraînées par la main
+  const THETA = 1.25;        // rotation imposée à la tige du bas (rad)
+  const TC = 0.6, TM = 0.3, TS = 0.5;
+  const KTIGE = 20;          // tige colorée
+  const HAUTEUR_CM = 100;
+  const REPOS = 0.38;        // angle de repos des tiges (pour voir la perspective)
+
+  let th = new Float64Array(N + 1), tho = new Float64Array(N + 1), thn = new Float64Array(N + 1);
+  const cible = new Float64Array(N + 1);
+  for (let i = 0; i <= N; i++) cible[i] = i <= K ? THETA * (1 - i / K) : 0;
+  let etat = "repos", tp = 0, t = 0, enPause = false, acc = 0, tArrivee = null;
+
+  const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+  const scene = document.getElementById("scene");
+  function ajuster() {
+    const W = scene.clientWidth - 8, H = scene.clientHeight - 8;
+    const s = Math.max(0.2, Math.min(W / cv.width, H / cv.height));
+    cv.style.width = Math.floor(cv.width * s) + "px";
+    cv.style.height = Math.floor(cv.height * s) + "px";
+  }
+  window.addEventListener("resize", ajuster); ajuster();
+
+  const lisse = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
+  const fr = x => x.toFixed(2).replace(".", ",");
+
+  function pas() {
+    const r2 = r * r;
+    for (let i = 1; i < N; i++) thn[i] = 2 * th[i] - tho[i] + r2 * (th[i + 1] - 2 * th[i] + th[i - 1]);
+    thn[0] = 2 * th[0] - tho[0] + 2 * r2 * (th[1] - th[0]);              // haut : extrémité libre
+    thn[N] = th[N - 1] + (r - 1) / (r + 1) * (thn[N - 1] - th[N]);       // bas : pas de réflexion
+    const tmp = tho; tho = th; th = thn; thn = tmp;
+  }
+
+  function avancer(duree) {
+    acc += duree;
+    while (acc >= dt) {
+      acc -= dt; tp += dt;
+      if (etat === "rotation") {
+        const p = lisse(tp / TC);
+        for (let i = 0; i <= N; i++) { th[i] = p * cible[i]; tho[i] = th[i]; }
+        if (tp >= TC) { etat = "maintien"; tp = 0; }
+      } else if (etat === "maintien") {
+        if (tp >= TM) { etat = "libre"; tp = 0; t = 0; for (let i = 0; i <= N; i++) tho[i] = th[i]; }
+      } else if (etat === "libre") {
+        pas(); t += dt;
+        if (tArrivee === null) {
+          let imax = -1, amax = 0;
+          for (let i = 0; i <= N; i++) { const a = Math.abs(th[i]); if (a > amax) { amax = a; imax = i; } }
+          if (amax > 0.15 && imax >= N - 1) tArrivee = t;
+        }
+      }
+    }
+  }
+
+  // ---------- dessin ----------
+  function rr(x, y, w, h, rad) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, rad); else ctx.rect(x, y, w, h); }
+  function peau() { ctx.fillStyle = "#f2c9a0"; ctx.strokeStyle = "#7a5230"; ctx.lineWidth = 1.2; }
+  function main(x, y) {            // main vue de côté qui pince une masse (x, y)
+    ctx.fillStyle = "#3d6fa3"; rr(x + 40, y - 13, 64, 26, 4); ctx.fill();
+    peau(); rr(x + 10, y - 17, 36, 34, 12); ctx.fill(); ctx.stroke();
+    peau(); rr(x - 6, y - 15, 24, 8, 4); ctx.fill(); ctx.stroke();
+    peau(); rr(x - 6, y + 7, 24, 8, 4); ctx.fill(); ctx.stroke();
+  }
+
+  const G = { xc: 108, bas: 560, haut: 92, L: 62 };
+  const yTige = i => G.haut + i * (G.bas - G.haut) / N;
+  function extremites(i) {
+    const a = REPOS + th[i];
+    const X = G.L * Math.cos(a), Z = G.L * Math.sin(a);
+    const y = yTige(i);
+    return { y, p: { x: G.xc + X, y: y + 0.32 * Z, z: Z }, q: { x: G.xc - X, y: y - 0.32 * Z, z: -Z } };
+  }
+
+  function boule(pt, couleur) {
+    const rad = 5.2 * (1 + 0.28 * pt.z / G.L);
+    ctx.beginPath(); ctx.arc(pt.x, pt.y, rad, 0, 2 * Math.PI); ctx.fillStyle = couleur; ctx.fill();
+    ctx.lineWidth = 0.8; ctx.strokeStyle = "rgba(0,0,0,0.45)"; ctx.stroke();
+  }
+
+  function cadre() {
+    ctx.strokeStyle = "#9a9a9a"; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(G.xc - 84, G.bas + 30); ctx.lineTo(G.xc - 84, G.haut - 30); ctx.lineTo(G.xc + 84, G.haut - 30);
+    ctx.lineTo(G.xc + 84, G.bas + 30); ctx.stroke();
+    ctx.fillStyle = "#cfcfcf"; ctx.fillRect(G.xc - 98, G.bas + 30, 196, 12);
+    ctx.strokeStyle = "#333"; ctx.lineWidth = 2.2;
+    ctx.beginPath(); ctx.moveTo(G.xc, G.haut - 30); ctx.lineTo(G.xc, G.bas + 30); ctx.stroke();   // ruban
+  }
+
+  function regle(xr) {
+    const y0 = G.bas, y1 = G.haut;
+    ctx.fillStyle = "#fff6d6"; ctx.strokeStyle = "#8a6d1f"; ctx.lineWidth = 1;
+    ctx.fillRect(xr, y1 - 8, 34, y0 - y1 + 16); ctx.strokeRect(xr, y1 - 8, 34, y0 - y1 + 16);
+    ctx.fillStyle = "#333"; ctx.font = "10px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    for (let cm = 0; cm <= HAUTEUR_CM; cm += 2.5) {
+      const yy = y1 + (cm / HAUTEUR_CM) * (y0 - y1);
+      const L = cm % 10 === 0 ? 12 : (cm % 5 === 0 ? 8 : 4);
+      ctx.beginPath(); ctx.moveTo(xr, yy); ctx.lineTo(xr + L, yy); ctx.strokeStyle = "#333"; ctx.stroke();
+      if (cm % 10 === 0) ctx.fillText(String(cm), xr + 14, yy);
+    }
+    ctx.textAlign = "right"; ctx.fillText("cm", xr + 32, y1 - 16);
+    ctx.textBaseline = "alphabetic";
+  }
+
+  function chronometre(cx, cy, R, tt) {
+    ctx.fillStyle = "#555"; ctx.fillRect(cx - 5, cy - R - 10, 10, 8);
+    ctx.beginPath(); ctx.arc(cx, cy, R + 4, 0, 2 * Math.PI); ctx.fillStyle = "#3a3a3a"; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.fillStyle = "#fff"; ctx.fill();
+    ctx.strokeStyle = "#333";
+    for (let k = 0; k < 20; k++) {
+      const a = k / 20 * 2 * Math.PI, L = k % 5 === 0 ? 7 : 3;
+      ctx.lineWidth = k % 5 === 0 ? 2 : 1;
+      ctx.beginPath(); ctx.moveTo(cx + (R - L) * Math.sin(a), cy - (R - L) * Math.cos(a));
+      ctx.lineTo(cx + R * Math.sin(a), cy - R * Math.cos(a)); ctx.stroke();
+    }
+    const a = (tt % 1) * 2 * Math.PI;
+    ctx.strokeStyle = "#c9211e"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + (R - 5) * Math.sin(a), cy - (R - 5) * Math.cos(a)); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, 3, 0, 2 * Math.PI); ctx.fillStyle = "#c9211e"; ctx.fill();
+    ctx.fillStyle = "#1f3a5f"; ctx.font = "bold 15px Arial"; ctx.textAlign = "center";
+    ctx.fillText("t = " + fr(tt) + " s", cx, cy + R + 22);
+    ctx.lineWidth = 1;
+  }
+
+  function fraction(x, y, num, den, font) {
+    ctx.font = font; ctx.textAlign = "center";
+    const w = Math.max(ctx.measureText(num).width, ctx.measureText(den).width) + 6;
+    ctx.fillText(num, x + w / 2, y - 6);
+    ctx.fillText(den, x + w / 2, y + 15);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + w, y); ctx.strokeStyle = "#222"; ctx.lineWidth = 1.2; ctx.stroke();
+    return w;
+  }
+
+  function calcul(x, y) {
+    ctx.fillStyle = "#f4f7fb"; ctx.strokeStyle = "#2a6099"; ctx.lineWidth = 1;
+    ctx.fillRect(x - 8, y - 22, 178, 270); ctx.strokeRect(x - 8, y - 22, 178, 270);
+    ctx.fillStyle = "#222"; ctx.textAlign = "left"; ctx.font = "13px Arial";
+    ctx.fillText("Départ (haut, 0 cm) :", x, y);
+    ctx.fillText("t = 0,00 s", x + 14, y + 18);
+    ctx.fillText("Arrivée en bas (100 cm) :", x, y + 42);
+    ctx.fillText("t = " + (tArrivee === null ? "…" : fr(tArrivee) + " s"), x + 14, y + 60);
+    if (tArrivee === null) return;
+    ctx.fillText("Distance parcourue :", x, y + 86);
+    ctx.fillText("d = 1,00 m", x + 14, y + 104);
+    ctx.fillText("Durée : Δt = " + fr(tArrivee) + " s", x, y + 128);
+    ctx.fillText("Célérité de l'onde le long", x, y + 152);
+    ctx.fillText("de l'échelle de perroquet :", x, y + 170);
+    let xx = x; const yy = y + 200, f = "14px Arial";
+    ctx.font = f; ctx.textAlign = "left"; ctx.fillText("v =", xx, yy + 5); xx += 26;
+    xx += fraction(xx, yy, "d", "Δt", f) + 4;
+    ctx.textAlign = "left"; ctx.font = f; ctx.fillText("=", xx, yy + 5); xx += 12;
+    fraction(xx, yy, "1,00 m", fr(tArrivee) + " s", f);
+    ctx.textAlign = "left"; ctx.font = "bold 14px Arial"; ctx.fillStyle = "#c9211e";
+    ctx.fillText("v = " + (1.00 / Number(tArrivee.toFixed(2))).toFixed(2).replace(".", ",") + " m·s⁻¹", x, yy + 44);
+    ctx.fillStyle = "#222";
+  }
+
+  function dessiner() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    cadre();
+    const colore = document.getElementById("repere").checked;
+    // des tiges du haut vers le bas : celles du bas recouvrent celles du haut (vue légèrement plongeante)
+    for (let i = 0; i <= N; i++) {
+      const E = extremites(i);
+      const avant = E.p.z >= 0 ? E.p : E.q, arriere = E.p.z >= 0 ? E.q : E.p;
+      const cAv = avant === E.p ? "#c9211e" : "#2a6099", cAr = arriere === E.p ? "#c9211e" : "#2a6099";
+      const special = colore && i === KTIGE;
+      boule(arriere, cAr);
+      ctx.strokeStyle = special ? "#e08a00" : "#3a3a3a"; ctx.lineWidth = special ? 4 : 2.2;
+      ctx.beginPath(); ctx.moveTo(arriere.x, arriere.y); ctx.lineTo(avant.x, avant.y); ctx.stroke();
+      boule(avant, cAv);
+    }
+    if (colore) {
+      const yr = yTige(KTIGE);
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = "#e08a00"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(G.xc + 86, yr); ctx.lineTo(G.xc + 102, yr); ctx.stroke(); ctx.setLineDash([]);
+    }
+    // main
+    let dx = 0, visible = true;
+    if (etat === "repos") visible = false;
+    else if (etat === "rotation") dx = 110 * (1 - lisse(Math.min(1, tp / (0.35 * TC))));
+    else if (etat === "libre") { dx = 150 * lisse(tp / TS); if (tp > TS) visible = false; }
+    if (visible) { const E = extremites(0); main(E.p.x + 6 + dx, E.p.y); }
+
+    regle(G.xc + 104);
+    const tc = etat === "libre" ? (tArrivee === null ? t : tArrivee) : 0;
+    chronometre(370, 62, 30, tc);
+    ctx.fillStyle = "#c9211e"; ctx.font = "bold 11px Arial"; ctx.textAlign = "center";
+    ctx.fillText(document.getElementById("ralenti").checked ? "animation ralentie 4 fois" : "animation en temps réel", 370, 136);
+    if (document.getElementById("calcul").checked) calcul(287, 172);
+  }
+
+  let dernier = null;
+  function boucle(ts) {
+    if (dernier === null) dernier = ts;
+    const ecoule = Math.min(0.05, (ts - dernier) / 1000);
+    dernier = ts;
+    if (!enPause) avancer(ecoule * (document.getElementById("ralenti").checked ? 0.25 : 1));
+    dessiner();
+    requestAnimationFrame(boucle);
+  }
+
+  function raz() { th.fill(0); tho.fill(0); thn.fill(0); t = 0; tp = 0; acc = 0; etat = "repos"; tArrivee = null; }
+  document.getElementById("lancer").addEventListener("click", () => {
+    raz(); etat = "rotation"; enPause = false; document.getElementById("pause").textContent = "Pause";
+  });
+  document.getElementById("pause").addEventListener("click", (ev) => {
+    enPause = !enPause; ev.target.textContent = enPause ? "Reprendre" : "Pause";
+  });
+  document.getElementById("raz").addEventListener("click", () => {
+    raz(); enPause = false; document.getElementById("pause").textContent = "Pause";
+  });
+  requestAnimationFrame(boucle);
+})();
+</script>
+</body>
+</html>

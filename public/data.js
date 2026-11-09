@@ -126,7 +126,8 @@ window.SITE = {
           { type: "video", titre: "Le principe du dosage par étalonnage spectrophotométrique", date: "2026-10-31", url: "https://www.youtube.com/watch?v=FySfA2eKlhI" }
         ] },
         { id: "ondes-mecaniques", titre: "Les ondes mécaniques", ressources: [
-          { type: "animation", titre: "Propagation d'une perturbation le long d'un ressort", desc: "Animation : on comprime quelques spires en haut d'un ressort tenu verticalement, puis on les relâche ; règle graduée, chronomètre et calcul de la célérité", date: "2026-11-09", url: "simulations/ressort-perturbation.html" }
+          { type: "animation", titre: "Propagation d'une perturbation le long d'un ressort", desc: "Animation : on comprime quelques spires en haut d'un ressort tenu verticalement, puis on les relâche ; règle graduée, chronomètre et calcul de la célérité", date: "2026-11-09", url: "simulations/ressort-perturbation.html" },
+          { type: "animation", titre: "Propagation d'une perturbation le long d'une échelle de perroquet", desc: "Animation : on fait tourner la tige du haut d'une échelle de perroquet, puis on la relâche ; règle graduée, chronomètre et calcul de la célérité", date: "2026-11-09", url: "simulations/echelle-de-perroquet.html" }
         ] }
       ]
     },
