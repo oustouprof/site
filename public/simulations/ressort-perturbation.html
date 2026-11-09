@@ -176,7 +176,7 @@
 
   function calcul(x, y) {
     ctx.fillStyle = "#f4f7fb"; ctx.strokeStyle = "#2a6099"; ctx.lineWidth = 1;
-    ctx.fillRect(x - 8, y - 22, 178, 250); ctx.strokeRect(x - 8, y - 22, 178, 250);
+    ctx.fillRect(x - 8, y - 22, 178, 270); ctx.strokeRect(x - 8, y - 22, 178, 270);
     ctx.fillStyle = "#222"; ctx.textAlign = "left"; ctx.font = "13px Arial";
     ctx.fillText("Départ (haut, 0 cm) :", x, y);
     ctx.fillText("t = 0,00 s", x + 14, y + 18);
@@ -187,8 +187,9 @@
     ctx.fillText("Distance parcourue :", x, y + 86);
     ctx.fillText("d = 1,80 m", x + 14, y + 104);
     ctx.fillText("Durée : Δt = " + fr(ta) + " s", x, y + 128);
-    ctx.fillText("Célérité :", x, y + 152);
-    let xx = x; const yy = y + 180, f = "14px Arial";
+    ctx.fillText("Célérité de l'onde le long", x, y + 152);
+    ctx.fillText("du ressort :", x, y + 170);
+    let xx = x; const yy = y + 200, f = "14px Arial";
     ctx.font = f; ctx.textAlign = "left"; ctx.fillText("v =", xx, yy + 5); xx += 26;
     xx += fraction(xx, yy, "d", "Δt", f) + 4;
     ctx.textAlign = "left"; ctx.font = f; ctx.fillText("=", xx, yy + 5); xx += 12;
