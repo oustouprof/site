@@ -126,6 +126,10 @@ window.SITE = {
           { type: "video", titre: "Le principe du dosage par étalonnage spectrophotométrique", date: "2026-10-31", url: "https://www.youtube.com/watch?v=FySfA2eKlhI" }
         ] },
         { id: "ondes-mecaniques", titre: "Les ondes mécaniques", ressources: [
+          { type: "cours", titre: "Les ondes mécaniques : cours", desc: "Onde mécanique progressive, célérité et retard ; onde périodique, période et fréquence ; longueur d'onde et relation entre célérité, période et longueur d'onde", date: "2026-11-09", fichier: "pdf/premiere-spe/ondes-mecaniques/cours-ondes-mecaniques.pdf" },
+          { type: "activite", titre: "Activité 1 : découverte de la notion d'onde mécanique", desc: "Corde, ressort, surface de l'eau et échelle de perroquet ; mesure de la célérité et du retard avec des simulations", date: "2026-11-09", fichier: "pdf/premiere-spe/ondes-mecaniques/activite-1-decouverte-onde-mecanique.pdf" },
+          { type: "activite", titre: "Activité 2 : ondes mécaniques périodiques (simulation)", desc: "Période, fréquence, longueur d'onde et relation v = λ/T avec la simulation « Introduction aux ondes »", date: "2026-11-09", fichier: "pdf/premiere-spe/ondes-mecaniques/activite-2-ondes-periodiques-simulation.pdf" },
+          { type: "exercice", titre: "Les ondes mécaniques : feuille d'exercices", desc: "6 applications directes et 2 exercices bilan", date: "2026-11-09", fichier: "pdf/premiere-spe/ondes-mecaniques/exercices-ondes-mecaniques.pdf" },
           { type: "animation", titre: "Propagation d'une perturbation le long d'un ressort", desc: "Animation : on comprime quelques spires en haut d'un ressort tenu verticalement, puis on les relâche ; règle graduée, chronomètre et calcul de la célérité", date: "2026-11-09", url: "simulations/ressort-perturbation.html" },
           { type: "animation", titre: "Propagation d'une perturbation le long d'une échelle de perroquet", desc: "Animation : on fait tourner la tige du haut d'une échelle de perroquet, puis on la relâche ; règle graduée, chronomètre et calcul de la célérité", date: "2026-11-09", url: "simulations/echelle-de-perroquet.html" }
         ] }
