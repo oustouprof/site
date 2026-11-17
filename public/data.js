@@ -254,6 +254,9 @@ window.SITE = {
           { type: "maths", titre: "Les fonctions du temps et leurs dérivées : des maths à la physique", desc: "Point maths à travailler à la maison : du f(x) des maths au x(t) de la physique, dérivées des fonctions usuelles, notation dx/dt. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/cinematique-deuxieme-loi-newton/point-maths-fonctions-du-temps-derivees.pdf" },
           { type: "maths", titre: "Colinéarité de deux vecteurs et applications en physique", desc: "Point maths à travailler à la maison : critère de colinéarité, poids, force électrique, deuxième loi de Newton, mouvement accéléré ou ralenti. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/cinematique-deuxieme-loi-newton/point-maths-colinearite-vecteurs.pdf" },
           { type: "maths", titre: "La parabole : trouver le sommet et la portée", desc: "Point maths à travailler à la maison : sommet et flèche, portée avec le discriminant, équation de la trajectoire. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/cinematique-deuxieme-loi-newton/point-maths-parabole-sommet-portee.pdf" }
+        ] },
+        { id: "mouvement-champ-uniforme", titre: "Mouvement dans un champ uniforme (champ de pesanteur ou champ électrique)", ressources: [
+          { type: "maths", titre: "Primitives et constante d’intégration : de l’accélération à la position", desc: "Point maths à travailler à la maison : primitives des fonctions constante, linéaire et affine, constante d’intégration et conditions initiales, équations horaires d’un projectile. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/mouvement-champ-uniforme/point-maths-primitives-conditions-initiales.pdf" }
         ] }
       ]
     },
