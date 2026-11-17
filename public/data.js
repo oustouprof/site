@@ -256,7 +256,8 @@ window.SITE = {
           { type: "maths", titre: "La parabole : trouver le sommet et la portée", desc: "Point maths à travailler à la maison : sommet et flèche, portée avec le discriminant, équation de la trajectoire. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/cinematique-deuxieme-loi-newton/point-maths-parabole-sommet-portee.pdf" }
         ] },
         { id: "mouvement-champ-uniforme", titre: "Mouvement dans un champ uniforme (champ de pesanteur ou champ électrique)", ressources: [
-          { type: "maths", titre: "Primitives et constante d’intégration : de l’accélération à la position", desc: "Point maths à travailler à la maison : primitives des fonctions constante, linéaire et affine, constante d’intégration et conditions initiales, équations horaires d’un projectile. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/mouvement-champ-uniforme/point-maths-primitives-conditions-initiales.pdf" }
+          { type: "maths", titre: "Primitives et constante d’intégration : de l’accélération à la position", desc: "Point maths à travailler à la maison : primitives des fonctions constante, linéaire et affine, constante d’intégration et conditions initiales, équations horaires d’un projectile. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/mouvement-champ-uniforme/point-maths-primitives-conditions-initiales.pdf" },
+          { type: "maths", titre: "Coordonnées d’un vecteur : vecteur horizontal, vertical ou incliné d’un angle θ", desc: "Point maths à travailler à la maison : projection d’un vecteur sur les axes, cos et sin dans le triangle rectangle, vitesse initiale d’un projectile, poids sur un plan incliné, retrouver la norme et l’angle. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/mouvement-champ-uniforme/point-maths-coordonnees-vecteur.pdf" }
         ] }
       ]
     },
