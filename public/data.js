@@ -18,7 +18,7 @@
    (« Choisir un chapitre », « Ouvrir le PDF »), jamais à l'impératif (« Choisis »).
    RÈGLE : les chapitres d'un niveau sont rangés dans l'ordre de la progression
    (Terminale spé : chap 1 acide-base, 2 ondes sonores et Doppler, 3 dosage par
-   étalonnage, 4 lunette astronomique afocale, 5 titrages, 6 diffraction et interférences ; Première spé : quantité de matière,
+   étalonnage, 4 lunette astronomique afocale, 5 titrages, 6 diffraction et interférences, 7 équilibre chimique et force des acides et des bases ; Première spé : quantité de matière,
    dosage par étalonnage spectrophotométrique, lentilles minces convergentes). Insérer un nouveau chapitre à sa place.
    RÈGLE : ne jamais publier de fiche professeur. Si un PDF en contient une
    (pages « Fiche professeur » en fin de sujet), retirer ces pages avant la mise en ligne.
@@ -240,6 +240,12 @@ window.SITE = {
           { type: "activite", groupe: "Diffraction et interférences de la lumière", titre: "Diffraction et interférences de la lumière, corrigé", desc: "Corrigé de l’activité expérimentale", date: "2026-11-09", fichier: "pdf/terminale-spe/diffraction-interferences/tp-diffraction-interferences-corrige.pdf" },
           { type: "evaluation", groupe: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", titre: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", desc: "À faire à la maison avec Regressi : tracer L en fonction de 1/a, en déduire λ, incertitude et z-score", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/evaluation-formative-diffraction.pdf" },
           { type: "evaluation", groupe: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe", titre: "Évaluation formative : longueur d’onde d’un laser à partir d’une courbe : notice Regressi", desc: "Les étapes dans Regressi : tableau, grandeur 1/a, graphique et modélisation, équation de la droite", date: "2026-11-08", fichier: "pdf/terminale-spe/diffraction-interferences/notice-regressi-diffraction.pdf" },
+        ] },
+        { id: "equilibre-force-acides-bases", titre: "Équilibre chimique et force des acides et des bases", ressources: [
+          { type: "cours", titre: "Équilibre chimique et force des acides et des bases", desc: "Cours du chapitre : transformation non totale et état d’équilibre, quotient de réaction et constante d’équilibre, critère d’évolution spontanée, constante d’acidité KA, force des acides et des bases, diagrammes de prédominance et de distribution", date: "2026-11-17", fichier: "pdf/terminale-spe/equilibre-force-acides-bases/cours-equilibre-chimique-force-acides-bases.pdf" },
+          { type: "activite", titre: "Équilibre chimique : mise en évidence d’un état d’équilibre", desc: "Activité expérimentale (entraînement ECE, 30 min) : formation de l’ion thiocyanatofer(III), mise en évidence de l’état d’équilibre et taux d’avancement final", date: "2026-11-17", fichier: "pdf/terminale-spe/equilibre-force-acides-bases/tp1-mise-en-evidence-etat-equilibre-sujet.pdf" },
+          { type: "activite", titre: "Constante d’acidité et force des acides", desc: "Activité expérimentale (entraînement ECE, 1 h) : constante d’acidité du couple acide éthanoïque / ion éthanoate à partir de mesures de pH, puis comparaison de la force d’acides dans l’eau", date: "2026-11-17", fichier: "pdf/terminale-spe/equilibre-force-acides-bases/tp2-constante-acidite-force-des-acides-sujet.pdf" },
+          { type: "exercice", titre: "Feuille d’exercices : équilibre chimique et force des acides et des bases", desc: "7 exercices d’application, puis 2 exercices bilans type bac : l’acide butanoïque et les pluies acides", date: "2026-11-17", fichier: "pdf/terminale-spe/equilibre-force-acides-bases/exercices-equilibre-chimique-force-acides-bases.pdf" }
         ] }
       ]
     },
