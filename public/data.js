@@ -284,7 +284,33 @@ window.SITE = {
         ] },
         { id: "circuit-rc", titre: "Le circuit RC", ressources: [
           { type: "cours", titre: "Le circuit RC", desc: "Intensité du courant, condensateur et capacité, équation différentielle de la charge et de la décharge, constante de temps τ = RC", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/cours-circuit-rc.pdf" },
-          { type: "activite", titre: "Étude d'un circuit RC avec une carte Arduino", desc: "Activité expérimentale : charge d'un condensateur, acquisition avec un microcontrôleur, détermination de la constante de temps et z-score", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/tp-circuit-rc-arduino.pdf" }
+          { type: "activite", titre: "Étude d'un circuit RC avec une carte Arduino", desc: "Activité expérimentale : charge d'un condensateur, acquisition avec un microcontrôleur, détermination de la constante de temps et z-score", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/tp-circuit-rc-arduino.pdf" },
+          { type: "exercice", titre: "Le circuit RC : feuille d'exercices", desc: "3 exercices d'application et 2 exercices bilan (flash d'appareil photo, capteur capacitif d'humidité)", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/exercices-circuit-rc.pdf" }
+        ] },
+        { id: "radioactivite", titre: "La radioactivité", ressources: [
+          { type: "cours", titre: "La radioactivité", desc: "Désintégrations radioactives, activité, loi de décroissance, demi-vie, applications", date: "2026-11-18", fichier: "pdf/terminale-spe/radioactivite/cours-radioactivite.pdf" },
+          { type: "exercice", titre: "La radioactivité : feuille d'exercices", desc: "3 exercices d'application (équations de désintégration, iode 131, carbone 14) et 2 exercices bilan (datation d'une roche, technétium)", date: "2026-11-18", fichier: "pdf/terminale-spe/radioactivite/exercices-radioactivite.pdf" }
+        ] },
+        { id: "effet-photoelectrique", titre: "L'effet photoélectrique", ressources: [
+          { type: "cours", titre: "L'effet photoélectrique", desc: "Énergie d'un photon, effet photoélectrique, bilan énergétique, rendement d'une cellule photovoltaïque", date: "2026-11-18", fichier: "pdf/terminale-spe/effet-photoelectrique/cours-effet-photoelectrique.pdf" },
+          { type: "exercice", titre: "L'effet photoélectrique : feuille d'exercices", desc: "2 exercices d'application et 2 exercices bilan (chargeur solaire, panneaux photovoltaïques)", date: "2026-11-18", fichier: "pdf/terminale-spe/effet-photoelectrique/exercices-effet-photoelectrique.pdf" }
+        ] },
+        { id: "pile-electrolyse", titre: "Pile électrochimique et électrolyse", ressources: [
+          { type: "cours", titre: "Pile électrochimique et électrolyse", desc: "Transfert spontané d'électrons, fonctionnement et capacité d'une pile, transformation forcée, électrolyse, stockage de l'énergie", date: "2026-11-18", fichier: "pdf/terminale-spe/pile-electrolyse/cours-pile-electrolyse.pdf" },
+          { type: "cours", titre: "Rappels de première : les réactions d'oxydoréduction", desc: "Oxydant, réducteur, couples, demi-équations et équation d'oxydoréduction", date: "2026-11-18", fichier: "pdf/terminale-spe/pile-electrolyse/rappel-oxydoreduction.pdf" },
+          { type: "exercice", titre: "Pile et électrolyse : feuille d'exercices", desc: "3 exercices résolus et 2 exercices bilan", date: "2026-11-18", fichier: "pdf/terminale-spe/pile-electrolyse/exercices-pile-electrolyse.pdf" }
+        ] },
+        { id: "ecoulement-fluide", titre: "Écoulement d'un fluide", ressources: [
+          { type: "cours", titre: "Écoulement d'un fluide", desc: "Poussée d'Archimède, débit volumique et sa conservation, relation de Bernoulli, effet Venturi", date: "2026-11-18", fichier: "pdf/terminale-spe/ecoulement-fluide/cours-ecoulement-fluide.pdf" },
+          { type: "exercice", titre: "Écoulement d'un fluide : feuille d'exercices", desc: "3 exercices d'application (iceberg, tuyau d'arrosage, effet Venturi) et 2 exercices bilan", date: "2026-11-18", fichier: "pdf/terminale-spe/ecoulement-fluide/exercices-ecoulement-fluide.pdf" }
+        ] },
+        { id: "premier-principe-thermodynamique", titre: "Premier principe de la thermodynamique et bilan énergétique", ressources: [
+          { type: "cours", titre: "Premier principe de la thermodynamique", desc: "Modèle du gaz parfait, énergie interne, transferts d'énergie, premier principe, capacité thermique", date: "2026-11-18", fichier: "pdf/terminale-spe/premier-principe-thermodynamique/cours-premier-principe.pdf" },
+          { type: "exercice", titre: "Premier principe : feuille d'exercices", desc: "4 exercices d'application et 2 exercices bilan", date: "2026-11-18", fichier: "pdf/terminale-spe/premier-principe-thermodynamique/exercices-premier-principe.pdf" }
+        ] },
+        { id: "transferts-thermiques", titre: "Les transferts thermiques", ressources: [
+          { type: "cours", titre: "Les transferts thermiques", desc: "Modes de transfert, flux et résistance thermiques, loi de Newton et thermostat, bilan thermique Terre-atmosphère", date: "2026-11-18", fichier: "pdf/terminale-spe/transferts-thermiques/cours-transferts-thermiques.pdf" },
+          { type: "exercice", titre: "Les transferts thermiques : feuille d'exercices", desc: "3 exercices d'application et 2 exercices bilan (pompe à chaleur, bouteille au réfrigérateur)", date: "2026-11-18", fichier: "pdf/terminale-spe/transferts-thermiques/exercices-transferts-thermiques.pdf" }
         ] }
       ]
     },
