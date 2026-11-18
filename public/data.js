@@ -258,6 +258,11 @@ window.SITE = {
         ] },
         { id: "mouvement-champ-uniforme", titre: "Mouvement dans un champ uniforme (champ de pesanteur ou champ électrique)", ressources: [
           { type: "maths", titre: "Primitives et constante d’intégration : de l’accélération à la position", desc: "Point maths à travailler à la maison : primitives des fonctions constante, linéaire et affine, constante d’intégration et conditions initiales, équations horaires d’un projectile. Exercices et corrigé en dernière page", date: "2026-11-17", fichier: "pdf/terminale-spe/mouvement-champ-uniforme/point-maths-primitives-conditions-initiales.pdf" }
+        ] },
+        { id: "structure-entites-organiques", titre: "La structure des entités chimiques organiques", ressources: [
+          { type: "cours", titre: "La structure des entités chimiques organiques", desc: "Cours du chapitre : formule topologique, groupes caractéristiques et familles fonctionnelles, molécules saturées ou insaturées, nomenclature, isomères de constitution, polymères, spectres d'absorption IR", date: "2026-11-18", fichier: "pdf/terminale-spe/structure-entites-organiques/cours-structure-entites-organiques.pdf" },
+          { type: "cours", titre: "Fiche méthode : nomenclature", desc: "Les règles pour nommer une molécule organique (à connaître)", date: "2026-11-18", fichier: "pdf/terminale-spe/structure-entites-organiques/fiche-methode-nomenclature.pdf" },
+          { type: "exercice", titre: "La structure des entités chimiques organiques : feuille d'exercices", desc: "12 exercices : schémas de Lewis, formules topologiques, familles fonctionnelles, nomenclature, isomères, polymères, spectres IR", date: "2026-11-18", fichier: "pdf/terminale-spe/structure-entites-organiques/exercices-structure-entites-organiques.pdf" }
         ] }
       ]
     },
