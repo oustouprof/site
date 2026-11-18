@@ -285,15 +285,15 @@ window.SITE = {
           { type: "exercice", titre: "Feuille d'exercices n°1 : le mécanisme réactionnel", desc: "Actes élémentaires, sites donneurs et accepteurs, flèches courbes", date: "2026-11-18", fichier: "pdf/terminale-spe/reactions-chimie-organique/exercices-n1-mecanisme-reactionnel.pdf" },
           { type: "exercice", titre: "Feuille d'exercices n°2 : exercices bilan", desc: "Deux exercices bilan : optimisation d'une synthèse avec un Dean-Stark, synthèse de l'éthanoate de géranyle", date: "2026-11-18", fichier: "pdf/terminale-spe/reactions-chimie-organique/exercices-n2-optimisation-strategie-synthese.pdf" }
         ] },
-        { id: "cinetique-chimique", titre: "Cinétique chimique", ressources: [
-          { type: "cours", titre: "Cinétique chimique", desc: "Transformations lentes et rapides, vitesses volumiques, temps de demi-réaction, suivi cinétique, facteurs cinétiques et catalyse, loi de vitesse d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/cours-cinetique-chimique.pdf" },
-          { type: "activite", titre: "Suivi cinétique de la formation du diiode (format ECE)", desc: "Activité expérimentale au format ECE : suivi spectrophotométrique de la réaction entre les ions peroxodisulfate et iodure, vérification d'une loi d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/tp-suivi-cinetique-formation-diiode.pdf" },
-          { type: "exercice", titre: "Cinétique chimique : feuille d'exercices", desc: "5 exercices d'application (vitesses volumiques, temps de demi-réaction, facteurs cinétiques, catalyse) et 2 exercices bilan", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/exercices-cinetique-chimique.pdf" }
-        ] },
         { id: "circuit-rc", titre: "Le circuit RC", ressources: [
           { type: "cours", titre: "Le circuit RC", desc: "Intensité du courant, condensateur et capacité, équation différentielle de la charge et de la décharge, constante de temps τ = RC", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/cours-circuit-rc.pdf" },
           { type: "activite", titre: "Étude d'un circuit RC avec une carte Arduino (format ECE)", desc: "Activité expérimentale au format ECE : charge d'un condensateur, acquisition avec un microcontrôleur, détermination de la constante de temps et z-score", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/tp-circuit-rc-arduino.pdf" },
           { type: "exercice", titre: "Le circuit RC : feuille d'exercices", desc: "3 exercices d'application et 2 exercices bilan (flash d'appareil photo, capteur capacitif d'humidité)", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/exercices-circuit-rc.pdf" }
+        ] },
+        { id: "cinetique-chimique", titre: "Cinétique chimique", ressources: [
+          { type: "cours", titre: "Cinétique chimique", desc: "Transformations lentes et rapides, vitesses volumiques, temps de demi-réaction, suivi cinétique, facteurs cinétiques et catalyse, loi de vitesse d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/cours-cinetique-chimique.pdf" },
+          { type: "activite", titre: "Suivi cinétique de la formation du diiode (format ECE)", desc: "Activité expérimentale au format ECE : suivi spectrophotométrique de la réaction entre les ions peroxodisulfate et iodure, vérification d'une loi d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/tp-suivi-cinetique-formation-diiode.pdf" },
+          { type: "exercice", titre: "Cinétique chimique : feuille d'exercices", desc: "5 exercices d'application (vitesses volumiques, temps de demi-réaction, facteurs cinétiques, catalyse) et 2 exercices bilan", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/exercices-cinetique-chimique.pdf" }
         ] },
         { id: "radioactivite", titre: "La radioactivité", ressources: [
           { type: "cours", titre: "La radioactivité", desc: "Désintégrations radioactives, activité, loi de décroissance, demi-vie, applications", date: "2026-11-18", fichier: "pdf/terminale-spe/radioactivite/cours-radioactivite.pdf" },
