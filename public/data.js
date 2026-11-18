@@ -284,7 +284,7 @@ window.SITE = {
         ] },
         { id: "circuit-rc", titre: "Le circuit RC", ressources: [
           { type: "cours", titre: "Le circuit RC", desc: "Intensité du courant, condensateur et capacité, équation différentielle de la charge et de la décharge, constante de temps τ = RC", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/cours-circuit-rc.pdf" },
-          { type: "activite", titre: "Étude d'un circuit RC avec une carte Arduino", desc: "Activité expérimentale : charge d'un condensateur, acquisition avec un microcontrôleur, détermination de la constante de temps et z-score", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/tp-circuit-rc-arduino.pdf" },
+          { type: "activite", titre: "Étude d'un circuit RC avec une carte Arduino (format ECE)", desc: "Activité expérimentale au format ECE : charge d'un condensateur, acquisition avec un microcontrôleur, détermination de la constante de temps et z-score", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/tp-circuit-rc-arduino.pdf" },
           { type: "exercice", titre: "Le circuit RC : feuille d'exercices", desc: "3 exercices d'application et 2 exercices bilan (flash d'appareil photo, capteur capacitif d'humidité)", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/exercices-circuit-rc.pdf" }
         ] },
         { id: "radioactivite", titre: "La radioactivité", ressources: [
@@ -298,6 +298,7 @@ window.SITE = {
         { id: "pile-electrolyse", titre: "Pile électrochimique et électrolyse", ressources: [
           { type: "cours", titre: "Pile électrochimique et électrolyse", desc: "Transfert spontané d'électrons, fonctionnement et capacité d'une pile, transformation forcée, électrolyse, stockage de l'énergie", date: "2026-11-18", fichier: "pdf/terminale-spe/pile-electrolyse/cours-pile-electrolyse.pdf" },
           { type: "cours", titre: "Rappels de première : les réactions d'oxydoréduction", desc: "Oxydant, réducteur, couples, demi-équations et équation d'oxydoréduction", date: "2026-11-18", fichier: "pdf/terminale-spe/pile-electrolyse/rappel-oxydoreduction.pdf" },
+          { type: "activite", titre: "Étude d'une pile cuivre/zinc (format ECE)", desc: "Activité expérimentale au format ECE : réaction spontanée entre les couples Cu²⁺/Cu et Zn²⁺/Zn, réalisation d'une pile, polarité, sens du courant et demi-équations", date: "2026-11-18", fichier: "pdf/terminale-spe/pile-electrolyse/tp-pile-cuivre-zinc.pdf" },
           { type: "exercice", titre: "Pile et électrolyse : feuille d'exercices", desc: "3 exercices résolus et 2 exercices bilan", date: "2026-11-18", fichier: "pdf/terminale-spe/pile-electrolyse/exercices-pile-electrolyse.pdf" }
         ] },
         { id: "ecoulement-fluide", titre: "Écoulement d'un fluide", ressources: [
@@ -306,6 +307,7 @@ window.SITE = {
         ] },
         { id: "premier-principe-thermodynamique", titre: "Premier principe de la thermodynamique et bilan énergétique", ressources: [
           { type: "cours", titre: "Premier principe de la thermodynamique", desc: "Modèle du gaz parfait, énergie interne, transferts d'énergie, premier principe, capacité thermique", date: "2026-11-18", fichier: "pdf/terminale-spe/premier-principe-thermodynamique/cours-premier-principe.pdf" },
+          { type: "activite", titre: "Calorimétrie : capacité thermique massique d'un métal (format ECE)", desc: "Activité expérimentale au format ECE : méthode des mélanges, capacité thermique d'un calorimètre, capacité thermique massique d'un métal et z-score", date: "2026-11-18", fichier: "pdf/terminale-spe/premier-principe-thermodynamique/tp-calorimetrie.pdf" },
           { type: "exercice", titre: "Premier principe : feuille d'exercices", desc: "4 exercices d'application et 2 exercices bilan", date: "2026-11-18", fichier: "pdf/terminale-spe/premier-principe-thermodynamique/exercices-premier-principe.pdf" }
         ] },
         { id: "transferts-thermiques", titre: "Les transferts thermiques", ressources: [
