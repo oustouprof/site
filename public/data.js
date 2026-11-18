@@ -276,6 +276,11 @@ window.SITE = {
           { type: "cours", titre: "Le mouvement circulaire des planètes et des satellites (partie 2)", desc: "Repère de Frenet, vecteur accélération d'un astre, vitesse, période de révolution et 3e loi de Kepler", date: "2026-11-18", fichier: "pdf/terminale-spe/lois-de-kepler/cours-lois-de-kepler-partie-2.pdf" },
           { type: "exercice", titre: "Feuille d'exercices n°1 : les lois de Kepler", desc: "Loi des aires, mouvement circulaire uniforme, vérification de la 3e loi et masse de Jupiter", date: "2026-11-18", fichier: "pdf/terminale-spe/lois-de-kepler/exercices-n1-lois-de-kepler.pdf" },
           { type: "exercice", titre: "Feuille d'exercices n°2 : mouvement circulaire des satellites", desc: "La Lune, la sonde TGO autour de Mars et la masse de la Terre à partir de l'étude d'un satellite", date: "2026-11-18", fichier: "pdf/terminale-spe/lois-de-kepler/exercices-n2-mouvement-circulaire-satellites.pdf" }
+        ] },
+        { id: "cinetique-chimique", titre: "Cinétique chimique", ressources: [
+          { type: "cours", titre: "Cinétique chimique", desc: "Transformations lentes et rapides, vitesses volumiques, temps de demi-réaction, suivi cinétique, facteurs cinétiques et catalyse, loi de vitesse d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/cours-cinetique-chimique.pdf" },
+          { type: "activite", titre: "Suivi cinétique de la formation du diiode", desc: "Activité expérimentale type ECE : suivi spectrophotométrique de la réaction entre les ions peroxodisulfate et iodure, vérification d'une loi d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/tp-suivi-cinetique-formation-diiode.pdf" },
+          { type: "exercice", titre: "Cinétique chimique : feuille d'exercices", desc: "11 exercices : vitesses volumiques, temps de demi-réaction, facteurs cinétiques, catalyse, ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/exercices-cinetique-chimique.pdf" }
         ] }
       ]
     },
