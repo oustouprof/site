@@ -281,6 +281,10 @@ window.SITE = {
           { type: "cours", titre: "Cinétique chimique", desc: "Transformations lentes et rapides, vitesses volumiques, temps de demi-réaction, suivi cinétique, facteurs cinétiques et catalyse, loi de vitesse d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/cours-cinetique-chimique.pdf" },
           { type: "activite", titre: "Suivi cinétique de la formation du diiode", desc: "Activité expérimentale type ECE : suivi spectrophotométrique de la réaction entre les ions peroxodisulfate et iodure, vérification d'une loi d'ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/tp-suivi-cinetique-formation-diiode.pdf" },
           { type: "exercice", titre: "Cinétique chimique : feuille d'exercices", desc: "11 exercices : vitesses volumiques, temps de demi-réaction, facteurs cinétiques, catalyse, ordre 1", date: "2026-11-18", fichier: "pdf/terminale-spe/cinetique-chimique/exercices-cinetique-chimique.pdf" }
+        ] },
+        { id: "circuit-rc", titre: "Le circuit RC", ressources: [
+          { type: "cours", titre: "Le circuit RC", desc: "Intensité du courant, condensateur et capacité, équation différentielle de la charge et de la décharge, constante de temps τ = RC", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/cours-circuit-rc.pdf" },
+          { type: "activite", titre: "Étude d'un circuit RC avec une carte Arduino", desc: "Activité expérimentale : charge d'un condensateur, acquisition avec un microcontrôleur, détermination de la constante de temps et z-score", date: "2026-11-18", fichier: "pdf/terminale-spe/circuit-rc/tp-circuit-rc-arduino.pdf" }
         ] }
       ]
     },
