@@ -270,6 +270,12 @@ window.SITE = {
           { type: "activite", titre: "Synthèse de l'acétate de benzyle, l'arôme de jasmin", desc: "Activité expérimentale type ECE : chauffage à reflux, extraction liquide-liquide et CCM", date: "2026-11-18", fichier: "pdf/terminale-spe/reactions-chimie-organique/tp-synthese-arome-jasmin.pdf" },
           { type: "exercice", titre: "Feuille d'exercices n°1 : le mécanisme réactionnel", desc: "Actes élémentaires, sites donneurs et accepteurs, flèches courbes", date: "2026-11-18", fichier: "pdf/terminale-spe/reactions-chimie-organique/exercices-n1-mecanisme-reactionnel.pdf" },
           { type: "exercice", titre: "Feuille d'exercices n°2 : optimisation et stratégie de synthèse", desc: "Rendement, Dean-Stark, catégories de réactions, extraction et identification du produit", date: "2026-11-18", fichier: "pdf/terminale-spe/reactions-chimie-organique/exercices-n2-optimisation-strategie-synthese.pdf" }
+        ] },
+        { id: "lois-de-kepler", titre: "Les 3 lois de Kepler : mouvement des satellites et des astres", ressources: [
+          { type: "cours", titre: "Les 3 lois de Kepler (partie 1)", desc: "Loi des orbites, loi des aires, loi des périodes", date: "2026-11-18", fichier: "pdf/terminale-spe/lois-de-kepler/cours-lois-de-kepler-partie-1.pdf" },
+          { type: "cours", titre: "Le mouvement circulaire des planètes et des satellites (partie 2)", desc: "Repère de Frenet, vecteur accélération d'un astre, vitesse, période de révolution et 3e loi de Kepler", date: "2026-11-18", fichier: "pdf/terminale-spe/lois-de-kepler/cours-lois-de-kepler-partie-2.pdf" },
+          { type: "exercice", titre: "Feuille d'exercices n°1 : les lois de Kepler", desc: "Loi des aires, mouvement circulaire uniforme, vérification de la 3e loi et masse de Jupiter", date: "2026-11-18", fichier: "pdf/terminale-spe/lois-de-kepler/exercices-n1-lois-de-kepler.pdf" },
+          { type: "exercice", titre: "Feuille d'exercices n°2 : mouvement circulaire des satellites", desc: "La Lune, la sonde TGO autour de Mars et la masse de la Terre à partir de l'étude d'un satellite", date: "2026-11-18", fichier: "pdf/terminale-spe/lois-de-kepler/exercices-n2-mouvement-circulaire-satellites.pdf" }
         ] }
       ]
     },
