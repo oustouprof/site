@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Émission et absorption de photons par un atome</title>
+<style>
+  :root{
+    --bg:#f4f6fa; --card:#ffffff; --ink:#1d2433; --muted:#5b6478; --line:#d9dee8;
+    --accent:#2457c5; --accent2:#c0392b; --ok:#1e8449;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.4}
+  header{background:#152447;color:#fff;padding:12px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between}
+  header h1{font-size:19px;margin:0;font-weight:600}
+  .tabs{display:flex;gap:6px}
+  .tab{border:2px solid #fff;background:transparent;color:#fff;padding:7px 16px;border-radius:20px;font-size:15px;cursor:pointer;font-weight:600}
+  .tab.active{background:#fff;color:#152447}
+  main{max-width:1200px;margin:0 auto;padding:14px;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr);gap:14px}
+  @media (max-width:860px){main{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .card h2{font-size:15px;margin:0 0 8px;color:#152447;text-transform:uppercase;letter-spacing:.03em}
+  #scene{width:100%;height:auto;display:block;user-select:none}
+  .full{grid-column:1/-1}
+  .consigne{background:#eef3ff;border-left:4px solid var(--accent);padding:8px 10px;border-radius:4px;margin-bottom:10px;font-size:14px}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  button.act{background:var(--accent);color:#fff;border:none;padding:9px 14px;border-radius:6px;font-size:14px;cursor:pointer;font-weight:600}
+  button.act.sec{background:#e6e9f0;color:var(--ink)}
+  button.act:disabled{opacity:.45;cursor:default}
+  label.chk{display:flex;align-items:center;gap:7px;margin:6px 0;cursor:pointer}
+  .radio{display:block;margin:4px 0;cursor:pointer}
+  .info{font-size:14.5px}
+  .info .row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px dashed #e3e6ee}
+  .info .row b{font-weight:600}
+  .msg{margin-top:8px;padding:8px 10px;border-radius:6px;font-weight:600;font-size:14px;display:none}
+  .msg.ok{display:block;background:#e7f6ec;color:#155d32}
+  .msg.no{display:block;background:#fdecea;color:#8e2a20}
+  .msg.neutral{display:block;background:#f1f3f7;color:#333}
+  .slider{display:flex;align-items:center;gap:10px;margin:8px 0}
+  .slider input[type=range]{flex:1}
+  .slider input[type=number]{width:80px;font-size:15px;padding:4px}
+  .swatch{width:26px;height:26px;border-radius:50%;border:1px solid #888;flex:none}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  th,td{border:1px solid var(--line);padding:4px 6px;text-align:center}
+  th{background:#f0f2f7}
+  .spec-wrap{position:relative}
+  canvas{width:100%;display:block}
+  .spec-title{font-weight:600;font-size:14px;margin:8px 0 3px}
+  .hidden{display:none!important}
+  .small{font-size:12.5px;color:var(--muted)}
+  sub,sup{font-size:70%}
+</style>
+</head>
+<body>
+<header>
+  <h1>Émission et absorption de photons par un atome</h1>
+  <div class="tabs">
+    <button class="tab active" id="tabEm">Émission – hydrogène</button>
+    <button class="tab" id="tabAb">Absorption – sodium</button>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="consigne" id="consigne"></div>
+    <svg id="scene" viewBox="0 0 760 520" aria-label="Diagramme des niveaux d'énergie de l'atome"></svg>
+  </section>
+
+  <section class="card">
+    <!-- Contrôles émission -->
+    <div id="ctrlEm">
+      <h2>Commandes</h2>
+      <div class="controls">
+        <button class="act" id="btnLamp">Allumer la lampe (beaucoup d'atomes)</button>
+        <button class="act sec" id="btnClearEm">Effacer le spectre</button>
+      </div>
+    </div>
+    <!-- Contrôles absorption -->
+    <div id="ctrlAb" class="hidden">
+      <h2>Commandes</h2>
+      <div class="small">Photon envoyé sur le gaz de sodium : choisir sa longueur d'onde λ.</div>
+      <div class="slider">
+        <span class="swatch" id="swatch"></span>
+        <input type="range" id="lam" min="200" max="900" step="1" value="550">
+        <input type="number" id="lamNum" min="200" max="900" step="1" value="550"> nm
+      </div>
+      <div class="small" id="lamDomain"></div>
+      <div class="controls">
+        <button class="act" id="btnSend">Envoyer le photon</button>
+        <button class="act" id="btnWhite">Envoyer de la lumière blanche</button>
+        <button class="act sec" id="btnClearAb">Effacer le spectre</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="chkEmUnder"> <span>Afficher le spectre d'émission du sodium en dessous</span></label>
+    </div>
+    <label class="chk"><input type="checkbox" id="chkCalc"> <span>Afficher les calculs (E<sub>photon</sub>, ν, λ)</span></label>
+
+    <h2 style="margin-top:12px">Dernière transition</h2>
+    <div class="info" id="info"><span class="small">Aucune transition pour l'instant.</span></div>
+    <div class="msg" id="msg"></div>
+
+    <h2 style="margin-top:12px">Données</h2>
+    <div class="small">h = 6,63 × 10<sup>−34</sup> J·s &nbsp;·&nbsp; c = 3,00 × 10<sup>8</sup> m·s<sup>−1</sup> &nbsp;·&nbsp; 1 eV = 1,60 × 10<sup>−19</sup> J</div>
+  </section>
+
+  <section class="card full">
+    <h2 id="specHead">Spectre observé avec le spectroscope</h2>
+    <div class="spec-title" id="specLabel1">Spectre d'émission obtenu</div>
+    <div class="spec-wrap"><canvas id="spec1" height="110"></canvas></div>
+    <div id="spec2Box" class="hidden">
+      <div class="spec-title">Spectre d'émission de la vapeur de sodium (pour comparer)</div>
+      <div class="spec-wrap"><canvas id="spec2" height="110"></canvas></div>
+    </div>
+    <div class="small" id="outside" style="margin-top:6px"></div>
+    <div id="tableBox" style="margin-top:10px"></div>
+  </section>
+</main>
+
+<script>
+(function(){
+"use strict";
+// ---------- Données physiques ----------
+const H = 6.63e-34, C = 3.00e8, EV = 1.60e-19;
+const ATOMS = {
+  em: { titre:"Atome d'hydrogène", nom:"hydrogène", levels:[-13.60,-3.40,-1.51,-0.85,-0.54,-0.38], brk:true },
+  ab: { titre:"Atome de sodium", nom:"sodium",    levels:[-5.14,-3.03,-1.39,-0.79], brk:false }
+};
+const SUBS = ["₁","₂","₃","₄","₅","₆"];
+let A = ATOMS.em, LEVELS = A.levels;
+const name = i => "E" + SUBS[i];
+
+function lambdaNm(dE_eV){ return H*C/(dE_eV*EV)*1e9; }
+function domain(l){ return l < 400 ? "ultraviolet (invisible)" : (l > 800 ? "infrarouge (invisible)" : "visible"); }
+
+const SUP = {"-":"⁻","0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+function fr(x, d){ return x.toFixed(d).replace(".", ",").replace("-", "−"); }
+function sci(x, sig){
+  sig = sig || 3;
+  let e = Math.floor(Math.log10(Math.abs(x)));
+  let m = +(x / Math.pow(10, e)).toFixed(sig-1);
+  if(Math.abs(m) >= 10){ m /= 10; e += 1; }
+  return fr(m, sig-1) + " × 10" + String(e).split("").map(ch => SUP[ch]).join("");
+}
+function wlColor(l){
+  let r=0,g=0,b=0;
+  if(l < 380) return "rgb(150,120,200)";
+  if(l > 780) return "rgb(130,40,40)";
+  if(l<440){r=-(l-440)/60;b=1;}
+  else if(l<490){g=(l-440)/50;b=1;}
+  else if(l<510){g=1;b=-(l-510)/20;}
+  else if(l<580){r=(l-510)/70;g=1;}
+  else if(l<645){r=1;g=-(l-645)/65;}
+  else {r=1;}
+  let f = 1;
+  if(l<420) f=0.3+0.7*(l-380)/40; else if(l>700) f=0.3+0.7*(780-l)/80;
+  const c = v => Math.round(255*Math.pow(v*f,0.8));
+  return `rgb(${c(r)},${c(g)},${c(b)})`;
+}
+const arrowColor = l => l<380 ? "#7b5fb5" : (l>780 ? "#8a2b2b" : wlColor(l));
+
+// ---------- Scène SVG ----------
+const svg = document.getElementById("scene");
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  (parent||svg).appendChild(e); return e;
+}
+const X0 = 110, X1 = 330, XC = 220, YTOP = 50, YLOW = 395, YBOT = 470;
+const SX = 640, SY = 230; // spectroscope
+function yOf(E){
+  if(A.brk){ return E < -5 ? YBOT : YTOP + (-E)/3.7*(YLOW-YTOP); }
+  const Emin = A.levels[0];
+  return YTOP + (E/Emin)*(YBOT-YTOP);
+}
+let LY = [];
+
+const gStatic = el("g",{}), gArrows = el("g",{}), gPhotons = el("g",{}), gTop = el("g",{});
+
+function drawStatic(){
+  gStatic.innerHTML = "";
+  LY = LEVELS.map(yOf);
+  el("text",{x:X0,y:22,"font-size":16,"font-weight":"bold",fill:"#152447"},gStatic).textContent = A.titre;
+  el("line",{x1:60,y1:YBOT+25,x2:60,y2:YTOP-12,stroke:"#333","stroke-width":2},gStatic);
+  el("path",{d:`M54 ${YTOP-4} L60 ${YTOP-16} L66 ${YTOP-4} Z`,fill:"#333"},gStatic);
+  el("text",{x:20,y:YTOP-6,"font-size":14,"font-weight":"bold",fill:"#333"},gStatic).textContent="E (eV)";
+  if(A.brk){
+    const yb = (YLOW + YBOT)/2 + 6;
+    el("rect",{x:52,y:yb-8,width:16,height:16,fill:"#fff"},gStatic);
+    el("line",{x1:50,y1:yb-2,x2:70,y2:yb-8,stroke:"#333","stroke-width":1.5},gStatic);
+    el("line",{x1:50,y1:yb+6,x2:70,y2:yb,stroke:"#333","stroke-width":1.5},gStatic);
+  }
+  el("line",{x1:X0,y1:YTOP,x2:X1,y2:YTOP,stroke:"#999","stroke-width":1.5,"stroke-dasharray":"6 4"},gStatic);
+  el("text",{x:X0-8,y:YTOP+4,"text-anchor":"end","font-size":12.5,fill:"#666"},gStatic).textContent="0";
+  el("text",{x:X1+8,y:YTOP+4,"font-size":12.5,fill:"#666"},gStatic).textContent="E∞ (atome ionisé)";
+  LEVELS.forEach((E,i)=>{
+    const y = LY[i];
+    el("line",{x1:X0,y1:y,x2:X1,y2:y,stroke:"#1d2433","stroke-width":2.5},gStatic);
+    el("text",{x:X0-8,y:y+4,"text-anchor":"end","font-size":12.5,fill:"#1d2433"},gStatic).textContent=fr(E,2);
+    el("text",{x:X1+8,y:y+4,"font-size":13,"font-weight":"bold",fill:"#1d2433"},gStatic).textContent = name(i) + (i===0 ? "  (état fondamental)" : "");
+    const hit = el("rect",{x:X0-6,y:y-9,width:X1-X0+12,height:18,fill:"transparent",style: mode==="em" ? "cursor:pointer" : ""},gStatic);
+    hit.addEventListener("click",()=>onLevelClick(i));
+    hit.addEventListener("mouseenter",()=>{ if(!busy && mode==="em") hit.setAttribute("fill","rgba(36,87,197,.12)"); });
+    hit.addEventListener("mouseleave",()=>hit.setAttribute("fill","transparent"));
+  });
+  el("rect",{x:SX,y:SY-38,width:92,height:76,rx:8,fill:"#2f3a52"},gStatic);
+  el("path",{d:`M${SX+30} ${SY+20} L${SX+46} ${SY-22} L${SX+62} ${SY+20} Z`,fill:"#bcd3f5",stroke:"#fff","stroke-width":1},gStatic);
+  el("text",{x:SX+46,y:SY+58,"text-anchor":"middle","font-size":13,fill:"#2f3a52","font-weight":"bold"},gStatic).textContent="spectroscope";
+}
+
+let cur = 0;
+const electron = el("circle",{cx:XC,cy:YBOT,r:9,fill:"#e67e22",stroke:"#7a3b00","stroke-width":1.5},gTop);
+const eLabel = el("text",{x:XC+14,y:YBOT-12,"font-size":12.5,fill:"#7a3b00","font-weight":"bold"},gTop);
+function setElectron(y){ electron.setAttribute("cy",y); eLabel.setAttribute("y",y-12); }
+function updateLabel(){ eLabel.textContent = "atome : E = " + fr(LEVELS[cur],2) + " eV"; }
+
+const lampG = el("g",{},gTop);
+function drawLamp(y){
+  lampG.innerHTML = "";
+  el("circle",{cx:26,cy:y,r:15,fill:"#fff7c2",stroke:"#c9a400","stroke-width":2},lampG);
+  for(let k=0;k<8;k++){
+    const a = k*Math.PI/4;
+    el("line",{x1:26+19*Math.cos(a),y1:y+19*Math.sin(a),x2:26+25*Math.cos(a),y2:y+25*Math.sin(a),stroke:"#c9a400","stroke-width":2},lampG);
+  }
+  el("text",{x:26,y:y+44,"text-anchor":"middle","font-size":11,fill:"#7a6200"},lampG).textContent="source";
+}
+
+// ---------- Animation ----------
+let busy = false;
+function tween(ms, fn){
+  return new Promise(res=>{
+    const t0 = performance.now();
+    function step(t){ const u = Math.min(1,(t-t0)/ms); fn(u); if(u<1) requestAnimationFrame(step); else res(); }
+    requestAnimationFrame(step);
+  });
+}
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+const ease = u => u<.5 ? 2*u*u : 1-Math.pow(-2*u+2,2)/2;
+function wavePath(x, y, len, l){
+  const per = Math.max(6, Math.min(26, l/28)), amp = 6;
+  let d = `M${x} ${y}`;
+  for(let s=0;s<=len;s+=2) d += ` L${x+s} ${y + amp*Math.sin(2*Math.PI*s/per)}`;
+  return d;
+}
+function makePhoton(l){
+  const p = el("path",{fill:"none",stroke:wlColor(l),"stroke-width":3,"stroke-linecap":"round"},gPhotons);
+  if(l<380 || l>780) p.setAttribute("stroke-dasharray","3 3");
+  return p;
+}
+function arrow(y1, y2, color, x){
+  x = x || XC;
+  const g = el("g",{},gArrows), dir = y2 > y1 ? 1 : -1;
+  el("line",{x1:x,y1:y1,x2:x,y2:y2-dir*10,stroke:color,"stroke-width":3.5},g);
+  el("path",{d:`M${x-7} ${y2-dir*12} L${x} ${y2} L${x+7} ${y2-dir*12} Z`,fill:color},g);
+  return g;
+}
+async function moveElectron(to, ms){
+  const y0 = +electron.getAttribute("cy"), y1 = LY[to];
+  await tween(ms, u=>setElectron(y0+(y1-y0)*ease(u)));
+  cur = to; updateLabel();
+}
+
+// ---------- Spectres ----------
+const VMIN = 380, VMAX = 780;
+const em = {}, ab = {};
+const cv1 = document.getElementById("spec1"), cv2 = document.getElementById("spec2");
+function drawSpectrum(cv, kind, lines){
+  const r = window.devicePixelRatio || 1, w = cv.parentElement.clientWidth;
+  cv.width = Math.round(w*r); cv.height = Math.round(110*r); cv.style.height = "110px";
+  const ctx = cv.getContext("2d"); ctx.setTransform(r,0,0,r,0,0);
+  const L = 50, R = w - 50, top = 8, hgt = 62;
+  const xOf = l => L + (l - VMIN)/(VMAX - VMIN)*(R - L);
+  ctx.clearRect(0,0,w,110);
+  ctx.fillStyle = "#e8e4f2"; ctx.fillRect(4, top, L-8, hgt);
+  ctx.fillStyle = "#f2e4e4"; ctx.fillRect(R+4, top, w-R-8, hgt);
+  ctx.fillStyle = "#555"; ctx.font = "bold 12px sans-serif"; ctx.textAlign = "center";
+  ctx.fillText("UV", L/2, top+hgt/2+4); ctx.fillText("IR", (R+w)/2, top+hgt/2+4);
+  if(kind === "abs"){
+    for(let x=L; x<=R; x++){ ctx.fillStyle = wlColor(VMIN + (x-L)/(R-L)*(VMAX-VMIN)); ctx.fillRect(x, top, 1.5, hgt); }
+    ctx.fillStyle = "#000";
+    Object.keys(lines).forEach(k=>{ const l=+k; if(l>=VMIN && l<=VMAX) ctx.fillRect(xOf(l)-1.5, top, 3, hgt); });
+  } else {
+    ctx.fillStyle = "#000"; ctx.fillRect(L, top, R-L, hgt);
+    let max = 1; Object.values(lines).forEach(v=>{ if(v>max) max=v; });
+    Object.keys(lines).forEach(k=>{
+      const l = +k; if(l<VMIN||l>VMAX) return;
+      ctx.globalAlpha = 0.45 + 0.55*Math.min(1, lines[k]/max);
+      ctx.fillStyle = wlColor(l); ctx.fillRect(xOf(l)-1.5, top, 3, hgt); ctx.globalAlpha = 1;
+    });
+  }
+  let uv = 0, ir = 0;
+  Object.keys(lines).forEach(k=>{ if(+k<VMIN) uv++; else if(+k>VMAX) ir++; });
+  ctx.font = "11px sans-serif"; ctx.fillStyle = "#333";
+  if(uv) ctx.fillText(uv + (uv>1?" raies":" raie"), L/2, top+hgt-6);
+  if(ir) ctx.fillText(ir + (ir>1?" raies":" raie"), (R+w)/2, top+hgt-6);
+  ctx.strokeStyle = "#333"; ctx.lineWidth = 1; ctx.textAlign = "center";
+  const yb = top + hgt;
+  for(let l=VMIN; l<=VMAX; l+=10){
+    const x = xOf(l), big = l % 50 === 0;
+    ctx.beginPath(); ctx.moveTo(x, yb); ctx.lineTo(x, yb + (big?9:4)); ctx.stroke();
+    if(big){ ctx.font = "12px sans-serif"; ctx.fillText(String(l), x, yb + 22); }
+  }
+  ctx.textAlign = "right"; ctx.fillText("λ (nm)", w-4, yb + 36);
+}
+// spectre d'émission du sodium : raies qui aboutissent à l'état fondamental
+const NA_EM = {};
+ATOMS.ab.levels.forEach((E,p)=>{ if(p>0) NA_EM[Math.round(lambdaNm(E - ATOMS.ab.levels[0]))] = 1; });
+function redraw(){
+  if(mode === "em") drawSpectrum(cv1, "em", em);
+  else { drawSpectrum(cv1, "abs", ab); if(chkEmUnder.checked) drawSpectrum(cv2, "em", NA_EM); }
+}
+
+// ---------- Informations ----------
+const info = document.getElementById("info"), msg = document.getElementById("msg");
+const chkCalc = document.getElementById("chkCalc");
+let last = null;
+function showInfo(){
+  if(!last){ info.innerHTML = '<span class="small">Aucune transition pour l\'instant.</span>'; return; }
+  const {i, f, kind, l} = last, dE = Math.abs(LEVELS[f]-LEVELS[i]);
+  let h = `<div class="row"><span>Transition</span><b>${name(i)} → ${name(f)}</b></div>`;
+  h += `<div class="row"><span>Énergie initiale E<sub>i</sub></span><b>${fr(LEVELS[i],2)} eV</b></div>`;
+  h += `<div class="row"><span>Énergie finale E<sub>f</sub></span><b>${fr(LEVELS[f],2)} eV</b></div>`;
+  h += `<div class="row"><span>Énergie de l'atome</span><b>${LEVELS[f]<LEVELS[i]?"diminue":"augmente"}</b></div>`;
+  h += `<div class="row"><span>Photon</span><b>${kind==="em"?"émis":"absorbé"}</b></div>`;
+  if(chkCalc.checked){
+    const EJ = dE*EV;
+    h += `<div class="row"><span>ΔE = |E<sub>f</sub> − E<sub>i</sub>|</span><b>${fr(dE,2)} eV</b></div>`;
+    h += `<div class="row"><span>E<sub>photon</sub></span><b>${sci(EJ)} J</b></div>`;
+    h += `<div class="row"><span>ν</span><b>${sci(EJ/H)} Hz</b></div>`;
+    h += `<div class="row"><span>λ</span><b>${fr(l,0)} nm</b></div>`;
+    h += `<div class="row"><span>Domaine</span><b>${domain(l)}</b></div>`;
+  } else h += `<div class="small" style="margin-top:4px">Coche « Afficher les calculs » pour vérifier tes résultats.</div>`;
+  info.innerHTML = h;
+}
+function setMsg(t, cls){ msg.className = "msg " + (cls||"neutral"); msg.innerHTML = t; }
+function clearMsg(){ msg.className = "msg"; msg.textContent = ""; }
+const done = [];
+function showTable(){
+  const box = document.getElementById("tableBox");
+  if(mode !== "em" || !done.length){ box.innerHTML = ""; return; }
+  let h = "<table><tr><th>Transition</th><th>ΔE (eV)</th>" + (chkCalc.checked ? "<th>λ (nm)</th><th>Domaine</th>" : "") + "</tr>";
+  done.forEach(d=>{
+    h += `<tr><td>${name(d.i)} → ${name(d.f)}</td><td>${fr(Math.abs(LEVELS[d.f]-LEVELS[d.i]),2)}</td>`;
+    if(chkCalc.checked) h += `<td>${fr(d.l,0)}</td><td>${domain(d.l)}</td>`;
+    h += "</tr>";
+  });
+  box.innerHTML = "<div class='spec-title'>Raies obtenues</div>" + h + "</table>";
+}
+
+// ---------- Émission (hydrogène) ----------
+async function emitPhoton(fromY, l, fast){
+  const p = makePhoton(l), x0 = XC+12, len = 70;
+  await tween(fast?380:1100, u=>p.setAttribute("d", wavePath(x0 + (SX-len-x0)*u, fromY + (SY-fromY)*u, len, l)));
+  p.remove();
+}
+function record(i, t, l){
+  const k = Math.round(l); em[k] = (em[k]||0) + 1;
+  if(!done.find(d=>d.i===i && d.f===t)) done.push({i, f:t, l});
+}
+async function onLevelClick(t){
+  if(busy || mode !== "em" || t === cur) return;
+  busy = true; setButtons(); clearMsg(); gArrows.innerHTML = "";
+  if(t > cur){
+    const a = arrow(LY[cur], LY[t], "#888");
+    setMsg("L'atome reçoit de l'énergie (décharge électrique) : il passe dans un état excité.", "neutral");
+    await moveElectron(t, 700); await wait(300); a.remove();
+    setMsg("Clique maintenant sur un niveau d'énergie plus bas : l'atome va se désexciter.", "neutral");
+  } else {
+    const i = cur, l = lambdaNm(LEVELS[i]-LEVELS[t]);
+    arrow(LY[i], LY[t], arrowColor(l));
+    const pr = emitPhoton(LY[i], l, false);
+    await moveElectron(t, 700); await pr;
+    record(i, t, l); last = {i, f:t, kind:"em", l};
+    showInfo(); showTable(); redraw();
+    setMsg(l<380 || l>780
+      ? "Un photon a été émis, mais aucune raie n'apparaît dans le visible : le photon appartient au domaine " + (l<380?"de l'ultraviolet (UV).":"de l'infrarouge (IR).")
+      : "Un photon a été émis : une raie colorée apparaît sur le spectre.", "ok");
+  }
+  busy = false; setButtons();
+}
+async function lamp(){
+  if(busy) return;
+  busy = true; setButtons(); clearMsg(); gArrows.innerHTML = "";
+  setMsg("Lampe allumée : un très grand nombre d'atomes sont excités puis se désexcitent…", "neutral");
+  for(let k=0;k<45;k++){
+    cur = 0; setElectron(LY[0]);
+    await moveElectron(1 + Math.floor(Math.random()*5), 90);
+    while(cur > 0){
+      const from = cur, to = Math.floor(Math.random()*cur), l = lambdaNm(LEVELS[from]-LEVELS[to]);
+      const a = arrow(LY[from], LY[to], arrowColor(l));
+      emitPhoton(LY[from], l, true);
+      await moveElectron(to, 110);
+      record(from, to, l); redraw();
+      setTimeout(()=>a.remove(), 250);
+    }
+  }
+  await wait(450);
+  done.sort((a,b)=>a.f-b.f || a.i-b.i);
+  showTable(); redraw();
+  setMsg("Le spectre obtenu est un spectre de raies : seules certaines longueurs d'onde sont émises.", "ok");
+  busy = false; setButtons();
+}
+
+// ---------- Absorption (sodium) ----------
+const lam = document.getElementById("lam"), lamNum = document.getElementById("lamNum");
+const swatch = document.getElementById("swatch"), lamDomain = document.getElementById("lamDomain");
+function syncLam(v){
+  v = Math.max(200, Math.min(900, Math.round(+v || 550)));
+  lam.value = v; lamNum.value = v;
+  swatch.style.background = wlColor(v);
+  lamDomain.textContent = "Domaine : " + domain(v);
+}
+lam.addEventListener("input", ()=>syncLam(lam.value));
+lamNum.addEventListener("change", ()=>syncLam(lamNum.value));
+function findTransition(l){
+  for(let p=1; p<LEVELS.length; p++){
+    const lt = lambdaNm(LEVELS[p]-LEVELS[0]);
+    if(Math.abs(lt - l) <= 1.5) return {p, lt};
+  }
+  return null;
+}
+async function sendPhoton(l, fast){
+  const y = LY[0], p = makePhoton(l), len = 60, xs = 46;
+  const tr = findTransition(l);
+  const ion = !tr && H*C/(l*1e-9)/EV > -LEVELS[0];
+  if(tr || ion){
+    await tween(fast?260:900, u=>p.setAttribute("d", wavePath(xs+(XC-len-xs)*u, y, len, l)));
+    p.remove(); return {tr, ion};
+  }
+  await tween(fast?420:1500, u=>{
+    const yy = y + (SY - y)*Math.max(0,(u-0.55)/0.45);
+    p.setAttribute("d", wavePath(xs + (SX-len-xs)*u, yy, len, l));
+  });
+  p.remove(); return {tr:null, ion:false};
+}
+async function sendOne(){
+  if(busy) return;
+  busy = true; setButtons(); clearMsg(); gArrows.innerHTML = "";
+  const res = await sendPhoton(+lam.value, false);
+  if(res.tr){
+    arrow(LY[0], LY[res.tr.p], "#c0392b");
+    await moveElectron(res.tr.p, 600);
+    ab[Math.round(res.tr.lt)] = 1;
+    last = {i:0, f:res.tr.p, kind:"ab", l:res.tr.lt};
+    showInfo(); redraw();
+    setMsg("Photon absorbé : son énergie est égale à l'écart entre deux niveaux d'énergie de l'atome (" + name(0) + " → " + name(res.tr.p) + ").", "ok");
+    await wait(1400);
+    await moveElectron(0, 600);
+    gArrows.innerHTML = "";
+  } else if(res.ion){
+    setMsg("Ce photon a assez d'énergie pour arracher un électron à l'atome (ionisation) : ce cas n'est pas étudié ici.", "neutral");
+  } else {
+    setMsg("Photon non absorbé : son énergie ne correspond à aucun écart entre deux niveaux d'énergie de l'atome. Il traverse le gaz.", "no");
+  }
+  busy = false; setButtons();
+}
+async function white(){
+  if(busy) return;
+  busy = true; setButtons(); clearMsg(); gArrows.innerHTML = "";
+  setMsg("La lumière blanche (toutes les radiations visibles) traverse le gaz de sodium…", "neutral");
+  const list = [];
+  for(let k=0;k<34;k++) list.push(380 + Math.random()*400);
+  for(let p=1; p<LEVELS.length; p++){ const lt = lambdaNm(LEVELS[p]-LEVELS[0]); if(lt>=380 && lt<=780) list.push(lt, lt, lt); }
+  list.sort(()=>Math.random()-0.5);
+  const jobs = [];
+  for(const l of list){
+    jobs.push((async()=>{
+      const res = await sendPhoton(l, true);
+      if(res.tr){
+        const a = arrow(LY[0], LY[res.tr.p], "#c0392b", XC - 30 + Math.random()*60);
+        ab[Math.round(res.tr.lt)] = 1; redraw();
+        setTimeout(()=>a.remove(), 700);
+      }
+    })());
+    await wait(70);
+  }
+  await Promise.all(jobs);
+  redraw();
+  setMsg("Une raie noire apparaît : les photons de cette longueur d'onde ont été absorbés par les atomes de sodium.", "ok");
+  busy = false; setButtons();
+}
+
+// ---------- Modes ----------
+let mode = "em";
+const chkEmUnder = document.getElementById("chkEmUnder");
+function setButtons(){ ["btnLamp","btnClearEm","btnSend","btnWhite","btnClearAb"].forEach(id=>document.getElementById(id).disabled = busy); }
+function setMode(m){
+  if(busy) return;
+  mode = m; A = ATOMS[m]; LEVELS = A.levels;
+  document.getElementById("tabEm").classList.toggle("active", m==="em");
+  document.getElementById("tabAb").classList.toggle("active", m==="ab");
+  document.getElementById("ctrlEm").classList.toggle("hidden", m!=="em");
+  document.getElementById("ctrlAb").classList.toggle("hidden", m!=="ab");
+  lampG.classList.toggle("hidden", m!=="ab");
+  document.getElementById("spec2Box").classList.toggle("hidden", !(m==="ab" && chkEmUnder.checked));
+  document.getElementById("specLabel1").textContent = m==="em" ? "Spectre d'émission obtenu" : "Spectre de la lumière blanche après la traversée du gaz de sodium";
+  gArrows.innerHTML = ""; gPhotons.innerHTML = ""; clearMsg(); last = null; showInfo();
+  drawStatic();
+  cur = 0; setElectron(LY[0]); updateLabel(); drawLamp(LY[0]);
+  document.getElementById("consigne").innerHTML = m === "em"
+    ? "<b>Émission – atome d'hydrogène.</b> 1) Clique sur un niveau d'énergie <b>plus haut</b> pour exciter l'atome. 2) Clique ensuite sur un niveau <b>plus bas</b> : l'atome se désexcite et émet un photon, analysé par le spectroscope."
+    : "<b>Absorption – atome de sodium.</b> Les atomes de sodium du gaz sont dans leur état fondamental. Envoie un photon de longueur d'onde choisie, ou de la lumière blanche, à travers le gaz.";
+  showTable(); redraw();
+}
+
+syncLam(550);
+document.getElementById("tabEm").addEventListener("click", ()=>setMode("em"));
+document.getElementById("tabAb").addEventListener("click", ()=>setMode("ab"));
+document.getElementById("btnLamp").addEventListener("click", lamp);
+document.getElementById("btnClearEm").addEventListener("click", ()=>{ if(busy) return; for(const k in em) delete em[k]; done.length = 0; last = null; showInfo(); showTable(); clearMsg(); redraw(); });
+document.getElementById("btnClearAb").addEventListener("click", ()=>{ if(busy) return; for(const k in ab) delete ab[k]; last = null; showInfo(); clearMsg(); redraw(); });
+document.getElementById("btnSend").addEventListener("click", sendOne);
+document.getElementById("btnWhite").addEventListener("click", white);
+chkCalc.addEventListener("change", ()=>{ showInfo(); showTable(); });
+chkEmUnder.addEventListener("change", ()=>{ document.getElementById("spec2Box").classList.toggle("hidden", !chkEmUnder.checked); redraw(); });
+window.addEventListener("resize", redraw);
+setMode("em");
+})();
+</script>
+</body>
+</html>
