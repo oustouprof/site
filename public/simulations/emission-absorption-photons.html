@@ -176,6 +176,112 @@ let LY = [];
 
 const gStatic = el("g",{}), gArrows = el("g",{}), gPhotons = el("g",{}), gTop = el("g",{});
 
+// ---------- Représentation imagée des atomes (sphères qui vibrent) ----------
+const defs = el("defs",{});
+function grad(id, c0, c1){
+  const g = el("radialGradient",{id:id,cx:"35%",cy:"32%",r:"70%"},defs);
+  el("stop",{offset:"0%","stop-color":c0},g); el("stop",{offset:"100%","stop-color":c1},g);
+}
+grad("gAtomCalm","#cfe0ff","#2457c5");
+grad("gAtomHot","#fff1c9","#e0662a");
+const gAtomLayer = el("g",{});
+const gH = el("g",{},gAtomLayer), gGas = el("g",{},gAtomLayer);
+function makeAtom(parent, x, y, r0, rG, nucR){
+  const g = el("g",{},parent);
+  const halo = el("circle",{cx:0,cy:0,r:r0,fill:"#f5a623",opacity:0},g);
+  const body = el("circle",{cx:0,cy:0,r:r0,fill:"url(#gAtomCalm)",stroke:"#152447","stroke-width":1},g);
+  const hot = el("circle",{cx:0,cy:0,r:r0,fill:"url(#gAtomHot)",opacity:0},g);
+  if(nucR) el("circle",{cx:0,cy:0,r:nucR,fill:"#152447"},g);
+  return {g, halo, body, hot, x0:x, y0:y, x:x, y:y, r0, rG, E:null, amp:0, shaking:false, dir:0, drift:false, ph:Math.random()*1000};
+}
+// atome d'hydrogène (émission)
+const AX = 592, AY = 405;
+const hAtom = makeAtom(gH, AX, AY, 26, 20, 3.5);
+el("text",{x:AX,y:AY-64,"text-anchor":"middle","font-size":11.5,fill:"#5b6478"},gH).textContent = "représentation de l'atome";
+// gaz de sodium (absorption)
+const CELL = {x:490, y:338, w:255, h:114};
+el("rect",{x:CELL.x,y:CELL.y,width:CELL.w,height:CELL.h,rx:16,fill:"#fffbe8",stroke:"#b8962e","stroke-width":1.6},gGas);
+el("text",{x:CELL.x+CELL.w/2,y:CELL.y-8,"text-anchor":"middle","font-size":11.5,fill:"#5b6478"},gGas).textContent = "gaz de sodium : représentation des atomes";
+const gasAtoms = [[520,368],[575,410],[628,362],[680,416],[722,366],[528,428],[640,432],[598,382],[700,440],[560,358]]
+  .map(([x,y])=>{ const a = makeAtom(gGas, x, y, 10, 8, 0); a.drift = true; return a; });
+const cap1 = el("text",{x:AX,y:AY+62,"text-anchor":"middle","font-size":12.5,"font-weight":"bold",fill:"#152447"});
+const cap2 = el("text",{x:AX,y:AY+78,"text-anchor":"middle","font-size":11.5,fill:"#5b6478"});
+let activeAtom = hAtom, tPrev = performance.now();
+function atomFrac(E){ const E0 = LEVELS[0]; return Math.max(0, Math.min(1, (E - E0)/(0 - E0))); }
+function atomCaption(){
+  const cx = mode === "em" ? AX : CELL.x + CELL.w/2, cy = mode === "em" ? AY + 62 : CELL.y + CELL.h + 22;
+  cap1.setAttribute("x", cx); cap2.setAttribute("x", cx); cap1.setAttribute("y", cy); cap2.setAttribute("y", cy + 16);
+  const at = activeAtom;
+  if(at.E === null) return;
+  if(at.shaking){
+    cap1.textContent = mode === "em" ? "l'atome vibre : transition" : (at.dir > 0 ? "un atome absorbe le photon : il vibre" : "l'atome vibre : il se désexcite");
+    cap2.textContent = "entre deux niveaux d'énergie"; return;
+  }
+  const i = LEVELS.indexOf(at.E);
+  if(mode === "em"){
+    cap1.textContent = i === 0 ? "état fondamental" : "état excité (" + name(i) + ")";
+    cap2.textContent = i === 0 ? "énergie la plus basse" : "énergie plus élevée";
+  } else {
+    cap1.textContent = i > 0 ? "un atome est dans l'état excité (" + name(i) + ")" : "atomes dans l'état fondamental";
+    cap2.textContent = i > 0 ? "il a absorbé l'énergie du photon" : "agitation thermique";
+  }
+}
+function renderAtoms(t){
+  const dt = t - tPrev; tPrev = t;
+  for(const a of [hAtom, ...gasAtoms]){
+    if(a.shaking) a.amp = Math.min(a.r0 > 20 ? 7 : 4, a.amp + dt*0.05);
+    else a.amp *= Math.exp(-dt/220);
+    if(a.amp < 0.05) a.amp = 0;
+    if(a.drift){ a.x = a.x0 + 5*Math.sin(t/900 + a.ph); a.y = a.y0 + 4*Math.cos(t/1150 + 1.3*a.ph); }
+    const f = a.E === null ? 0 : atomFrac(a.E), k = a.r0/26;
+    const r = a.r0 + a.rG*f + a.amp*0.45*Math.sin(t*2*Math.PI/48 + a.ph);
+    const dx = a.amp*Math.sin(t*2*Math.PI/52 + a.ph), dy = 0.6*a.amp*Math.sin(t*2*Math.PI/67 + 1 + a.ph);
+    a.g.setAttribute("transform", `translate(${(a.x+dx).toFixed(2)},${(a.y+dy).toFixed(2)})`);
+    a.body.setAttribute("r", r.toFixed(2)); a.hot.setAttribute("r", r.toFixed(2));
+    a.hot.setAttribute("opacity", (f > 0.01 ? Math.min(1, 0.4 + f*1.2) : 0).toFixed(2));
+    a.halo.setAttribute("r", (r + k*(6 + 10*f) + a.amp).toFixed(2));
+    const ho = (f > 0.01 || a.amp > 0) ? 0.10 + 0.35*f + 0.05*a.amp : 0;
+    a.halo.setAttribute("opacity", ho.toFixed(2));
+  }
+  requestAnimationFrame(renderAtoms);
+}
+requestAnimationFrame(renderAtoms);
+function resetAtoms(){
+  for(const a of [hAtom, ...gasAtoms]){ a.E = LEVELS[0]; a.amp = 0; a.shaking = false; }
+  activeAtom = mode === "em" ? hAtom : gasAtoms[0];
+  gH.style.display = mode === "em" ? "" : "none";
+  gGas.style.display = mode === "ab" ? "" : "none";
+  atomCaption();
+}
+// excitation brève d'un atome du gaz (lumière blanche)
+function flashAtom(a, p){
+  a.E = LEVELS[p]; a.amp = 4;
+  setTimeout(()=>{ a.E = LEVELS[0]; a.amp = 3; }, 650);
+}
+const gAtomPh = el("g",{});
+// photon émis par l'atome d'hydrogène
+function atomPhoton(l, kind, ms){
+  const p = makePhoton(l); gAtomPh.appendChild(p);
+  const len = 46, a0 = AX + 24, a1 = 770;
+  return tween(ms, u=>p.setAttribute("d", wavePath(a0 + (a1-a0)*u, AY, len, l))).then(()=>p.remove());
+}
+// photon qui arrive sur le gaz : absorbé par le premier atome rencontré, ou qui traverse le gaz
+function gasTarget(){
+  let t = gasAtoms[Math.floor(Math.random()*gasAtoms.length)];
+  const y = t.y;
+  for(const a of gasAtoms) if(Math.abs(a.y - y) < 16 && a.x < t.x) t = a;
+  return t;
+}
+function gasPhoton(l, kind, ms){
+  const p = makePhoton(l); gAtomPh.appendChild(p);
+  const len = 40, a0 = 425 - len;
+  let t = null, y, a1;
+  if(kind === "ab"){ t = gasTarget(); y = t.y; a1 = t.x - 12 - len; }
+  else { y = CELL.y + 16 + Math.random()*(CELL.h - 32); a1 = 780; }
+  const pr = tween(ms, u=>p.setAttribute("d", wavePath(a0 + (a1-a0)*u, y, len, l))).then(()=>p.remove());
+  return {pr, t};
+}
+
 function drawStatic(){
   gStatic.innerHTML = "";
   LY = LEVELS.map(yOf);
@@ -255,8 +361,11 @@ function arrow(y1, y2, color, x){
 }
 async function moveElectron(to, ms){
   const y0 = +electron.getAttribute("cy"), y1 = LY[to];
-  await tween(ms, u=>setElectron(y0+(y1-y0)*ease(u)));
-  cur = to; updateLabel();
+  const E0 = LEVELS[cur], E1 = LEVELS[to], at = activeAtom;
+  at.shaking = true; at.dir = to > cur ? 1 : -1; atomCaption();
+  if(ms < 300) at.amp = 6;
+  await tween(ms, u=>{ setElectron(y0+(y1-y0)*ease(u)); at.E = E0 + (E1-E0)*ease(u); });
+  at.shaking = false; cur = to; at.E = LEVELS[to]; atomCaption(); updateLabel();
 }
 
 // ---------- Spectres ----------
@@ -367,8 +476,8 @@ async function onLevelClick(t){
   } else {
     const i = cur, l = lambdaNm(LEVELS[i]-LEVELS[t]);
     arrow(LY[i], LY[t], arrowColor(l));
-    const pr = emitPhoton(LY[i], l, false);
-    await moveElectron(t, 700); await pr;
+    const pr = emitPhoton(LY[i], l, false), pa = atomPhoton(l, "em", 1100);
+    await moveElectron(t, 700); await pr; await pa;
     record(i, t, l); last = {i, f:t, kind:"em", l};
     showInfo(); showTable(); redraw();
     setMsg(l<380 || l>780
@@ -382,12 +491,12 @@ async function lamp(){
   busy = true; setButtons(); clearMsg(); gArrows.innerHTML = "";
   setMsg("Lampe allumée : un très grand nombre d'atomes sont excités puis se désexcitent…", "neutral");
   for(let k=0;k<45;k++){
-    cur = 0; setElectron(LY[0]);
+    cur = 0; setElectron(LY[0]); hAtom.E = LEVELS[0];
     await moveElectron(1 + Math.floor(Math.random()*5), 90);
     while(cur > 0){
       const from = cur, to = Math.floor(Math.random()*cur), l = lambdaNm(LEVELS[from]-LEVELS[to]);
       const a = arrow(LY[from], LY[to], arrowColor(l));
-      emitPhoton(LY[from], l, true);
+      emitPhoton(LY[from], l, true); atomPhoton(l, "em", 380);
       await moveElectron(to, 110);
       record(from, to, l); redraw();
       setTimeout(()=>a.remove(), 250);
@@ -423,9 +532,11 @@ async function sendPhoton(l, fast){
   const tr = findTransition(l);
   const ion = !tr && H*C/(l*1e-9)/EV > -LEVELS[0];
   if(tr || ion){
+    const ga = gasPhoton(l, "ab", fast?260:900);
     await tween(fast?260:900, u=>p.setAttribute("d", wavePath(xs+(XC-len-xs)*u, y, len, l)));
-    p.remove(); return {tr, ion};
+    p.remove(); await ga.pr; return {tr, ion, target: ga.t};
   }
+  gasPhoton(l, "pass", fast?420:1500);
   await tween(fast?420:1500, u=>{
     const yy = y + (SY - y)*Math.max(0,(u-0.55)/0.45);
     p.setAttribute("d", wavePath(xs + (SX-len-xs)*u, yy, len, l));
@@ -437,6 +548,7 @@ async function sendOne(){
   busy = true; setButtons(); clearMsg(); gArrows.innerHTML = "";
   const res = await sendPhoton(+lam.value, false);
   if(res.tr){
+    activeAtom = res.target;
     arrow(LY[0], LY[res.tr.p], "#c0392b");
     await moveElectron(res.tr.p, 600);
     ab[Math.round(res.tr.lt)] = 1;
@@ -457,6 +569,7 @@ async function white(){
   if(busy) return;
   busy = true; setButtons(); clearMsg(); gArrows.innerHTML = "";
   setMsg("La lumière blanche (toutes les radiations visibles) traverse le gaz de sodium…", "neutral");
+  cap1.textContent = "certains atomes absorbent un photon"; cap2.textContent = "ils vibrent, passent dans un état excité puis se désexcitent";
   const list = [];
   for(let k=0;k<34;k++) list.push(380 + Math.random()*400);
   for(let p=1; p<LEVELS.length; p++){ const lt = lambdaNm(LEVELS[p]-LEVELS[0]); if(lt>=380 && lt<=780) list.push(lt, lt, lt); }
@@ -467,7 +580,7 @@ async function white(){
       const res = await sendPhoton(l, true);
       if(res.tr){
         const a = arrow(LY[0], LY[res.tr.p], "#c0392b", XC - 30 + Math.random()*60);
-        ab[Math.round(res.tr.lt)] = 1; redraw();
+        ab[Math.round(res.tr.lt)] = 1; redraw(); flashAtom(res.target, res.tr.p);
         setTimeout(()=>a.remove(), 700);
       }
     })());
@@ -476,6 +589,7 @@ async function white(){
   await Promise.all(jobs);
   redraw();
   setMsg("Une raie noire apparaît : les photons de cette longueur d'onde ont été absorbés par les atomes de sodium.", "ok");
+  atomCaption();
   busy = false; setButtons();
 }
 
@@ -493,9 +607,9 @@ function setMode(m){
   lampG.classList.toggle("hidden", m!=="ab");
   document.getElementById("spec2Box").classList.toggle("hidden", !(m==="ab" && chkEmUnder.checked));
   document.getElementById("specLabel1").textContent = m==="em" ? "Spectre d'émission obtenu" : "Spectre de la lumière blanche après la traversée du gaz de sodium";
-  gArrows.innerHTML = ""; gPhotons.innerHTML = ""; clearMsg(); last = null; showInfo();
+  gArrows.innerHTML = ""; gPhotons.innerHTML = ""; gAtomPh.innerHTML = ""; clearMsg(); last = null; showInfo();
   drawStatic();
-  cur = 0; setElectron(LY[0]); updateLabel(); drawLamp(LY[0]);
+  cur = 0; setElectron(LY[0]); updateLabel(); drawLamp(LY[0]); resetAtoms();
   document.getElementById("consigne").innerHTML = m === "em"
     ? "<b>Émission – atome d'hydrogène.</b> 1) Clique sur un niveau d'énergie <b>plus haut</b> pour exciter l'atome. 2) Clique ensuite sur un niveau <b>plus bas</b> : l'atome se désexcite et émet un photon, analysé par le spectroscope."
     : "<b>Absorption – atome de sodium.</b> Les atomes de sodium du gaz sont dans leur état fondamental. Envoie un photon de longueur d'onde choisie, ou de la lumière blanche, à travers le gaz.";
